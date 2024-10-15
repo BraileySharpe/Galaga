@@ -1,5 +1,5 @@
 ﻿<local:BaseSprite
-    x:Class="Galaga.Level1Enemy"
+    x:Class="Galaga.View.Sprites.Level1EnemySprite"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Galaga.View.Sprites"
@@ -39,7 +39,7 @@
 
         <Rectangle Width="5" Height="5" Fill="{StaticResource AntennaColor}" Canvas.Left="8" Canvas.Top="12"/>
         <Rectangle Width="5" Height="5" Fill="{StaticResource ResourceKey=AntennaColor}" Canvas.Left="37" Canvas.Top="12"/>
-        <Rectangle Width="5" Height="10" Fill="{StaticResource ResourceKey=AntennaColor}" Canvas.Left="3" Canvas.Top="2"/>
-        <Rectangle Width="5" Height="10" Fill="{StaticResource ResourceKey=AntennaColor}" Canvas.Left="43" Canvas.Top="2"/>
+        <Rectangle Width="5" Height="12" Fill="{StaticResource ResourceKey=AntennaColor}" Canvas.Left="3"/>
+        <Rectangle Width="5" Height="12" Fill="{StaticResource ResourceKey=AntennaColor}" Canvas.Left="42"/>
     </Canvas>
 </local:BaseSprite>
