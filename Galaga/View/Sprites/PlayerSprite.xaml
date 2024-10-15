@@ -20,33 +20,33 @@
     </UserControl.Resources>
 
     <Canvas>
-        <Rectangle Width="5" Height="60" Fill="{StaticResource ShipBaseColor}" Canvas.Left="23"/>
-        <Rectangle Width="15" Height="40" Fill="{StaticResource ShipBaseColor}" Canvas.Top="15" Canvas.Left="18"/>
-        <Rectangle Width="25" Height="20" Fill="{StaticResource ShipBaseColor}" Canvas.Top="25" Canvas.Left="13"/>
+        <Rectangle Width="4" Height="60" Fill="{StaticResource ShipBaseColor}" Canvas.Left="23"/>
+        <Rectangle Width="14" Height="40" Fill="{StaticResource ShipBaseColor}" Canvas.Top="15" Canvas.Left="18"/>
+        <Rectangle Width="24" Height="20" Fill="{StaticResource ShipBaseColor}" Canvas.Top="25" Canvas.Left="13"/>
         <Rectangle Width="5" Height="20" Fill="{StaticResource ShipBaseColor}" Canvas.Left="5" Canvas.Top="30"/>
         <Rectangle Width="5" Height="20" Fill="{StaticResource ShipBaseColor}" Canvas.Left="40" Canvas.Top="30"/>
         <Rectangle Width="17" Height="15" Fill="{StaticResource ShipBaseColor}" Canvas.Left="33" Canvas.Top="30"/>
-        <Rectangle Width="5" Height="35" Fill="{StaticResource ShipBaseColor}" Canvas.Top="20" Canvas.Left="1"/>
+        <Rectangle Width="5" Height="35" Fill="{StaticResource ShipBaseColor}" Canvas.Top="20"/>
         <Rectangle Width="17" Height="15" Fill="{StaticResource ShipBaseColor}" Canvas.Left="3" Canvas.Top="30"/>
         <Rectangle Width="5" Height="35" Fill="{StaticResource ShipBaseColor}" Canvas.Left="45" Canvas.Top="20"/>
-        <Rectangle Width="9" Height="20" Fill="{StaticResource ShipBaseColor}" Canvas.Left="4" Canvas.Top="30"/>
-        <Rectangle Width="7" Height="20" Fill="{StaticResource ShipBaseColor}" Canvas.Left="40" Canvas.Top="30"/>
+        <Rectangle Width="5" Height="20" Fill="{StaticResource ShipBaseColor}" Canvas.Left="5" Canvas.Top="30"/>
+        <Rectangle Width="8" Height="20" Fill="{StaticResource ShipBaseColor}" Canvas.Left="40" Canvas.Top="30"/>
 
-        <Rectangle Width="5" Height="5" Fill="{StaticResource WingTipColor}" Canvas.Top="15" Canvas.Left="1"/>
+        <Rectangle Width="5" Height="5" Fill="{StaticResource WingTipColor}" Canvas.Top="15"/>
         <Rectangle Width="5" Height="5" Fill="{StaticResource WingTipColor}" Canvas.Left="45" Canvas.Top="15"/>
 
-        <Rectangle Width="7" Height="5" Fill="{StaticResource AccentColor}" Canvas.Left="6" Canvas.Top="30"/>
-        <Rectangle Width="5" Height="5" Fill="{StaticResource AccentColor}" Canvas.Top="35" Canvas.Left="1"/>
-        <Rectangle Width="7" Height="5" Fill="{StaticResource AccentColor}" Canvas.Left="38" Canvas.Top="30"/>
+        <Rectangle Width="8" Height="5" Fill="{StaticResource AccentColor}" Canvas.Left="5" Canvas.Top="30"/>
+        <Rectangle Width="5" Height="5" Fill="{StaticResource AccentColor}" Canvas.Top="35"/>
+        <Rectangle Width="8" Height="5" Fill="{StaticResource AccentColor}" Canvas.Left="37" Canvas.Top="30"/>
         <Rectangle Width="5" Height="5" Fill="{StaticResource AccentColor}" Canvas.Left="45" Canvas.Top="35"/>
 
-        <Rectangle Width="5" Height="10" Fill="{StaticResource CockpitColor}" Canvas.Left="23" Canvas.Top="28"/>
-        <Rectangle Width="5" Height="10" Fill="{StaticResource CockpitColor}" Canvas.Left="28" Canvas.Top="33"/>
+        <Rectangle Width="4" Height="10" Fill="{StaticResource CockpitColor}" Canvas.Left="23" Canvas.Top="28"/>
+        <Rectangle Width="5" Height="10" Fill="{StaticResource CockpitColor}" Canvas.Left="27" Canvas.Top="33"/>
         <Rectangle Width="5" Height="10" Fill="{StaticResource CockpitColor}" Canvas.Left="18" Canvas.Top="33"/>
-        <Rectangle Width="15" Height="5" Fill="{StaticResource CockpitColor}" Canvas.Left="18" Canvas.Top="33"/>
+        <Rectangle Width="13" Height="5" Fill="{StaticResource CockpitColor}" Canvas.Left="18" Canvas.Top="33"/>
 
-        <Rectangle Width="7" Height="15" Fill="{StaticResource EngineFireColor}" Canvas.Left="11" Canvas.Top="45"/>
-        <Rectangle Width="7" Height="15" Fill="{StaticResource EngineFireColor}" Canvas.Left="33" Canvas.Top="45"/>
+        <Rectangle Width="5" Height="15" Fill="{StaticResource EngineFireColor}" Canvas.Left="13" Canvas.Top="45"/>
+        <Rectangle Width="5" Height="15" Fill="{StaticResource EngineFireColor}" Canvas.Left="32" Canvas.Top="45"/>
 
     </Canvas>
 
