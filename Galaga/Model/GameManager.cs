@@ -63,7 +63,10 @@ namespace Galaga.Model
         /// </summary>
         public void MovePlayerLeft()
         {
-            this.player.MoveLeft();
+            if (this.player.X - this.player.SpeedX > 0)
+            {
+                this.player.MoveLeft();
+            }
         }
 
         /// <summary>
@@ -71,7 +74,10 @@ namespace Galaga.Model
         /// </summary>
         public void MovePlayerRight()
         {
-            this.player.MoveRight();
+            if (this.player.X + this.player.Width + this.player.SpeedX < this.canvasWidth)
+            {
+                this.player.MoveRight();
+            }
         }
 
         #endregion
