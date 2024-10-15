@@ -20,8 +20,8 @@
 
     <Canvas>
         <Rectangle Width="24" Height="15" Fill="{StaticResource BaseColor}" Canvas.Left="13" Canvas.Top="12"/>
-        <Rectangle Width="14" Height="25" Fill="{StaticResource BaseColor}" Canvas.Left="18" Canvas.Top="27"/>
-        <Rectangle Width="4" Height="4" Fill="{StaticResource BaseColor}" Canvas.Left="23" Canvas.Top="8"/>
+        <Rectangle Width="14" Height="26" Fill="{StaticResource BaseColor}" Canvas.Left="18" Canvas.Top="26"/>
+        <Rectangle Width="4" Height="6" Fill="{StaticResource BaseColor}" Canvas.Left="23" Canvas.Top="8"/>
 
         <Rectangle Width="10" Height="5" Fill="{StaticResource AccentColor}" Canvas.Left="27" Canvas.Top="17"/>
         <Rectangle Width="10" Height="5" Fill="{StaticResource AccentColor}" Canvas.Left="13" Canvas.Top="17"/>
@@ -30,7 +30,7 @@
 
         <Rectangle Width="14" Height="10" Fill="{StaticResource AccentColor}" Canvas.Left="18" Canvas.Top="32"/>
         <Rectangle Width="14" Height="5" Fill="{StaticResource AccentColor}" Canvas.Left="18" Canvas.Top="47"/>
-        <Rectangle Width="4" Height="5" Fill="{StaticResource AccentColor}" Canvas.Left="23" Canvas.Top="52"/>
+        <Rectangle Width="4" Height="6" Fill="{StaticResource AccentColor}" Canvas.Left="23" Canvas.Top="51"/>
 
         <Rectangle Width="10" Height="10" Fill="{StaticResource WingColor}" Canvas.Left="8" Canvas.Top="27"/>
         <Rectangle Width="10" Height="10" Fill="{StaticResource WingColor}" Canvas.Left="32" Canvas.Top="27"/>
