@@ -34,6 +34,7 @@
 
         <Rectangle Width="7" Height="7" Fill="{StaticResource TrimColor}" Canvas.Left="16" Canvas.Top="11"/>
         <Rectangle Width="7" Height="7" Fill="{StaticResource TrimColor}" Canvas.Left="27" Canvas.Top="11"/>
+
         <Rectangle Width="11" Height="17" Fill="{StaticResource BaseColor}" Canvas.Left="34" Canvas.Top="24"/>
         <Rectangle Width="5" Height="10" Fill="{StaticResource BaseColor}" Canvas.Left="34" Canvas.Top="21"/>
         <Rectangle Width="11" Height="28" Fill="{StaticResource BaseColor}" Canvas.Left="39" Canvas.Top="27"/>

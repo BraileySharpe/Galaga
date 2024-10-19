@@ -12,34 +12,34 @@
     Width="50">
 
     <UserControl.Resources>
-        <SolidColorBrush x:Key="BaseColor" Color="#FFFF00"/>
-        <SolidColorBrush x:Key="AccentColor" Color="#FF1744"/>
-        <SolidColorBrush x:Key="WingColor" Color="#651FFF"/>
-        <SolidColorBrush x:Key="AntennaColor" Color="#651FFF"/>
+        <SolidColorBrush x:Key="Lvl1BaseColor" Color="#FFFF00"/>
+        <SolidColorBrush x:Key="Lvl1AccentColor" Color="#FF1744"/>
+        <SolidColorBrush x:Key="Lvl1WingColor" Color="#651FFF"/>
+        <SolidColorBrush x:Key="Lvl1AntennaColor" Color="#651FFF"/>
     </UserControl.Resources>
 
     <Canvas>
-        <Rectangle Width="24" Height="15" Fill="{StaticResource BaseColor}" Canvas.Left="13" Canvas.Top="12"/>
-        <Rectangle Width="14" Height="26" Fill="{StaticResource BaseColor}" Canvas.Left="18" Canvas.Top="26"/>
-        <Rectangle Width="4" Height="6" Fill="{StaticResource BaseColor}" Canvas.Left="23" Canvas.Top="8"/>
+        <Rectangle Width="24" Height="15" Fill="{StaticResource Lvl1BaseColor}" Canvas.Left="13" Canvas.Top="12"/>
+        <Rectangle Width="14" Height="26" Fill="{StaticResource Lvl1BaseColor}" Canvas.Left="18" Canvas.Top="26"/>
+        <Rectangle Width="4" Height="6" Fill="{StaticResource Lvl1BaseColor}" Canvas.Left="23" Canvas.Top="8"/>
 
-        <Rectangle Width="10" Height="5" Fill="{StaticResource AccentColor}" Canvas.Left="27" Canvas.Top="17"/>
-        <Rectangle Width="10" Height="5" Fill="{StaticResource AccentColor}" Canvas.Left="13" Canvas.Top="17"/>
-        <Rectangle Width="5" Height="10" Fill="{StaticResource AccentColor}" Canvas.Left="27" Canvas.Top="12"/>
-        <Rectangle Width="5" Height="10" Fill="{StaticResource AccentColor}" Canvas.Left="18" Canvas.Top="12"/>
+        <Rectangle Width="10" Height="5" Fill="{StaticResource Lvl1AccentColor}" Canvas.Left="27" Canvas.Top="17"/>
+        <Rectangle Width="10" Height="5" Fill="{StaticResource Lvl1AccentColor}" Canvas.Left="13" Canvas.Top="17"/>
+        <Rectangle Width="5" Height="10" Fill="{StaticResource Lvl1AccentColor}" Canvas.Left="27" Canvas.Top="12"/>
+        <Rectangle Width="5" Height="10" Fill="{StaticResource Lvl1AccentColor}" Canvas.Left="18" Canvas.Top="12"/>
 
-        <Rectangle Width="14" Height="10" Fill="{StaticResource AccentColor}" Canvas.Left="18" Canvas.Top="32"/>
-        <Rectangle Width="14" Height="5" Fill="{StaticResource AccentColor}" Canvas.Left="18" Canvas.Top="47"/>
-        <Rectangle Width="4" Height="6" Fill="{StaticResource AccentColor}" Canvas.Left="23" Canvas.Top="51"/>
+        <Rectangle Width="14" Height="10" Fill="{StaticResource Lvl1AccentColor}" Canvas.Left="18" Canvas.Top="32"/>
+        <Rectangle Width="14" Height="5" Fill="{StaticResource Lvl1AccentColor}" Canvas.Left="18" Canvas.Top="47"/>
+        <Rectangle Width="4" Height="6" Fill="{StaticResource Lvl1AccentColor}" Canvas.Left="23" Canvas.Top="51"/>
 
-        <Rectangle Width="10" Height="10" Fill="{StaticResource WingColor}" Canvas.Left="8" Canvas.Top="27"/>
-        <Rectangle Width="10" Height="10" Fill="{StaticResource WingColor}" Canvas.Left="32" Canvas.Top="27"/>
-        <Rectangle Width="10" Height="28" Fill="{StaticResource WingColor}" Canvas.Top="32"/>
-        <Rectangle Width="10" Height="28" Fill="{StaticResource WingColor}" Canvas.Left="40" Canvas.Top="32"/>
+        <Rectangle Width="10" Height="10" Fill="{StaticResource Lvl1WingColor}" Canvas.Left="8" Canvas.Top="27"/>
+        <Rectangle Width="10" Height="10" Fill="{StaticResource Lvl1WingColor}" Canvas.Left="32" Canvas.Top="27"/>
+        <Rectangle Width="10" Height="28" Fill="{StaticResource Lvl1WingColor}" Canvas.Top="32"/>
+        <Rectangle Width="10" Height="28" Fill="{StaticResource Lvl1WingColor}" Canvas.Left="40" Canvas.Top="32"/>
 
-        <Rectangle Width="5" Height="5" Fill="{StaticResource AntennaColor}" Canvas.Left="8" Canvas.Top="12"/>
-        <Rectangle Width="5" Height="5" Fill="{StaticResource ResourceKey=AntennaColor}" Canvas.Left="37" Canvas.Top="12"/>
-        <Rectangle Width="5" Height="12" Fill="{StaticResource ResourceKey=AntennaColor}" Canvas.Left="3"/>
-        <Rectangle Width="5" Height="12" Fill="{StaticResource ResourceKey=AntennaColor}" Canvas.Left="42"/>
+        <Rectangle Width="5" Height="5" Fill="{StaticResource Lvl1AntennaColor}" Canvas.Left="8" Canvas.Top="12"/>
+        <Rectangle Width="5" Height="5" Fill="{StaticResource ResourceKey=Lvl1AntennaColor}" Canvas.Left="37" Canvas.Top="12"/>
+        <Rectangle Width="5" Height="12" Fill="{StaticResource ResourceKey=Lvl1AntennaColor}" Canvas.Left="3"/>
+        <Rectangle Width="5" Height="12" Fill="{StaticResource ResourceKey=Lvl1AntennaColor}" Canvas.Left="42"/>
     </Canvas>
 </local:BaseSprite>

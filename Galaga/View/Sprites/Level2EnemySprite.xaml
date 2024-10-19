@@ -1,4 +1,4 @@
-﻿<local:BaseSprite
+﻿<local:Level1EnemySprite
     x:Class="Galaga.View.Sprites.Level2EnemySprite"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -12,35 +12,34 @@
     Height="60">
 
     <UserControl.Resources>
-        <SolidColorBrush x:Key="BaseColor" Color="#F6F7F0"/>
-        <SolidColorBrush x:Key="AccentColor" Color="#288BCB"/>
-        <SolidColorBrush x:Key="WingColor" Color="#D62430"/>
-        <SolidColorBrush x:Key="EyeColor" Color="#D62430"/>
-        <SolidColorBrush x:Key="AntennaColor" Color="#288BCB"/>
+        <SolidColorBrush x:Key="Lvl2BaseColor" Color="#F6F7F0" />
+        <SolidColorBrush x:Key="Lvl2AccentColor" Color="#288BCB"/>
+        <SolidColorBrush x:Key="Lvl2WingColor" Color="#D62430"/>
+        <SolidColorBrush x:Key="Lvl2EyeColor" Color="#D62430"/>
     </UserControl.Resources>
 
     <Canvas>
-        <Rectangle Width="5" Height="10" Fill="{StaticResource AccentColor}" Canvas.Left="18" Canvas.Top="7"/>
-        <Rectangle Width="5" Height="10" Fill="{StaticResource AccentColor}" Canvas.Left="27" Canvas.Top="7"/>
+        <Rectangle Width="5" Height="10" Fill="{StaticResource Lvl2AccentColor}" Canvas.Left="18" Canvas.Top="7"/>
+        <Rectangle Width="5" Height="10" Fill="{StaticResource Lvl2AccentColor}" Canvas.Left="27" Canvas.Top="7"/>
 
-        <Rectangle Width="14" Height="35" Fill="{StaticResource BaseColor}" Canvas.Left="18" Canvas.Top="17"/>
-        <Rectangle Width="20" Height="10" Fill="{StaticResource BaseColor}" Canvas.Left="15" Canvas.Top="17"/>
+        <Rectangle Width="14" Height="35" Fill="{StaticResource Lvl2BaseColor}" Canvas.Left="18" Canvas.Top="17"/>
+        <Rectangle Width="20" Height="10" Fill="{StaticResource Lvl2BaseColor}" Canvas.Left="15" Canvas.Top="17"/>
 
-        <Rectangle Width="14" Height="10" Fill="{StaticResource AccentColor}" Canvas.Left="18" Canvas.Top="32"/>
-        <Rectangle Width="14" Height="5" Fill="{StaticResource AccentColor}" Canvas.Left="18" Canvas.Top="47"/>
+        <Rectangle Width="14" Height="10" Fill="{StaticResource Lvl2AccentColor}" Canvas.Left="18" Canvas.Top="32"/>
+        <Rectangle Width="14" Height="5" Fill="{StaticResource Lvl2AccentColor}" Canvas.Left="18" Canvas.Top="47"/>
 
-        <Rectangle Width="5" Height="5" Fill="{StaticResource EyeColor}" Canvas.Left="18" Canvas.Top="17"/>
-        <Rectangle Width="5" Height="5" Fill="{StaticResource EyeColor}" Canvas.Left="27" Canvas.Top="17"/>
+        <Rectangle Width="5" Height="5" Fill="{StaticResource Lvl2EyeColor}" Canvas.Left="18" Canvas.Top="17"/>
+        <Rectangle Width="5" Height="5" Fill="{StaticResource Lvl2EyeColor}" Canvas.Left="27" Canvas.Top="17"/>
 
-        <Rectangle Width="10" Height="15" Fill="{StaticResource WingColor}" Canvas.Left="8" Canvas.Top="27"/>
-        <Rectangle Width="10" Height="15" Fill="{StaticResource WingColor}" Canvas.Left="32" Canvas.Top="27"/>
-        <Rectangle Width="13" Height="30" Fill="{StaticResource WingColor}" Canvas.Top="7"/>
-        <Rectangle Width="13" Height="30" Fill="{StaticResource WingColor}" Canvas.Left="37" Canvas.Top="7"/>
-        <Rectangle Width="5" Height="52" Fill="{StaticResource WingColor}" Canvas.Left="8"/>
-        <Rectangle Width="5" Height="52" Fill="{StaticResource WingColor}" Canvas.Left="37"/>
-        <Rectangle Width="13" Height="15" Fill="{StaticResource WingColor}" Canvas.Left="37" Canvas.Top="42"/>
-        <Rectangle Width="13" Height="15" Fill="{StaticResource WingColor}" Canvas.Top="42"/>
-        <Rectangle Width="5" Height="18" Fill="{StaticResource WingColor}" Canvas.Left="37" Canvas.Top="42"/>
-        <Rectangle Width="5" Height="18" Fill="{StaticResource WingColor}" Canvas.Left="8" Canvas.Top="42"/>
+        <Rectangle Width="10" Height="15" Fill="{StaticResource Lvl2WingColor}" Canvas.Left="8" Canvas.Top="27"/>
+        <Rectangle Width="10" Height="15" Fill="{StaticResource Lvl2WingColor}" Canvas.Left="32" Canvas.Top="27"/>
+        <Rectangle Width="13" Height="30" Fill="{StaticResource Lvl2WingColor}" Canvas.Top="7"/>
+        <Rectangle Width="13" Height="30" Fill="{StaticResource Lvl2WingColor}" Canvas.Left="37" Canvas.Top="7"/>
+        <Rectangle Width="5" Height="52" Fill="{StaticResource Lvl2WingColor}" Canvas.Left="8"/>
+        <Rectangle Width="5" Height="52" Fill="{StaticResource Lvl2WingColor}" Canvas.Left="37"/>
+        <Rectangle Width="13" Height="15" Fill="{StaticResource Lvl2WingColor}" Canvas.Left="37" Canvas.Top="42"/>
+        <Rectangle Width="13" Height="15" Fill="{StaticResource Lvl2WingColor}" Canvas.Top="42"/>
+        <Rectangle Width="5" Height="18" Fill="{StaticResource Lvl2WingColor}" Canvas.Left="37" Canvas.Top="42"/>
+        <Rectangle Width="5" Height="18" Fill="{StaticResource Lvl2WingColor}" Canvas.Left="8" Canvas.Top="42"/>
     </Canvas>
-</local:BaseSprite>
+</local:Level1EnemySprite>
