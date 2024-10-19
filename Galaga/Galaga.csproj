@@ -137,6 +137,9 @@
     <Compile Include="View\Sprites\Level2EnemySprite.xaml.cs">
       <DependentUpon>Level2EnemySprite.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Sprites\Level3EnemySprite.xaml.cs">
+      <DependentUpon>Level3EnemySprite.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Sprites\PlayerSprite.xaml.cs">
       <DependentUpon>PlayerSprite.xaml</DependentUpon>
     </Compile>
@@ -174,6 +177,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Sprites\Level2EnemySprite.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Sprites\Level3EnemySprite.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
