@@ -8,7 +8,7 @@ namespace Galaga.View.Sprites
     /// <seealso cref="Galaga.View.Sprites.BaseSprite" />
     /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector" />
     /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector2" />
-    public sealed partial class Level1EnemySprite
+    public partial class Level1EnemySprite
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Level1EnemySprite"/> class.
