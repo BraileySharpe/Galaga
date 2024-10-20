@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using Windows.UI.Xaml.Controls;
 using Galaga.View.Sprites;
 
@@ -35,7 +36,7 @@ namespace Galaga.Model
             this.canvasHeight = canvas.Height;
             this.canvasWidth = canvas.Width;
 
-            this.enemyManager = new EnemyManager(this.canvas, this.canvasWidth, this.canvasHeight);
+            this.enemyManager = new EnemyManager();
             this.initializeGame();
         }
 
@@ -46,84 +47,8 @@ namespace Galaga.Model
         private void initializeGame()
         {
             this.createAndPlacePlayer();
-            this.enemyManager.CreateAndPlaceEnemies();
+            this.enemyManager.CreateAndPlaceEnemies(this.canvas);
         }
-
-        //private void createAndPlaceEnemies()
-        //{
-        //    this.createAndPlaceLevel1Enemies(2);
-        //    this.createAndPlaceLevel2Enemies(3);
-        //    this.createAndPlaceLevel3Enemies(4);
-        //}
-
-        //private void createAndPlaceLevel1Enemies(int numOfEnemies)
-        //{
-        //    if (numOfEnemies < 1)
-        //    {
-        //        throw new ArgumentException("Number of enemies must be greater than 0.");
-        //    }
-
-        //    double spacing = 5;
-        //    var totalSpriteWidth = numOfEnemies * new Level1EnemySprite().Width + (numOfEnemies - 1) * spacing;
-        //    var leftMargin = (this.canvasWidth - totalSpriteWidth) / 2;
-
-        //    for (var i = 0; i < numOfEnemies; i++)
-        //    {
-        //        var currEnemy = new Enemy(new Level1EnemySprite());
-        //        this.enemyManager.Level1Enemies.Add(currEnemy);
-        //        this.canvas.Children.Add(currEnemy.Sprite);
-
-        //        var xPosition = leftMargin + i * (currEnemy.Width + spacing);
-        //        currEnemy.X = xPosition;
-        //        currEnemy.Y = this.canvasHeight - currEnemy.Height - 250;
-        //    }
-        //}
-
-        //private void createAndPlaceLevel2Enemies(int numOfEnemies)
-        //{
-        //    if (numOfEnemies < 1)
-        //    {
-        //        throw new ArgumentException("Number of enemies must be greater than 0.");
-        //    }
-
-        //    double spacing = 5;
-        //    var totalSpriteWidth = numOfEnemies * new Level2EnemySprite().Width + (numOfEnemies - 1) * spacing;
-        //    var leftMargin = (this.canvasWidth - totalSpriteWidth) / 2;
-
-        //    for (var i = 0; i < numOfEnemies; i++)
-        //    {
-        //        var currEnemy = new Enemy(new Level2EnemySprite());
-        //        this.enemyManager.Level2Enemies.Add(currEnemy);
-        //        this.canvas.Children.Add(currEnemy.Sprite);
-
-        //        var xPosition = leftMargin + i * (currEnemy.Width + spacing);
-        //        currEnemy.X = xPosition;
-        //        currEnemy.Y = this.canvasHeight - currEnemy.Height - 325;
-        //    }
-        //}
-
-        //private void createAndPlaceLevel3Enemies(int numOfEnemies)
-        //{
-        //    if (numOfEnemies < 1)
-        //    {
-        //        throw new ArgumentException("Number of enemies must be greater than 0.");
-        //    }
-
-        //    double spacing = 5;
-        //    var totalSpriteWidth = numOfEnemies * new Level3EnemySprite().Width + (numOfEnemies - 1) * spacing;
-        //    var leftMargin = (this.canvasWidth - totalSpriteWidth) / 2;
-
-        //    for (var i = 0; i < numOfEnemies; i++)
-        //    {
-        //        var currEnemy = new Enemy(new Level3EnemySprite());
-        //        this.enemyManager.Level3Enemies.Add(currEnemy);
-        //        this.canvas.Children.Add(currEnemy.Sprite);
-
-        //        var xPosition = leftMargin + i * (currEnemy.Width + spacing);
-        //        currEnemy.X = xPosition;
-        //        currEnemy.Y = this.canvasHeight - currEnemy.Height - 400;
-        //    }
-        //}
 
         private void createAndPlacePlayer()
         {
