@@ -21,13 +21,23 @@ namespace Galaga.Model
 
         #region Properties
 
-        public List<Enemy> Level1Enemies { get; } = new List<Enemy>();
-        public List<Enemy> Level2Enemies { get; } = new List<Enemy>();
-        public List<Enemy> Level3Enemies { get; } = new List<Enemy>();
+        public IList<Enemy> Level1Enemies { get; }
+        public IList<Enemy> Level2Enemies { get; }
+        public IList<Enemy> Level3Enemies { get; }
 
         #endregion
 
         #region Constructors
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="EnemyManager" /> class.
+        /// </summary>
+        public EnemyManager()
+        {
+            this.Level1Enemies = new List<Enemy>();
+            this.Level2Enemies = new List<Enemy>();
+            this.Level3Enemies = new List<Enemy>();
+        }
 
         #endregion
 
@@ -48,7 +58,7 @@ namespace Galaga.Model
                 Level3EnemyOffset);
         }
 
-        private void createAndPlaceEnemiesByLevel(List<Enemy> enemyList, Canvas canvas, int numOfEnemies,
+        private void createAndPlaceEnemiesByLevel(IList<Enemy> enemyList, Canvas canvas, int numOfEnemies,
             BaseSprite sprite, double yOffset)
         {
             if (numOfEnemies < 1)
@@ -73,7 +83,44 @@ namespace Galaga.Model
             }
         }
 
+        /// <summary>
+        /// Moves the enemies for the game left.
+        /// </summary>
+        public void MoveEnemiesLeft()
+        {
+            foreach (var enemy in this.Level1Enemies)
+            {
+                enemy.MoveLeft();
+            }
 
+            foreach (var enemy in this.Level2Enemies)
+            {
+                enemy.MoveLeft();
+            }
+
+            foreach (var enemy in this.Level3Enemies)
+            {
+                enemy.MoveLeft();
+            }
+        }
+
+        public void MoveEnemiesRight()
+        {
+            foreach (var enemy in this.Level1Enemies)
+            {
+                enemy.MoveRight();
+            }
+
+            foreach (var enemy in this.Level2Enemies)
+            {
+                enemy.MoveRight();
+            }
+
+            foreach (var enemy in this.Level3Enemies)
+            {
+                enemy.MoveRight();
+            }
+        }
 
         #endregion
     }

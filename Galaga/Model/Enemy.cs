@@ -13,7 +13,7 @@ namespace Galaga.Model
     public class Enemy : GameObject
     {
         private BaseSprite sprite;
-        private const int SpeedXDirection = 3;
+        private const int SpeedXDirection = 10;
         private const int SpeedYDirection = 0;
 
         /// <summary>

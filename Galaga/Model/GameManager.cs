@@ -86,6 +86,16 @@ namespace Galaga.Model
             }
         }
 
+        public void MoveEnemiesLeft()
+        {
+            this.enemyManager.MoveEnemiesLeft();
+        }
+
+        public void MoveEnemiesRight()
+        {
+            this.enemyManager.MoveEnemiesRight();
+        }
+
         #endregion
     }
 }
