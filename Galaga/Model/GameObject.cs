@@ -5,7 +5,7 @@ using Galaga.View.Sprites;
 namespace Galaga.Model
 {
     /// <summary>
-    /// Represents a game object in the Galaga game.
+    ///     Represents a game object in the Galaga game.
     /// </summary>
     public abstract class GameObject
     {
@@ -164,6 +164,5 @@ namespace Galaga.Model
         }
 
         #endregion
-
     }
 }

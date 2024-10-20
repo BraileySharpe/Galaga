@@ -3,7 +3,7 @@
 namespace Galaga.Model
 {
     /// <summary>
-    /// Represents a player in the game.
+    ///     Represents a player in the game.
     /// </summary>
     public class Player : GameObject
     {
@@ -17,7 +17,7 @@ namespace Galaga.Model
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Player"/> class.
+        ///     Initializes a new instance of the <see cref="Player" /> class.
         /// </summary>
         public Player()
         {

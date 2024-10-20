@@ -21,8 +21,28 @@ namespace Galaga.Model
 
         #region Properties
 
+        /// <summary>
+        ///     Gets the level1 enemies.
+        /// </summary>
+        /// <value>
+        ///     The level1 enemies.
+        /// </value>
         public IList<Enemy> Level1Enemies { get; }
+
+        /// <summary>
+        ///     Gets the level2 enemies.
+        /// </summary>
+        /// <value>
+        ///     The level2 enemies.
+        /// </value>
         public IList<Enemy> Level2Enemies { get; }
+
+        /// <summary>
+        ///     Gets the level3 enemies.
+        /// </summary>
+        /// <value>
+        ///     The level3 enemies.
+        /// </value>
         public IList<Enemy> Level3Enemies { get; }
 
         #endregion
@@ -66,6 +86,16 @@ namespace Galaga.Model
                 throw new ArgumentException("Number of enemies must be greater than 0.");
             }
 
+            if (canvas == null)
+            {
+                throw new ArgumentException("The canvas cannot be null.");
+            }
+
+            if (sprite == null)
+            {
+                throw new ArgumentException("The sprite cannot be null.");
+            }
+
             enemyList.Clear();
 
             var totalSpriteWidth = numOfEnemies * sprite.Width + (numOfEnemies - 1) * Spacing;
@@ -84,7 +114,7 @@ namespace Galaga.Model
         }
 
         /// <summary>
-        /// Moves the enemies for the game left.
+        ///     Moves the enemies for the game left.
         /// </summary>
         public void MoveEnemiesLeft()
         {

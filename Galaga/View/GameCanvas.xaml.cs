@@ -1,21 +1,22 @@
-﻿using Galaga.Model;
-using System;
+﻿using System;
 using Windows.Foundation;
 using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
+using Galaga.Model;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace Galaga.View
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    ///     An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
     public sealed partial class GameCanvas
     {
+        #region Data members
+
         public const int InitialTickMovement = 5;
         public const int TicksBeforeDirectionChange = 10;
 
@@ -25,8 +26,12 @@ namespace Galaga.View
         private int tickCounter;
         private bool moveRight;
 
+        #endregion
+
+        #region Constructors
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="GameCanvas"/> class.
+        ///     Initializes a new instance of the <see cref="GameCanvas" /> class.
         /// </summary>
         public GameCanvas()
         {
@@ -34,7 +39,7 @@ namespace Galaga.View
             this.createTimer();
 
             Width = this.canvas.Width;
-            Height= this.canvas.Height;
+            Height = this.canvas.Height;
             ApplicationView.PreferredLaunchViewSize = new Size { Width = Width, Height = Height };
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
             ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(Width, Height));
@@ -43,6 +48,10 @@ namespace Galaga.View
 
             this.gameManager = new GameManager(this.canvas);
         }
+
+        #endregion
+
+        #region Methods
 
         private void createTimer()
         {
@@ -59,7 +68,8 @@ namespace Galaga.View
             if (this.tickCounter <= InitialTickMovement)
             {
                 this.gameManager.MoveEnemiesLeft();
-            } else if (this.tickCounter < TicksBeforeDirectionChange)
+            }
+            else if (this.tickCounter < TicksBeforeDirectionChange)
             {
                 this.tickCounter = TicksBeforeDirectionChange;
             }
@@ -80,7 +90,6 @@ namespace Galaga.View
                     this.gameManager.MoveEnemiesLeft();
                 }
             }
-
         }
 
         private void coreWindowOnKeyDown(CoreWindow sender, KeyEventArgs args)
@@ -95,5 +104,7 @@ namespace Galaga.View
                     break;
             }
         }
+
+        #endregion
     }
 }

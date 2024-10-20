@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections;
 using Windows.UI.Xaml.Controls;
-using Galaga.View.Sprites;
 
 namespace Galaga.Model
 {
