@@ -9,7 +9,7 @@ namespace Galaga.Model
     {
         #region Data members
 
-        private const int SpeedXDirection = 10;
+        private const int SpeedXDirection = 5;
         private const int SpeedYDirection = 0;
 
         #endregion

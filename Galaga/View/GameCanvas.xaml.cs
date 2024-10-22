@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Windows.Foundation;
 using Windows.System;
 using Windows.UI.Core;
@@ -21,15 +22,17 @@ namespace Galaga.View
         public const int TicksBeforeEnemyDirectionChange = 10;
 
         private readonly GameManager gameManager;
-        private Random random;
+        private readonly Random random;
 
         private DispatcherTimer enemyBulletTimer;
         private DispatcherTimer enemyMovementTimer;
         private DispatcherTimer enemyBulletMovementTimer;
         private DispatcherTimer playerBulletTimer;
+        private DispatcherTimer gameLoopTimer;
 
         private int enemyTickCounter;
         private bool enemyMoveRight;
+        private readonly HashSet<VirtualKey> activeKeys;
 
         #endregion
 
@@ -43,10 +46,12 @@ namespace Galaga.View
             this.InitializeComponent();
 
             this.random = new Random();
+            this.activeKeys = new HashSet<VirtualKey>();
 
             this.createPlayerBulletTimer();
             this.createEnemyMovementTimer();
             this.createEnemyBulletTimer();
+            this.createGameLoopTimer();
 
             Width = this.canvas.Width;
             Height = this.canvas.Height;
@@ -55,6 +60,7 @@ namespace Galaga.View
             ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(Width, Height));
 
             Window.Current.CoreWindow.KeyDown += this.coreWindowOnKeyDown;
+            Window.Current.CoreWindow.KeyUp += this.coreWindowOnKeyUp;
 
             this.gameManager = new GameManager(this.canvas);
         }
@@ -66,9 +72,11 @@ namespace Galaga.View
         private void createEnemyBulletTimer()
         {
             this.enemyBulletTimer = new DispatcherTimer();
-            this.enemyBulletMovementTimer = new DispatcherTimer();
+            this.enemyBulletMovementTimer = new DispatcherTimer
+            {
+                Interval = new TimeSpan(0, 0, 0, 0, 100)
+            };
             this.setRandomTimeInterval();
-            this.enemyBulletMovementTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
             this.enemyBulletTimer.Tick += this.bullet_TimerTick;
             this.enemyBulletMovementTimer.Tick += this.bulletMovement_TimerTick;
             this.enemyBulletMovementTimer.Start();
@@ -77,8 +85,8 @@ namespace Galaga.View
 
         private void setRandomTimeInterval()
         {
-            int randomTime = this.random.Next(1, 3);
-            this.enemyBulletTimer.Interval = TimeSpan.FromSeconds(randomTime);
+            var randomTime = this.random.Next(500, 3000);
+            this.enemyBulletTimer.Interval = TimeSpan.FromMilliseconds(randomTime);
         }
 
         private void bullet_TimerTick(object sender, object e)
@@ -94,8 +102,10 @@ namespace Galaga.View
 
         private void createPlayerBulletTimer()
         {
-            this.playerBulletTimer = new DispatcherTimer();
-            this.playerBulletTimer.Interval = new TimeSpan(0, 0, 0, 0, 10);
+            this.playerBulletTimer = new DispatcherTimer
+            {
+                Interval = new TimeSpan(0, 0, 0, 0, 10)
+            };
             this.playerBulletTimer.Tick += this.playerBullet_TimerTick;
             this.playerBulletTimer.Start();
         }
@@ -107,8 +117,10 @@ namespace Galaga.View
 
         private void createEnemyMovementTimer()
         {
-            this.enemyMovementTimer = new DispatcherTimer();
-            this.enemyMovementTimer.Interval = new TimeSpan(0, 0, 0, 0, 350);
+            this.enemyMovementTimer = new DispatcherTimer
+            {
+                Interval = new TimeSpan(0, 0, 0, 0, 350)
+            };
             this.enemyMovementTimer.Tick += this.enemyMovement_TimerTick;
             this.enemyMovementTimer.Start();
         }
@@ -144,20 +156,42 @@ namespace Galaga.View
             }
         }
 
+        private void createGameLoopTimer()
+        {
+            this.gameLoopTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromMilliseconds(16)
+            };
+            this.gameLoopTimer.Tick += this.gameLoopTimer_Tick;
+            this.gameLoopTimer.Start();
+        }
+
+        private void gameLoopTimer_Tick(object sender, object e)
+        {
+            if (this.activeKeys.Contains(VirtualKey.Left))
+            {
+                this.gameManager.MovePlayerLeft();
+            }
+
+            if (this.activeKeys.Contains(VirtualKey.Right))
+            {
+                this.gameManager.MovePlayerRight();
+            }
+
+            if (this.activeKeys.Contains(VirtualKey.Space))
+            {
+                this.gameManager.PlacePlayerBullet();
+            }
+        }
+
         private void coreWindowOnKeyDown(CoreWindow sender, KeyEventArgs args)
         {
-            switch (args.VirtualKey)
-            {
-                case VirtualKey.Left:
-                    this.gameManager.MovePlayerLeft();
-                    break;
-                case VirtualKey.Right:
-                    this.gameManager.MovePlayerRight();
-                    break;
-                case VirtualKey.Space:
-                    this.gameManager.PlacePlayerBullet();
-                    break;
-            }
+            this.activeKeys.Add(args.VirtualKey);
+        }
+
+        private void coreWindowOnKeyUp(CoreWindow sender, KeyEventArgs args)
+        {
+            this.activeKeys.Remove(args.VirtualKey);
         }
 
         #endregion
