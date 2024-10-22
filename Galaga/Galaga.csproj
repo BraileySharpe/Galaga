@@ -120,6 +120,8 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\Bullet.cs" />
+    <Compile Include="Model\BulletManager.cs" />
     <Compile Include="Model\Enemy.cs" />
     <Compile Include="Model\EnemyManager.cs" />
     <Compile Include="Model\GameManager.cs" />

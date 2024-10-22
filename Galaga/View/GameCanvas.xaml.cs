@@ -17,14 +17,15 @@ namespace Galaga.View
     {
         #region Data members
 
-        public const int InitialTickMovement = 5;
-        public const int TicksBeforeDirectionChange = 10;
+        public const int InitialTickEnemyMovement = 5;
+        public const int TicksBeforeEnemyDirectionChange = 10;
 
         private readonly GameManager gameManager;
-        private DispatcherTimer timer;
+        private DispatcherTimer enemyTimer;
+        private DispatcherTimer bulletTimer;
 
-        private int tickCounter;
-        private bool moveRight;
+        private int enemyTickCounter;
+        private bool enemyMoveRight;
 
         #endregion
 
@@ -36,7 +37,8 @@ namespace Galaga.View
         public GameCanvas()
         {
             this.InitializeComponent();
-            this.createTimer();
+            this.createBulletTimer();
+            this.createEnemyTimer();
 
             Width = this.canvas.Width;
             Height = this.canvas.Height;
@@ -49,39 +51,47 @@ namespace Galaga.View
             this.gameManager = new GameManager(this.canvas);
         }
 
+        private void createBulletTimer()
+        {
+            this.bulletTimer = new DispatcherTimer();
+            this.bulletTimer.Interval = new TimeSpan(0, 0, 0, 0, 3);
+            this.bulletTimer.Tick += this.bulletTimerTick;
+            this.bulletTimer.Start();
+        }
+
         #endregion
 
         #region Methods
 
-        private void createTimer()
+        private void createEnemyTimer()
         {
-            this.timer = new DispatcherTimer();
-            this.timer.Interval = new TimeSpan(0, 0, 0, 0, 350);
-            this.timer.Tick += this.timer_Tick;
-            this.timer.Start();
+            this.enemyTimer = new DispatcherTimer();
+            this.enemyTimer.Interval = new TimeSpan(0, 0, 0, 0, 350);
+            this.enemyTimer.Tick += this.enemyTimerTick;
+            this.enemyTimer.Start();
         }
 
-        private void timer_Tick(object sender, object e)
+        private void enemyTimerTick(object sender, object e)
         {
-            this.tickCounter++;
+            this.enemyTickCounter++;
 
-            if (this.tickCounter <= InitialTickMovement)
+            if (this.enemyTickCounter <= InitialTickEnemyMovement)
             {
                 this.gameManager.MoveEnemiesLeft();
             }
-            else if (this.tickCounter < TicksBeforeDirectionChange)
+            else if (this.enemyTickCounter < TicksBeforeEnemyDirectionChange)
             {
-                this.tickCounter = TicksBeforeDirectionChange;
+                this.enemyTickCounter = TicksBeforeEnemyDirectionChange;
             }
 
-            if (this.tickCounter >= TicksBeforeDirectionChange)
+            if (this.enemyTickCounter >= TicksBeforeEnemyDirectionChange)
             {
-                if (this.tickCounter % TicksBeforeDirectionChange == 0)
+                if (this.enemyTickCounter % TicksBeforeEnemyDirectionChange == 0)
                 {
-                    this.moveRight = !this.moveRight;
+                    this.enemyMoveRight = !this.enemyMoveRight;
                 }
 
-                if (this.moveRight)
+                if (this.enemyMoveRight)
                 {
                     this.gameManager.MoveEnemiesRight();
                 }
@@ -102,7 +112,15 @@ namespace Galaga.View
                 case VirtualKey.Right:
                     this.gameManager.MovePlayerRight();
                     break;
+                case VirtualKey.Space:
+                    this.gameManager.PlaceBullet();
+                    break;
             }
+        }
+
+        private void bulletTimerTick(object sender, object e)
+        {
+            this.gameManager.MoveBullet();
         }
 
         #endregion

@@ -12,7 +12,7 @@ namespace Galaga.Model
     {
         #region Data members
 
-        private const double Spacing = 5;
+        private const double Spacing = 10;
         private const double Level1EnemyOffset = 250;
         private const double Level2EnemyOffset = 325;
         private const double Level3EnemyOffset = 400;
@@ -88,12 +88,12 @@ namespace Galaga.Model
 
             if (canvas == null)
             {
-                throw new ArgumentException("The canvas cannot be null.");
+                throw new ArgumentNullException(nameof(canvas));
             }
 
             if (sprite == null)
             {
-                throw new ArgumentException("The sprite cannot be null.");
+                throw new ArgumentNullException(nameof(sprite));
             }
 
             enemyList.Clear();

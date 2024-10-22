@@ -1,5 +1,6 @@
 ﻿using System;
 using Windows.UI.Xaml.Controls;
+using Galaga.View.Sprites;
 
 namespace Galaga.Model
 {
@@ -16,6 +17,7 @@ namespace Galaga.Model
         private readonly double canvasWidth;
 
         private readonly EnemyManager enemyManager;
+        private readonly BulletManager bulletManager;
 
         private Player player;
 
@@ -35,6 +37,7 @@ namespace Galaga.Model
             this.canvasWidth = canvas.Width;
 
             this.enemyManager = new EnemyManager();
+            this.bulletManager = new BulletManager();
             this.initializeGame();
         }
 
@@ -92,6 +95,21 @@ namespace Galaga.Model
         public void MoveEnemiesRight()
         {
             this.enemyManager.MoveEnemiesRight();
+        }
+
+        public void PlaceBullet()
+        {
+            this.bulletManager.FireBullet(this.canvas, this.player);
+        }
+
+        public void MoveBullet()
+        {
+            this.bulletManager.MoveBullet(this.canvas);
+
+            if (this.bulletManager.BulletFired)
+            {
+                this.checkBulletCollision();
+            }
         }
 
         #endregion
