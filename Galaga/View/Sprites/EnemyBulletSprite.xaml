@@ -1,0 +1,17 @@
+﻿<local:BaseSprite
+    x:Class="Galaga.View.Sprites.EnemyBulletSprite"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Galaga.View.Sprites"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="20"
+    d:DesignWidth="4"
+    Height="20"
+    Width="4">
+
+    <Canvas>
+        <Rectangle Width="4" Height="20" Fill="#FFFFFF" Canvas.Left="0" Canvas.Top="0"/>
+    </Canvas>
+</local:BaseSprite>

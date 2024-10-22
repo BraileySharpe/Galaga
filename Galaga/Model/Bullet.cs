@@ -21,23 +21,31 @@ namespace Galaga.Model
         /// </summary>
         public Bullet()
         {
-            Sprite = new BulletSprite();
+            SetSpeed(SpeedXDirection, SpeedYDirection);
+        }
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="Bullet" /> class.
+        /// </summary>
+        public Bullet(BaseSprite sprite)
+        {
+            Sprite = sprite;
             SetSpeed(SpeedXDirection, SpeedYDirection);
         }
 
         #endregion
 
-        public bool CollidesWith(Enemy enemy)
+        public bool CollidesWith(GameObject gameObject)
         {
-            if (enemy == null)
+            if (gameObject == null)
             {
                 return false;
             }
 
-            return X < enemy.X + enemy.Width &&
-                   X + Width > enemy.X &&
-                   Y < enemy.Y + enemy.Height &&
-                   Y + Height > enemy.Y;
+            return X < gameObject.X + gameObject.Width &&
+                   X + Width > gameObject.X &&
+                   Y < gameObject.Y + gameObject.Height &&
+                   Y + Height > gameObject.Y;
         }
     }
 }

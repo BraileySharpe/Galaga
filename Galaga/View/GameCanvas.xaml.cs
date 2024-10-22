@@ -21,8 +21,12 @@ namespace Galaga.View
         public const int TicksBeforeEnemyDirectionChange = 10;
 
         private readonly GameManager gameManager;
-        private DispatcherTimer enemyTimer;
-        private DispatcherTimer bulletTimer;
+        private Random random;
+
+        private DispatcherTimer enemyBulletTimer;
+        private DispatcherTimer enemyMovementTimer;
+        private DispatcherTimer enemyBulletMovementTimer;
+        private DispatcherTimer playerBulletTimer;
 
         private int enemyTickCounter;
         private bool enemyMoveRight;
@@ -37,8 +41,12 @@ namespace Galaga.View
         public GameCanvas()
         {
             this.InitializeComponent();
-            this.createBulletTimer();
-            this.createEnemyTimer();
+
+            this.random = new Random();
+
+            this.createPlayerBulletTimer();
+            this.createEnemyMovementTimer();
+            this.createEnemyBulletTimer();
 
             Width = this.canvas.Width;
             Height = this.canvas.Height;
@@ -51,27 +59,54 @@ namespace Galaga.View
             this.gameManager = new GameManager(this.canvas);
         }
 
-        private void createBulletTimer()
-        {
-            this.bulletTimer = new DispatcherTimer();
-            this.bulletTimer.Interval = new TimeSpan(0, 0, 0, 0, 5);
-            this.bulletTimer.Tick += this.bulletTimerTick;
-            this.bulletTimer.Start();
-        }
-
         #endregion
 
         #region Methods
 
-        private void createEnemyTimer()
+        private void createEnemyBulletTimer()
         {
-            this.enemyTimer = new DispatcherTimer();
-            this.enemyTimer.Interval = new TimeSpan(0, 0, 0, 0, 350);
-            this.enemyTimer.Tick += this.enemyTimerTick;
-            this.enemyTimer.Start();
+            this.enemyBulletTimer = new DispatcherTimer();
+            this.enemyBulletMovementTimer = new DispatcherTimer();
+            this.enemyBulletTimer.Interval = new TimeSpan(0, 0, 0, 1, 500);
+            this.enemyBulletMovementTimer.Interval = new TimeSpan(0, 0, 0, 0, 75);
+            this.enemyBulletTimer.Tick += this.bullet_TimerTick;
+            this.enemyBulletMovementTimer.Tick += this.bulletMovement_TimerTick;
+            this.enemyBulletMovementTimer.Start();
+            this.enemyBulletTimer.Start();
         }
 
-        private void enemyTimerTick(object sender, object e)
+        private void bullet_TimerTick(object sender, object e)
+        {
+            this.gameManager.PlaceEnemyBullet();
+        }
+
+        private void bulletMovement_TimerTick(object sender, object e)
+        {
+            this.gameManager.MoveEnemyBullet();
+        }
+
+        private void createPlayerBulletTimer()
+        {
+            this.playerBulletTimer = new DispatcherTimer();
+            this.playerBulletTimer.Interval = new TimeSpan(0, 0, 0, 0, 10);
+            this.playerBulletTimer.Tick += this.playerBullet_TimerTick;
+            this.playerBulletTimer.Start();
+        }
+
+        private void playerBullet_TimerTick(object sender, object e)
+        {
+            this.gameManager.MovePlayerBullet();
+        }
+
+        private void createEnemyMovementTimer()
+        {
+            this.enemyMovementTimer = new DispatcherTimer();
+            this.enemyMovementTimer.Interval = new TimeSpan(0, 0, 0, 0, 350);
+            this.enemyMovementTimer.Tick += this.enemyMovement_TimerTick;
+            this.enemyMovementTimer.Start();
+        }
+
+        private void enemyMovement_TimerTick(object sender, object e)
         {
             this.enemyTickCounter++;
 
@@ -113,14 +148,9 @@ namespace Galaga.View
                     this.gameManager.MovePlayerRight();
                     break;
                 case VirtualKey.Space:
-                    this.gameManager.PlaceBullet();
+                    this.gameManager.PlacePlayerBullet();
                     break;
             }
-        }
-
-        private void bulletTimerTick(object sender, object e)
-        {
-            this.gameManager.MoveBullet();
         }
 
         #endregion

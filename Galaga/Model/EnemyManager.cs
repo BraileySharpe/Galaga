@@ -45,6 +45,14 @@ namespace Galaga.Model
         /// </value>
         public IList<Enemy> Level3Enemies { get; }
 
+        /// <summary>
+        /// Gets the count.
+        /// </summary>
+        /// <value>
+        /// The count.
+        /// </value>
+        public int Count => this.Level1Enemies.Count + this.Level2Enemies.Count + this.Level3Enemies.Count;
+
         #endregion
 
         #region Constructors

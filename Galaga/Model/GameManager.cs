@@ -26,8 +26,10 @@ namespace Galaga.Model
         #region Constructors
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="GameManager" /> class.
+        /// Initializes a new instance of the <see cref="GameManager"/> class.
         /// </summary>
+        /// <param name="canvas">The canvas.</param>
+        /// <exception cref="System.ArgumentNullException">canvas</exception>
         public GameManager(Canvas canvas)
         {
             this.canvas = canvas ?? throw new ArgumentNullException(nameof(canvas));
@@ -37,8 +39,8 @@ namespace Galaga.Model
             this.canvasWidth = canvas.Width;
 
             this.enemyManager = new EnemyManager();
-            this.bulletManager = new BulletManager(this.enemyManager);
             this.initializeGame();
+            this.bulletManager = new BulletManager(this.enemyManager, this.player);
         }
 
         #endregion
@@ -87,24 +89,52 @@ namespace Galaga.Model
             }
         }
 
+        /// <summary>
+        /// Moves the enemies left.
+        /// </summary>
         public void MoveEnemiesLeft()
         {
             this.enemyManager.MoveEnemiesLeft();
         }
 
+        /// <summary>
+        /// Moves the enemies right.
+        /// </summary>
         public void MoveEnemiesRight()
         {
             this.enemyManager.MoveEnemiesRight();
         }
 
-        public void PlaceBullet()
+        /// <summary>
+        /// Places the player bullet.
+        /// </summary>
+        public void PlacePlayerBullet()
         {
-            this.bulletManager.FireBullet(this.canvas, this.player);
+            this.bulletManager.PlayerFireBullet(this.canvas, this.player);
         }
 
-        public void MoveBullet()
+        /// <summary>
+        /// Moves the player bullet.
+        /// </summary>
+        public void MovePlayerBullet()
         { 
-            this.bulletManager.MoveBullet(this.canvas);
+            this.bulletManager.MovePlayerBullet(this.canvas);
+        }
+
+        /// <summary>
+        /// Places the enemy bullet on a random level 3 enemy.
+        /// </summary>
+        public void PlaceEnemyBullet()
+        {
+            this.bulletManager.EnemyFireBullet(this.canvas);
+        }
+
+        /// <summary>
+        /// Moves the enemy bullet.
+        /// </summary>
+        public void MoveEnemyBullet()
+        {
+            this.bulletManager.MoveEnemyBullet(this.canvas);
         }
 
         #endregion

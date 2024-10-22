@@ -6,11 +6,14 @@ namespace Galaga.View.Sprites
     ///     The Player's bullet sprite.
     /// </summary>
     /// <seealso cref="Galaga.View.Sprites.BaseSprite" />
-    public sealed partial class BulletSprite
+    public sealed partial class PlayerBulletSprite
     {
         #region Constructors
 
-        public BulletSprite()
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="PlayerBulletSprite" /> class.
+        /// </summary>
+        public PlayerBulletSprite()
         {
             this.InitializeComponent();
         }
