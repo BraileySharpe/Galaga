@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using Windows.UI.Xaml.Controls;
 using Galaga.View.Sprites;
@@ -13,7 +12,7 @@ namespace Galaga.Model
         private readonly EnemyManager enemyManager;
         private readonly Player player;
         private Bullet playerBullet;
-        private IList<Bullet> activeEnemyBullets;
+        private readonly IList<Bullet> activeEnemyBullets;
         private bool playerBulletFired;
 
         #endregion
@@ -36,7 +35,17 @@ namespace Galaga.Model
 
         #region Methods
 
-        public void PlayerFireBullet(Canvas canvas, Player player)
+        /// <summary>
+        ///     Fires the player bullet.
+        /// </summary>
+        /// <param name="canvas">The canvas.</param>
+        /// <param name="player">The player.</param>
+        /// <exception cref="System.ArgumentNullException">
+        /// canvas
+        /// or
+        /// player
+        /// </exception>
+        public void PlacePlayerBullet(Canvas canvas, Player player)
         {
             if (canvas == null)
             {
@@ -59,6 +68,11 @@ namespace Galaga.Model
             }
         }
 
+        /// <summary>
+        /// Moves the player bullet after its placed.
+        /// </summary>
+        /// <param name="canvas">The canvas.</param>
+        /// <exception cref="System.ArgumentNullException">canvas</exception>
         public void MovePlayerBullet(Canvas canvas)
         {
             if (canvas == null)
@@ -130,11 +144,11 @@ namespace Galaga.Model
         }
 
         /// <summary>
-        /// Enemies the fire bullet.
+        ///     Places the enemy bullet.
         /// </summary>
         /// <param name="canvas">The canvas.</param>
         /// <exception cref="System.ArgumentNullException">canvas</exception>
-        public void EnemyFireBullet(Canvas canvas)
+        public void EnemyPlaceBullet(Canvas canvas)
         {
             if (canvas == null)
             {
@@ -146,18 +160,18 @@ namespace Galaga.Model
                 return;
             }
 
-            Random random = new Random();
+            var random = new Random();
 
             var randomIndex = random.Next(0, this.enemyManager.Level3Enemies.Count);
-            Enemy enemy = this.enemyManager.Level3Enemies[randomIndex];
+            var enemy = this.enemyManager.Level3Enemies[randomIndex];
 
-            Bullet bullet = new Bullet(new EnemyBulletSprite())
+            var bullet = new Bullet(new EnemyBulletSprite())
             {
                 X = enemy.X + enemy.Width / 2.0,
                 Y = enemy.Y + enemy.Height
             };
 
-            bullet.SetSpeed(0, 10);
+            bullet.SetSpeed(0, 15);
 
             this.activeEnemyBullets.Add(bullet);
             canvas.Children.Add(bullet.Sprite);
@@ -170,23 +184,28 @@ namespace Galaga.Model
                 throw new ArgumentNullException(nameof(canvas));
             }
 
-            for (int i = this.activeEnemyBullets.Count - 1; i >= 0; i--)
+            for (var i = this.activeEnemyBullets.Count - 1; i >= 0; i--)
             {
-                Bullet bullet = this.activeEnemyBullets[i];
+                var bullet = this.activeEnemyBullets[i];
                 bullet.MoveDown();
-                if (bullet.CollidesWith(this.player))
-                {
-                    canvas.Children.Remove(bullet.Sprite);
-                    canvas.Children.Remove(this.player.Sprite);
-                    this.activeEnemyBullets.RemoveAt(i);
-                    continue;
-                }
+                this.checkEnemyBulletCollision(canvas, bullet, i);
+            }
+        }
 
-                if (bullet.Y > canvas.Height)
-                {
-                    canvas.Children.Remove(bullet.Sprite);
-                    this.activeEnemyBullets.RemoveAt(i);
-                }
+        private void checkEnemyBulletCollision(Canvas canvas, Bullet bullet, int i)
+        {
+            if (bullet.CollidesWith(this.player))
+            {
+                canvas.Children.Remove(bullet.Sprite);
+                canvas.Children.Remove(this.player.Sprite);
+                this.activeEnemyBullets.RemoveAt(i);
+                return;
+            }
+
+            if (bullet.Y > canvas.Height)
+            {
+                canvas.Children.Remove(bullet.Sprite);
+                this.activeEnemyBullets.RemoveAt(i);
             }
         }
 

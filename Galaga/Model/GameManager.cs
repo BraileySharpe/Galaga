@@ -110,7 +110,7 @@ namespace Galaga.Model
         /// </summary>
         public void PlacePlayerBullet()
         {
-            this.bulletManager.PlayerFireBullet(this.canvas, this.player);
+            this.bulletManager.PlacePlayerBullet(this.canvas, this.player);
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace Galaga.Model
         /// </summary>
         public void PlaceEnemyBullet()
         {
-            this.bulletManager.EnemyFireBullet(this.canvas);
+            this.bulletManager.EnemyPlaceBullet(this.canvas);
         }
 
         /// <summary>

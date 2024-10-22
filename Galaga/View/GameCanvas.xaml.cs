@@ -67,17 +67,24 @@ namespace Galaga.View
         {
             this.enemyBulletTimer = new DispatcherTimer();
             this.enemyBulletMovementTimer = new DispatcherTimer();
-            this.enemyBulletTimer.Interval = new TimeSpan(0, 0, 0, 1, 500);
-            this.enemyBulletMovementTimer.Interval = new TimeSpan(0, 0, 0, 0, 75);
+            this.setRandomTimeInterval();
+            this.enemyBulletMovementTimer.Interval = new TimeSpan(0, 0, 0, 0, 100);
             this.enemyBulletTimer.Tick += this.bullet_TimerTick;
             this.enemyBulletMovementTimer.Tick += this.bulletMovement_TimerTick;
             this.enemyBulletMovementTimer.Start();
             this.enemyBulletTimer.Start();
         }
 
+        private void setRandomTimeInterval()
+        {
+            int randomTime = this.random.Next(1, 3);
+            this.enemyBulletTimer.Interval = TimeSpan.FromSeconds(randomTime);
+        }
+
         private void bullet_TimerTick(object sender, object e)
         {
             this.gameManager.PlaceEnemyBullet();
+            this.setRandomTimeInterval();
         }
 
         private void bulletMovement_TimerTick(object sender, object e)
