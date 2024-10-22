@@ -8,11 +8,18 @@ namespace Galaga.Model
         #region Data members
 
         private Bullet bullet;
+        private EnemyManager enemyManager;
 
         #endregion
 
         #region Properties
 
+        /// <summary>
+        /// Gets a value indicating whether [bullet fired].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [bullet fired]; otherwise, <c>false</c>.
+        /// </value>
         public bool BulletFired { get; private set; }
 
         #endregion
@@ -22,8 +29,9 @@ namespace Galaga.Model
         /// <summary>
         /// Initializes a new instance of the <see cref="BulletManager"/> class.
         /// </summary>
-        public BulletManager()
+        public BulletManager(EnemyManager enemyManager)
         {
+            this.enemyManager = enemyManager ?? throw new ArgumentNullException(nameof(enemyManager));
             this.bullet = new Bullet();
             this.BulletFired = false;
         }
@@ -77,7 +85,53 @@ namespace Galaga.Model
             {
                 this.BulletFired = false;
                 canvas.Children.Remove(this.bullet.Sprite);
-            } 
+            }
+
+            if (this.BulletFired == true)
+            {
+                foreach (var enemy in this.enemyManager.Level1Enemies)
+                {
+                    if (this.bullet.CollidesWith(enemy))
+                    {
+                        this.BulletFired = false;
+                        canvas.Children.Remove(this.bullet.Sprite);
+                        canvas.Children.Remove(enemy.Sprite);
+                        this.enemyManager.Level1Enemies.Remove(enemy);
+                        break;
+                    }
+                }
+            }
+
+            if (this.BulletFired == true)
+            {
+                foreach (var enemy in this.enemyManager.Level2Enemies)
+                {
+                    if (this.bullet.CollidesWith(enemy))
+                    {
+                        this.BulletFired = false;
+                        canvas.Children.Remove(this.bullet.Sprite);
+                        canvas.Children.Remove(enemy.Sprite);
+                        this.enemyManager.Level2Enemies.Remove(enemy);
+                        break;
+                    }
+                }
+            }
+
+            
+            if (this.BulletFired == true)
+            {
+                foreach (var enemy in this.enemyManager.Level3Enemies)
+                {
+                    if (this.bullet.CollidesWith(enemy))
+                    {
+                        this.BulletFired = false;
+                        canvas.Children.Remove(this.bullet.Sprite);
+                        canvas.Children.Remove(enemy.Sprite);
+                        this.enemyManager.Level3Enemies.Remove(enemy);
+                        break;
+                    }
+                }
+            }
         }
 
         #endregion

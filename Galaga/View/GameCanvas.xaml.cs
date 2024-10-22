@@ -54,7 +54,7 @@ namespace Galaga.View
         private void createBulletTimer()
         {
             this.bulletTimer = new DispatcherTimer();
-            this.bulletTimer.Interval = new TimeSpan(0, 0, 0, 0, 3);
+            this.bulletTimer.Interval = new TimeSpan(0, 0, 0, 0, 5);
             this.bulletTimer.Tick += this.bulletTimerTick;
             this.bulletTimer.Start();
         }

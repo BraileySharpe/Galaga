@@ -37,7 +37,7 @@ namespace Galaga.Model
             this.canvasWidth = canvas.Width;
 
             this.enemyManager = new EnemyManager();
-            this.bulletManager = new BulletManager();
+            this.bulletManager = new BulletManager(this.enemyManager);
             this.initializeGame();
         }
 
@@ -103,13 +103,8 @@ namespace Galaga.Model
         }
 
         public void MoveBullet()
-        {
+        { 
             this.bulletManager.MoveBullet(this.canvas);
-
-            if (this.bulletManager.BulletFired)
-            {
-                this.checkBulletCollision();
-            }
         }
 
         #endregion
