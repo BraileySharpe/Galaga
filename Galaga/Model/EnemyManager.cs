@@ -17,6 +17,10 @@ namespace Galaga.Model
         private const double Level2EnemyOffset = 325;
         private const double Level3EnemyOffset = 400;
 
+        private const int Level1EnemyScore = 1000;
+        private const int Level2EnemyScore = 1500;
+        private const int Level3EnemyScore = 2000;
+
         #endregion
 
         #region Properties
@@ -52,6 +56,7 @@ namespace Galaga.Model
         /// The count.
         /// </value>
         public int Count => this.Level1Enemies.Count + this.Level2Enemies.Count + this.Level3Enemies.Count;
+        public int Score { get; set; }
 
         #endregion
 
@@ -65,6 +70,7 @@ namespace Galaga.Model
             this.Level1Enemies = new List<Enemy>();
             this.Level2Enemies = new List<Enemy>();
             this.Level3Enemies = new List<Enemy>();
+            this.Score = 0;
         }
 
         #endregion
@@ -79,19 +85,24 @@ namespace Galaga.Model
         public void CreateAndPlaceEnemies(Canvas canvas)
         {
             this.createAndPlaceEnemiesByLevel(this.Level1Enemies, canvas, 2, new Level1EnemySprite(),
-                Level1EnemyOffset);
+                Level1EnemyOffset, Level1EnemyScore);
             this.createAndPlaceEnemiesByLevel(this.Level2Enemies, canvas, 3, new Level2EnemySprite(),
-                Level2EnemyOffset);
+                Level2EnemyOffset, Level2EnemyScore);
             this.createAndPlaceEnemiesByLevel(this.Level3Enemies, canvas, 4, new Level3EnemySprite(),
-                Level3EnemyOffset);
+                Level3EnemyOffset, Level3EnemyScore);
         }
 
         private void createAndPlaceEnemiesByLevel(IList<Enemy> enemyList, Canvas canvas, int numOfEnemies,
-            BaseSprite sprite, double yOffset)
+            BaseSprite sprite, double yOffset, int score)
         {
             if (numOfEnemies < 1)
             {
                 throw new ArgumentException("Number of enemies must be greater than 0.");
+            }
+
+            if (score < 0)
+            {
+                throw new ArgumentException("Score must be greater than 0.");
             }
 
             if (canvas == null)
@@ -104,6 +115,11 @@ namespace Galaga.Model
                 throw new ArgumentNullException(nameof(sprite));
             }
 
+            if (enemyList == null)
+            {
+                throw new ArgumentNullException(nameof(enemyList));
+            }
+
             enemyList.Clear();
 
             var totalSpriteWidth = numOfEnemies * sprite.Width + (numOfEnemies - 1) * Spacing;
@@ -111,7 +127,7 @@ namespace Galaga.Model
 
             for (var i = 0; i < numOfEnemies; i++)
             {
-                var currEnemy = new Enemy((BaseSprite)Activator.CreateInstance(sprite.GetType()));
+                var currEnemy = new Enemy((BaseSprite)Activator.CreateInstance(sprite.GetType())) {Score = score};
                 enemyList.Add(currEnemy);
                 canvas.Children.Add(currEnemy.Sprite);
 

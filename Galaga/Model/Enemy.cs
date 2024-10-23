@@ -12,6 +12,8 @@ namespace Galaga.Model
         private const int SpeedXDirection = 20;
         private const int SpeedYDirection = 0;
 
+        public int Score { get; set; }
+
         #endregion
 
         #region Constructors

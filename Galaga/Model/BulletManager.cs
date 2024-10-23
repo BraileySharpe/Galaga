@@ -104,6 +104,7 @@ namespace Galaga.Model
                     if (this.playerBullet.CollidesWith(enemy))
                     {
                         this.playerBulletFired = false;
+                        this.enemyManager.Score += enemy.Score;
                         canvas.Children.Remove(this.playerBullet.Sprite);
                         canvas.Children.Remove(enemy.Sprite);
                         this.enemyManager.Level1Enemies.Remove(enemy);
@@ -119,6 +120,7 @@ namespace Galaga.Model
                     if (this.playerBullet.CollidesWith(enemy))
                     {
                         this.playerBulletFired = false;
+                        this.enemyManager.Score += enemy.Score;
                         canvas.Children.Remove(this.playerBullet.Sprite);
                         canvas.Children.Remove(enemy.Sprite);
                         this.enemyManager.Level2Enemies.Remove(enemy);
@@ -134,6 +136,7 @@ namespace Galaga.Model
                     if (this.playerBullet.CollidesWith(enemy))
                     {
                         this.playerBulletFired = false;
+                        this.enemyManager.Score += enemy.Score;
                         canvas.Children.Remove(this.playerBullet.Sprite);
                         canvas.Children.Remove(enemy.Sprite);
                         this.enemyManager.Level3Enemies.Remove(enemy);

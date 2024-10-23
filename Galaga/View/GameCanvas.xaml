@@ -8,5 +8,7 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Canvas x:Name="canvas" Width="640" Height="480" Background ="Black">
+        <TextBlock Text="SCORE" FocusVisualPrimaryBrush="#FFD01919" Height="31" Width="80" FontFamily="ModeNine" FontWeight="Bold" Canvas.Left="556" Canvas.Top="112" FontSize="20"></TextBlock>
+        <TextBlock x:Name="scoreTextBlock" Text="0" FocusVisualPrimaryBrush="White" Height="31" Width="80" FontFamily="ModeNine" FontWeight="Bold" Canvas.Left="556" Canvas.Top="137" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Top"></TextBlock>
     </Canvas>
 </Page>

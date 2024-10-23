@@ -137,6 +137,15 @@ namespace Galaga.Model
             this.bulletManager.MoveEnemyBullet(this.canvas);
         }
 
+        /// <summary>
+        /// Gets the current score of the game.
+        /// </summary>
+        /// <returns>The current score</returns>
+        public int GetScore()
+        {
+            return this.enemyManager.Score;
+        }
+
         #endregion
     }
 }

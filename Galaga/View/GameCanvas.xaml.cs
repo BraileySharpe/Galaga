@@ -85,7 +85,7 @@ namespace Galaga.View
 
         private void setRandomTimeInterval()
         {
-            var randomTime = this.random.Next(500, 3000);
+            var randomTime = this.random.Next(250, 3000);
             this.enemyBulletTimer.Interval = TimeSpan.FromMilliseconds(randomTime);
         }
 
@@ -113,6 +113,8 @@ namespace Galaga.View
         private void playerBullet_TimerTick(object sender, object e)
         {
             this.gameManager.MovePlayerBullet();
+            this.scoreTextBlock.Text = this.gameManager.GetScore().ToString();
+
         }
 
         private void createEnemyMovementTimer()
