@@ -19,14 +19,7 @@ namespace Galaga.Model
         /// <summary>
         ///     Initializes a new instance of the <see cref="Bullet" /> class.
         /// </summary>
-        public Bullet()
-        {
-            SetSpeed(SpeedXDirection, SpeedYDirection);
-        }
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="Bullet" /> class.
-        /// </summary>
+        /// <param name="sprite">The sprite to set for the bullet.</param>
         public Bullet(BaseSprite sprite)
         {
             Sprite = sprite;
@@ -35,6 +28,13 @@ namespace Galaga.Model
 
         #endregion
 
+        #region Methods
+
+        /// <summary>
+        ///     Checks if the bullet collides with the game object.
+        /// </summary>
+        /// <param name="gameObject">The game object.</param>
+        /// <returns>true if gameObject and the bullet intersect, false otherwise</returns>
         public bool CollidesWith(GameObject gameObject)
         {
             if (gameObject == null)
@@ -47,5 +47,7 @@ namespace Galaga.Model
                    Y < gameObject.Y + gameObject.Height &&
                    Y + Height > gameObject.Y;
         }
+
+        #endregion
     }
 }

@@ -12,18 +12,18 @@
     Width="12">
 
     <UserControl.Resources>
-        <SolidColorBrush x:Key="BulletTip" Color="#FF0000"/>
-        <SolidColorBrush x:Key="BulletBase" Color="#0043fe"/>
-        <SolidColorBrush x:Key="BulletAccent" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="BulletTip" Color="#FF0000" />
+        <SolidColorBrush x:Key="BulletBase" Color="#0043fe" />
+        <SolidColorBrush x:Key="BulletAccent" Color="#FFFFFF" />
     </UserControl.Resources>
 
     <Canvas>
-        <Rectangle Width="4" Height="10" Fill="{StaticResource BulletAccent}" Canvas.Left="4" Canvas.Top="10"/>
+        <Rectangle Width="4" Height="10" Fill="{StaticResource BulletAccent}" Canvas.Left="4" Canvas.Top="10" />
 
-        <Rectangle Width="4" Height="15" Fill="{StaticResource BulletBase}" Canvas.Left="4"/>
-        <Rectangle Width="4" Height="10" Fill="{StaticResource BulletBase}" Canvas.Left="8" Canvas.Top="10"/>
-        <Rectangle Width="4" Height="10" Fill="{StaticResource BulletBase}" Canvas.Top="10"/>
+        <Rectangle Width="4" Height="15" Fill="{StaticResource BulletBase}" Canvas.Left="4" />
+        <Rectangle Width="4" Height="10" Fill="{StaticResource BulletBase}" Canvas.Left="8" Canvas.Top="10" />
+        <Rectangle Width="4" Height="10" Fill="{StaticResource BulletBase}" Canvas.Top="10" />
 
-        <Rectangle Width="4" Height="20" Fill="{StaticResource BulletTip}" Canvas.Left="4" Canvas.Top="20"/>
+        <Rectangle Width="4" Height="20" Fill="{StaticResource BulletTip}" Canvas.Left="4" Canvas.Top="20" />
     </Canvas>
 </local:BaseSprite>

@@ -5,15 +5,14 @@ using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using Galaga.Model;
 using Galaga.View.Sprites;
-
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace Galaga.View
 {
     /// <summary>
-    ///     An empty page that can be used on its own or navigated to within a Frame.
+    ///     The Canvas for the Galaga Game.
     /// </summary>
     public sealed partial class GameCanvas
     {
@@ -49,16 +48,8 @@ namespace Galaga.View
             this.random = new Random();
             this.activeKeys = new HashSet<VirtualKey>();
 
-            this.createPlayerBulletTimer();
-            this.createEnemyMovementTimer();
-            this.createEnemyBulletTimer();
-            this.createGameLoopTimer();
-
-            Width = this.canvas.Width;
-            Height = this.canvas.Height;
-            ApplicationView.PreferredLaunchViewSize = new Size { Width = Width, Height = Height };
-            ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
-            ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(Width, Height));
+            this.initializeTimers();
+            this.setupWindowPreferences();
 
             Window.Current.CoreWindow.KeyDown += this.coreWindowOnKeyDown;
             Window.Current.CoreWindow.KeyUp += this.coreWindowOnKeyUp;
@@ -70,80 +61,120 @@ namespace Galaga.View
 
         #region Methods
 
-        private void createEnemyBulletTimer()
+        private void setupWindowPreferences()
+        {
+            Width = this.canvas.Width;
+            Height = this.canvas.Height;
+            ApplicationView.PreferredLaunchViewSize = new Size { Width = Width, Height = Height };
+            ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
+            ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(Width, Height));
+        }
+
+        private void initializeTimers()
+        {
+            this.setUpPlayerBulletTimer();
+            this.setUpEnemyMovementTimer();
+            this.setUpEnemyBulletTimer();
+            this.setUpGameLoopTimer();
+        }
+
+        private void setUpEnemyBulletTimer()
         {
             this.enemyBulletTimer = new DispatcherTimer();
             this.enemyBulletMovementTimer = new DispatcherTimer
             {
                 Interval = new TimeSpan(0, 0, 0, 0, 100)
             };
-            this.setRandomTimeInterval();
-            this.enemyBulletTimer.Tick += this.bullet_TimerTick;
-            this.enemyBulletMovementTimer.Tick += this.bulletMovement_TimerTick;
+
+            this.setRandomEnemyTimeInterval();
+            this.enemyBulletTimer.Tick += this.bulletTimerTick;
+            this.enemyBulletMovementTimer.Tick += this.bulletMovementTimerTick;
+
             this.enemyBulletMovementTimer.Start();
             this.enemyBulletTimer.Start();
         }
 
-        private void setRandomTimeInterval()
+        private void setRandomEnemyTimeInterval()
         {
-            var randomTime = this.random.Next(250, 2500);
-            this.enemyBulletTimer.Interval = TimeSpan.FromMilliseconds(randomTime);
+            this.enemyBulletTimer.Interval = TimeSpan.FromMilliseconds(this.random.Next(250, 2500));
         }
 
-        private void bullet_TimerTick(object sender, object e)
+        private void bulletTimerTick(object sender, object e)
         {
             this.gameManager.PlaceEnemyBullet();
-            this.setRandomTimeInterval();
+            this.setRandomEnemyTimeInterval();
         }
 
-        private void bulletMovement_TimerTick(object sender, object e)
+        private void bulletMovementTimerTick(object sender, object e)
         {
             this.gameManager.MoveEnemyBullet();
-            this.loseTheGame();
+            this.checkGameOver();
         }
 
-        private void createPlayerBulletTimer()
+        private void setUpPlayerBulletTimer()
         {
             this.playerBulletTimer = new DispatcherTimer
             {
                 Interval = new TimeSpan(0, 0, 0, 0, 10)
             };
-            this.playerBulletTimer.Tick += this.playerBullet_TimerTick;
+            this.playerBulletTimer.Tick += this.playerBulletTimerTick;
             this.playerBulletTimer.Start();
         }
 
-        private void playerBullet_TimerTick(object sender, object e)
+        private void playerBulletTimerTick(object sender, object e)
         {
             this.gameManager.MovePlayerBullet();
             this.scoreTextBlock.Text = this.gameManager.GetScore().ToString();
-            this.winTheGame();
-
+            this.checkGameWin();
         }
 
-        private void winTheGame()
+        private void checkGameWin()
         {
             if (this.gameManager.GetRemainingEnemyCount() == 0)
             {
-                this.disableSpritesAndTimers();
-                this.youWinTextBlock.Visibility = Visibility.Visible;
+                this.endGame(this.youWinTextBlock);
             }
         }
 
-        private void loseTheGame()
+        private void checkGameOver()
+        {
+            if (!this.playerExists())
+            {
+                this.endGame(this.gameOverTextBlock);
+            }
+        }
+
+        private bool playerExists()
         {
             foreach (var sprite in this.canvas.Children)
             {
-                if ((sprite is PlayerSprite player))
+                if (sprite is PlayerSprite player)
                 {
-                    return;
+                    return true;
                 }
             }
 
-            this.disableSpritesAndTimers();
-            this.gameOverTextBlock.Visibility = Visibility.Visible;
+            return false;
         }
 
-        private void disableSpritesAndTimers()
+        private void endGame(TextBlock endgameTextBlock)
+        {
+            this.disableAllSprites();
+            this.stopAllTimers();
+
+            endgameTextBlock.Visibility = Visibility.Visible;
+        }
+
+        private void stopAllTimers()
+        {
+            this.gameLoopTimer.Stop();
+            this.enemyMovementTimer.Stop();
+            this.enemyBulletTimer.Stop();
+            this.enemyBulletMovementTimer.Stop();
+            this.playerBulletTimer.Stop();
+        }
+
+        private void disableAllSprites()
         {
             foreach (var sprite in this.canvas.Children)
             {
@@ -152,15 +183,9 @@ namespace Galaga.View
                     baseSprite.Visibility = Visibility.Collapsed;
                 }
             }
-
-            this.gameLoopTimer.Stop();
-            this.enemyMovementTimer.Stop();
-            this.enemyBulletTimer.Stop();
-            this.enemyBulletMovementTimer.Stop();
-            this.playerBulletTimer.Stop();
         }
 
-        private void createEnemyMovementTimer()
+        private void setUpEnemyMovementTimer()
         {
             this.enemyMovementTimer = new DispatcherTimer
             {
@@ -201,7 +226,7 @@ namespace Galaga.View
             }
         }
 
-        private void createGameLoopTimer()
+        private void setUpGameLoopTimer()
         {
             this.gameLoopTimer = new DispatcherTimer
             {

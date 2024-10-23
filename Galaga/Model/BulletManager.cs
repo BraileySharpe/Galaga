@@ -5,15 +5,19 @@ using Galaga.View.Sprites;
 
 namespace Galaga.Model
 {
+    /// <summary>
+    ///     Manages the bullets in the game and their functionality.
+    /// </summary>
     public class BulletManager
     {
         #region Data members
 
+        private readonly IList<Bullet> activeEnemyBullets;
         private readonly EnemyManager enemyManager;
         private readonly Player player;
-        private Bullet playerBullet;
-        private readonly IList<Bullet> activeEnemyBullets;
         private bool playerBulletFired;
+
+        private Bullet playerBullet;
 
         #endregion
 
@@ -26,9 +30,9 @@ namespace Galaga.Model
         {
             this.enemyManager = enemyManager ?? throw new ArgumentNullException(nameof(enemyManager));
             this.player = player ?? throw new ArgumentNullException(nameof(player));
+
             this.playerBullet = new Bullet(new PlayerBulletSprite());
             this.activeEnemyBullets = new List<Bullet>();
-            this.playerBulletFired = false;
         }
 
         #endregion
@@ -36,40 +40,29 @@ namespace Galaga.Model
         #region Methods
 
         /// <summary>
-        ///     Fires the player bullet.
+        ///     Places the player bullet onto the Canvas if one isn't already on there.
         /// </summary>
         /// <param name="canvas">The canvas.</param>
-        /// <param name="player">The player.</param>
-        /// <exception cref="System.ArgumentNullException">
-        /// canvas
-        /// or
-        /// player
-        /// </exception>
-        public void PlacePlayerBullet(Canvas canvas, Player player)
+        /// <exception cref="System.ArgumentNullException">canvas</exception>
+        public void PlacePlayerBullet(Canvas canvas)
         {
             if (canvas == null)
             {
                 throw new ArgumentNullException(nameof(canvas));
             }
 
-            if (player == null)
-            {
-                throw new ArgumentNullException(nameof(player));
-            }
-
             if (!this.playerBulletFired)
             {
                 this.playerBullet = new Bullet(new PlayerBulletSprite());
                 canvas.Children.Add(this.playerBullet.Sprite);
-                this.playerBullet.X = player.X + player.Width / 2.0 - this.playerBullet.Width / 2.0;
-                this.playerBullet.Y = player.Y - this.playerBullet.Height;
-
+                this.playerBullet.X = this.player.X + this.player.Width / 2.0 - this.playerBullet.Width / 2.0;
+                this.playerBullet.Y = this.player.Y - this.playerBullet.Height;
                 this.playerBulletFired = true;
             }
         }
 
         /// <summary>
-        /// Moves the player bullet after its placed.
+        ///     Moves the player bullet after its placed.
         /// </summary>
         /// <param name="canvas">The canvas.</param>
         /// <exception cref="System.ArgumentNullException">canvas</exception>
@@ -97,53 +90,53 @@ namespace Galaga.Model
                 canvas.Children.Remove(this.playerBullet.Sprite);
             }
 
-            if (this.playerBulletFired)
+            IList<IList<Enemy>> enemyLists = new List<IList<Enemy>>
             {
-                foreach (var enemy in this.enemyManager.Level1Enemies)
+                this.enemyManager.Level1Enemies,
+                this.enemyManager.Level2Enemies,
+                this.enemyManager.Level3Enemies
+            };
+
+            foreach (var currentEnemies in enemyLists)
+            {
+                if (this.playerBulletFired)
                 {
-                    if (this.playerBullet.CollidesWith(enemy))
-                    {
-                        this.playerBulletFired = false;
-                        this.enemyManager.Score += enemy.Score;
-                        canvas.Children.Remove(this.playerBullet.Sprite);
-                        canvas.Children.Remove(enemy.Sprite);
-                        this.enemyManager.Level1Enemies.Remove(enemy);
-                        break;
-                    }
+                    this.checkEnemyBulletCollision(canvas, this.playerBullet, currentEnemies);
+                }
+            }
+        }
+
+        private bool checkEnemyBulletCollision(Canvas canvas, Bullet bullet, IList<Enemy> enemyList)
+        {
+            if (canvas == null)
+            {
+                throw new ArgumentNullException(nameof(canvas));
+            }
+
+            if (bullet == null)
+            {
+                throw new ArgumentNullException(nameof(bullet));
+            }
+
+            if (enemyList == null)
+            {
+                throw new ArgumentNullException(nameof(enemyList));
+            }
+
+            foreach (var enemy in enemyList)
+            {
+                if (bullet.CollidesWith(enemy))
+                {
+                    this.playerBulletFired = false;
+                    this.enemyManager.Score += enemy.Score;
+                    canvas.Children.Remove(bullet.Sprite);
+                    canvas.Children.Remove(enemy.Sprite);
+                    enemyList.Remove(enemy);
+                    return true;
                 }
             }
 
-            if (this.playerBulletFired)
-            {
-                foreach (var enemy in this.enemyManager.Level2Enemies)
-                {
-                    if (this.playerBullet.CollidesWith(enemy))
-                    {
-                        this.playerBulletFired = false;
-                        this.enemyManager.Score += enemy.Score;
-                        canvas.Children.Remove(this.playerBullet.Sprite);
-                        canvas.Children.Remove(enemy.Sprite);
-                        this.enemyManager.Level2Enemies.Remove(enemy);
-                        break;
-                    }
-                }
-            }
-
-            if (this.playerBulletFired)
-            {
-                foreach (var enemy in this.enemyManager.Level3Enemies)
-                {
-                    if (this.playerBullet.CollidesWith(enemy))
-                    {
-                        this.playerBulletFired = false;
-                        this.enemyManager.Score += enemy.Score;
-                        canvas.Children.Remove(this.playerBullet.Sprite);
-                        canvas.Children.Remove(enemy.Sprite);
-                        this.enemyManager.Level3Enemies.Remove(enemy);
-                        break;
-                    }
-                }
-            }
+            return false;
         }
 
         /// <summary>
@@ -158,28 +151,31 @@ namespace Galaga.Model
                 throw new ArgumentNullException(nameof(canvas));
             }
 
-            if (this.enemyManager.Level3Enemies.Count == 0)
+            if (this.enemyManager.Level3Enemies.Count != 0)
             {
-                return;
+                var random = new Random();
+
+                var randomIndex = random.Next(0, this.enemyManager.Level3Enemies.Count);
+                var enemy = this.enemyManager.Level3Enemies[randomIndex];
+
+                var bullet = new Bullet(new EnemyBulletSprite())
+                {
+                    X = enemy.X + enemy.Width / 2.0,
+                    Y = enemy.Y + enemy.Height
+                };
+
+                bullet.SetSpeed(0, 15);
+
+                this.activeEnemyBullets.Add(bullet);
+                canvas.Children.Add(bullet.Sprite);
             }
-
-            var random = new Random();
-
-            var randomIndex = random.Next(0, this.enemyManager.Level3Enemies.Count);
-            var enemy = this.enemyManager.Level3Enemies[randomIndex];
-
-            var bullet = new Bullet(new EnemyBulletSprite())
-            {
-                X = enemy.X + enemy.Width / 2.0,
-                Y = enemy.Y + enemy.Height
-            };
-
-            bullet.SetSpeed(0, 15);
-
-            this.activeEnemyBullets.Add(bullet);
-            canvas.Children.Add(bullet.Sprite);
         }
 
+        /// <summary>
+        ///     Moves the enemy bullet.
+        /// </summary>
+        /// <param name="canvas">The canvas.</param>
+        /// <exception cref="System.ArgumentNullException">canvas</exception>
         public void MoveEnemyBullet(Canvas canvas)
         {
             if (canvas == null)
@@ -187,7 +183,8 @@ namespace Galaga.Model
                 throw new ArgumentNullException(nameof(canvas));
             }
 
-            for (var i = this.activeEnemyBullets.Count - 1; i >= 0; i--)
+            var indexOfLastBullet = this.activeEnemyBullets.Count - 1;
+            for (var i = indexOfLastBullet; i >= 0; i--)
             {
                 var bullet = this.activeEnemyBullets[i];
                 bullet.MoveDown();
@@ -202,10 +199,9 @@ namespace Galaga.Model
                 canvas.Children.Remove(bullet.Sprite);
                 canvas.Children.Remove(this.player.Sprite);
                 this.activeEnemyBullets.RemoveAt(i);
-                return;
             }
 
-            if (bullet.Y > canvas.Height)
+            else if (bullet.Y > canvas.Height)
             {
                 canvas.Children.Remove(bullet.Sprite);
                 this.activeEnemyBullets.RemoveAt(i);

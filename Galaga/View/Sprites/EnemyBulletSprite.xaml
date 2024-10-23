@@ -12,6 +12,6 @@
     Width="4">
 
     <Canvas>
-        <Rectangle Width="4" Height="20" Fill="#FFFFFF" Canvas.Left="0" Canvas.Top="0"/>
+        <Rectangle Width="4" Height="20" Fill="#FFFFFF" Canvas.Left="0" Canvas.Top="0" />
     </Canvas>
 </local:BaseSprite>

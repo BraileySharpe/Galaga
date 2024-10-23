@@ -1,6 +1,5 @@
 ﻿using System;
 using Windows.UI.Xaml.Controls;
-using Galaga.View.Sprites;
 
 namespace Galaga.Model
 {
@@ -12,12 +11,12 @@ namespace Galaga.Model
         #region Data members
 
         private const double PlayerOffsetFromBottom = 30;
-        private readonly Canvas canvas;
-        private readonly double canvasHeight;
-        private readonly double canvasWidth;
 
+        private readonly Canvas canvas;
         private readonly EnemyManager enemyManager;
         private readonly BulletManager bulletManager;
+        private readonly double canvasHeight;
+        private readonly double canvasWidth;
 
         private Player player;
 
@@ -26,7 +25,7 @@ namespace Galaga.Model
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GameManager"/> class.
+        ///     Initializes a new instance of the <see cref="GameManager" /> class.
         /// </summary>
         /// <param name="canvas">The canvas.</param>
         /// <exception cref="System.ArgumentNullException">canvas</exception>
@@ -90,7 +89,7 @@ namespace Galaga.Model
         }
 
         /// <summary>
-        /// Moves the enemies left.
+        ///     Moves the enemies left.
         /// </summary>
         public void MoveEnemiesLeft()
         {
@@ -98,7 +97,7 @@ namespace Galaga.Model
         }
 
         /// <summary>
-        /// Moves the enemies right.
+        ///     Moves the enemies right.
         /// </summary>
         public void MoveEnemiesRight()
         {
@@ -106,23 +105,23 @@ namespace Galaga.Model
         }
 
         /// <summary>
-        /// Places the player bullet.
+        ///     Places the player bullet.
         /// </summary>
         public void PlacePlayerBullet()
         {
-            this.bulletManager.PlacePlayerBullet(this.canvas, this.player);
+            this.bulletManager.PlacePlayerBullet(this.canvas);
         }
 
         /// <summary>
-        /// Moves the player bullet.
+        ///     Moves the player bullet.
         /// </summary>
         public void MovePlayerBullet()
-        { 
+        {
             this.bulletManager.MovePlayerBullet(this.canvas);
         }
 
         /// <summary>
-        /// Places the enemy bullet on a random level 3 enemy.
+        ///     Places the enemy bullet on a random level 3 enemy.
         /// </summary>
         public void PlaceEnemyBullet()
         {
@@ -130,7 +129,7 @@ namespace Galaga.Model
         }
 
         /// <summary>
-        /// Moves the enemy bullet.
+        ///     Moves the enemy bullet.
         /// </summary>
         public void MoveEnemyBullet()
         {
@@ -138,7 +137,7 @@ namespace Galaga.Model
         }
 
         /// <summary>
-        /// Gets the current score of the game.
+        ///     Gets the current score of the game.
         /// </summary>
         /// <returns>The current score</returns>
         public int GetScore()
@@ -147,7 +146,7 @@ namespace Galaga.Model
         }
 
         /// <summary>
-        /// Gets the remaining enemy count.
+        ///     Gets the remaining enemy count.
         /// </summary>
         /// <returns>The remaining enemy count</returns>
         public int GetRemainingEnemyCount()

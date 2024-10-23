@@ -1,9 +1,7 @@
-﻿// The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
-
-namespace Galaga.View.Sprites
+﻿namespace Galaga.View.Sprites
 {
     /// <summary>
-    ///     The player sprite.
+    ///     The Player's Sprite.
     /// </summary>
     /// <seealso cref="Galaga.View.Sprites.BaseSprite" />
     /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector" />

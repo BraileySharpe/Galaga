@@ -3,7 +3,7 @@
 namespace Galaga.Model
 {
     /// <summary>
-    ///     Represents enemies in the game
+    ///     Represents enemies in the game.
     /// </summary>
     public class Enemy : GameObject
     {
@@ -12,6 +12,16 @@ namespace Galaga.Model
         private const int SpeedXDirection = 20;
         private const int SpeedYDirection = 0;
 
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets or sets the score.
+        /// </summary>
+        /// <value>
+        /// The score.
+        /// </value>
         public int Score { get; set; }
 
         #endregion

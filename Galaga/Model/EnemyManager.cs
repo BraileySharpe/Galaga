@@ -21,6 +21,10 @@ namespace Galaga.Model
         private const int Level2EnemyScore = 150;
         private const int Level3EnemyScore = 200;
 
+        private const int NumOfLevel1Enemies = 2;
+        private const int NumOfLevel2Enemies = 3;
+        private const int NumOfLevel3Enemies = 4;
+
         #endregion
 
         #region Properties
@@ -31,7 +35,7 @@ namespace Galaga.Model
         /// <value>
         ///     The level1 enemies.
         /// </value>
-        public IList<Enemy> Level1Enemies { get; }
+        public IList<Enemy> Level1Enemies { get; } = new List<Enemy>();
 
         /// <summary>
         ///     Gets the level2 enemies.
@@ -39,7 +43,7 @@ namespace Galaga.Model
         /// <value>
         ///     The level2 enemies.
         /// </value>
-        public IList<Enemy> Level2Enemies { get; }
+        public IList<Enemy> Level2Enemies { get; } = new List<Enemy>();
 
         /// <summary>
         ///     Gets the level3 enemies.
@@ -47,31 +51,32 @@ namespace Galaga.Model
         /// <value>
         ///     The level3 enemies.
         /// </value>
-        public IList<Enemy> Level3Enemies { get; }
+        public IList<Enemy> Level3Enemies { get; } = new List<Enemy>();
 
         /// <summary>
-        /// Gets the count.
+        ///     Gets the count.
         /// </summary>
         /// <value>
-        /// The count.
+        ///     The count.
         /// </value>
         public int Count => this.Level1Enemies.Count + this.Level2Enemies.Count + this.Level3Enemies.Count;
-        public int Score { get; set; }
-
-        #endregion
-
-        #region Constructors
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="EnemyManager" /> class.
+        ///     Gets or sets the score.
         /// </summary>
-        public EnemyManager()
-        {
-            this.Level1Enemies = new List<Enemy>();
-            this.Level2Enemies = new List<Enemy>();
-            this.Level3Enemies = new List<Enemy>();
-            this.Score = 0;
-        }
+        /// <value>
+        ///     The score.
+        /// </value>
+        public int Score { get; set; } = 0;
+
+        /// <summary>
+        ///     Gets all in the game enemies.
+        /// </summary>
+        /// <value>
+        ///     All enemies.
+        /// </value>
+        public IList<IList<Enemy>> AllEnemies => new List<IList<Enemy>>
+            { this.Level1Enemies, this.Level2Enemies, this.Level3Enemies };
 
         #endregion
 
@@ -84,11 +89,11 @@ namespace Galaga.Model
         /// <param name="canvas">The canvas to add enemies too.</param>
         public void CreateAndPlaceEnemies(Canvas canvas)
         {
-            this.createAndPlaceEnemiesByLevel(this.Level1Enemies, canvas, 2, new Level1EnemySprite(),
+            this.createAndPlaceEnemiesByLevel(this.Level1Enemies, canvas, NumOfLevel1Enemies, new Level1EnemySprite(),
                 Level1EnemyOffset, Level1EnemyScore);
-            this.createAndPlaceEnemiesByLevel(this.Level2Enemies, canvas, 3, new Level2EnemySprite(),
+            this.createAndPlaceEnemiesByLevel(this.Level2Enemies, canvas, NumOfLevel2Enemies, new Level2EnemySprite(),
                 Level2EnemyOffset, Level2EnemyScore);
-            this.createAndPlaceEnemiesByLevel(this.Level3Enemies, canvas, 4, new Level3EnemySprite(),
+            this.createAndPlaceEnemiesByLevel(this.Level3Enemies, canvas, NumOfLevel3Enemies, new Level3EnemySprite(),
                 Level3EnemyOffset, Level3EnemyScore);
         }
 
@@ -127,7 +132,7 @@ namespace Galaga.Model
 
             for (var i = 0; i < numOfEnemies; i++)
             {
-                var currEnemy = new Enemy((BaseSprite)Activator.CreateInstance(sprite.GetType())) {Score = score};
+                var currEnemy = new Enemy((BaseSprite)Activator.CreateInstance(sprite.GetType())) { Score = score };
                 enemyList.Add(currEnemy);
                 canvas.Children.Add(currEnemy.Sprite);
 
@@ -142,37 +147,26 @@ namespace Galaga.Model
         /// </summary>
         public void MoveEnemiesLeft()
         {
-            foreach (var enemy in this.Level1Enemies)
+            foreach (var enemyList in this.AllEnemies)
             {
-                enemy.MoveLeft();
-            }
-
-            foreach (var enemy in this.Level2Enemies)
-            {
-                enemy.MoveLeft();
-            }
-
-            foreach (var enemy in this.Level3Enemies)
-            {
-                enemy.MoveLeft();
+                foreach (var enemy in enemyList)
+                {
+                    enemy.MoveLeft();
+                }
             }
         }
 
+        /// <summary>
+        ///     Moves the enemies right.
+        /// </summary>
         public void MoveEnemiesRight()
         {
-            foreach (var enemy in this.Level1Enemies)
+            foreach (var enemyList in this.AllEnemies)
             {
-                enemy.MoveRight();
-            }
-
-            foreach (var enemy in this.Level2Enemies)
-            {
-                enemy.MoveRight();
-            }
-
-            foreach (var enemy in this.Level3Enemies)
-            {
-                enemy.MoveRight();
+                foreach (var enemy in enemyList)
+                {
+                    enemy.MoveRight();
+                }
             }
         }
 
