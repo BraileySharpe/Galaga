@@ -6,6 +6,7 @@ using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Galaga.Model;
+using Galaga.View.Sprites;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -85,7 +86,7 @@ namespace Galaga.View
 
         private void setRandomTimeInterval()
         {
-            var randomTime = this.random.Next(250, 3000);
+            var randomTime = this.random.Next(250, 2500);
             this.enemyBulletTimer.Interval = TimeSpan.FromMilliseconds(randomTime);
         }
 
@@ -98,6 +99,7 @@ namespace Galaga.View
         private void bulletMovement_TimerTick(object sender, object e)
         {
             this.gameManager.MoveEnemyBullet();
+            this.loseTheGame();
         }
 
         private void createPlayerBulletTimer()
@@ -114,7 +116,48 @@ namespace Galaga.View
         {
             this.gameManager.MovePlayerBullet();
             this.scoreTextBlock.Text = this.gameManager.GetScore().ToString();
+            this.winTheGame();
 
+        }
+
+        private void winTheGame()
+        {
+            if (this.gameManager.GetRemainingEnemyCount() == 0)
+            {
+                this.disableSpritesAndTimers();
+                this.youWinTextBlock.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void loseTheGame()
+        {
+            foreach (var sprite in this.canvas.Children)
+            {
+                if ((sprite is PlayerSprite player))
+                {
+                    return;
+                }
+            }
+
+            this.disableSpritesAndTimers();
+            this.gameOverTextBlock.Visibility = Visibility.Visible;
+        }
+
+        private void disableSpritesAndTimers()
+        {
+            foreach (var sprite in this.canvas.Children)
+            {
+                if (sprite is BaseSprite baseSprite)
+                {
+                    baseSprite.Visibility = Visibility.Collapsed;
+                }
+            }
+
+            this.gameLoopTimer.Stop();
+            this.enemyMovementTimer.Stop();
+            this.enemyBulletTimer.Stop();
+            this.enemyBulletMovementTimer.Stop();
+            this.playerBulletTimer.Stop();
         }
 
         private void createEnemyMovementTimer()

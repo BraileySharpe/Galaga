@@ -12,14 +12,14 @@ namespace Galaga.Model
     {
         #region Data members
 
-        private const double Spacing = 20;
+        private const double Spacing = 15;
         private const double Level1EnemyOffset = 250;
         private const double Level2EnemyOffset = 325;
         private const double Level3EnemyOffset = 400;
 
-        private const int Level1EnemyScore = 1000;
-        private const int Level2EnemyScore = 1500;
-        private const int Level3EnemyScore = 2000;
+        private const int Level1EnemyScore = 100;
+        private const int Level2EnemyScore = 150;
+        private const int Level3EnemyScore = 200;
 
         #endregion
 

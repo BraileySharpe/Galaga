@@ -146,6 +146,15 @@ namespace Galaga.Model
             return this.enemyManager.Score;
         }
 
+        /// <summary>
+        /// Gets the remaining enemy count.
+        /// </summary>
+        /// <returns>The remaining enemy count</returns>
+        public int GetRemainingEnemyCount()
+        {
+            return this.enemyManager.Count;
+        }
+
         #endregion
     }
 }
