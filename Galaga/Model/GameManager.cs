@@ -1,4 +1,5 @@
 ﻿using System;
+using Windows.Services.Store;
 using Windows.UI.Xaml.Controls;
 
 namespace Galaga.Model
@@ -12,11 +13,19 @@ namespace Galaga.Model
 
         private const double PlayerOffsetFromBottom = 30;
 
-        private readonly Canvas canvas;
+        private Canvas canvas;
         private readonly EnemyManager enemyManager;
         private readonly BulletManager bulletManager;
         private readonly double canvasHeight;
         private readonly double canvasWidth;
+
+        /// <summary>
+        /// Gets or sets the score.
+        /// </summary>
+        /// <value>
+        /// The score.
+        /// </value>
+        public int Score { get; set; } = 0;
 
         private Player player;
 
@@ -37,9 +46,9 @@ namespace Galaga.Model
             this.canvasHeight = canvas.Height;
             this.canvasWidth = canvas.Width;
 
-            this.enemyManager = new EnemyManager();
+            this.enemyManager = new EnemyManager(this.canvas);
             this.initializeGame();
-            this.bulletManager = new BulletManager(this.enemyManager, this.player);
+            this.bulletManager = new BulletManager(this.enemyManager, this.player, this.canvas, this);
         }
 
         #endregion
@@ -49,7 +58,7 @@ namespace Galaga.Model
         private void initializeGame()
         {
             this.createAndPlacePlayer();
-            this.enemyManager.CreateAndPlaceEnemies(this.canvas);
+            this.enemyManager.CreateAndPlaceEnemies();
         }
 
         private void createAndPlacePlayer()
@@ -109,7 +118,7 @@ namespace Galaga.Model
         /// </summary>
         public void PlacePlayerBullet()
         {
-            this.bulletManager.PlacePlayerBullet(this.canvas);
+            this.bulletManager.PlacePlayerBullet();
         }
 
         /// <summary>
@@ -117,7 +126,7 @@ namespace Galaga.Model
         /// </summary>
         public void MovePlayerBullet()
         {
-            this.bulletManager.MovePlayerBullet(this.canvas);
+            this.bulletManager.MovePlayerBullet();
         }
 
         /// <summary>
@@ -125,7 +134,7 @@ namespace Galaga.Model
         /// </summary>
         public void PlaceEnemyBullet()
         {
-            this.bulletManager.EnemyPlaceBullet(this.canvas);
+            this.bulletManager.EnemyPlaceBullet();
         }
 
         /// <summary>
@@ -133,16 +142,7 @@ namespace Galaga.Model
         /// </summary>
         public void MoveEnemyBullet()
         {
-            this.bulletManager.MoveEnemyBullet(this.canvas);
-        }
-
-        /// <summary>
-        ///     Gets the current score of the game.
-        /// </summary>
-        /// <returns>The current score</returns>
-        public int GetScore()
-        {
-            return this.enemyManager.Score;
+            this.bulletManager.MoveEnemyBullet();
         }
 
         /// <summary>

@@ -124,7 +124,7 @@ namespace Galaga.View
         private void playerBulletTimerTick(object sender, object e)
         {
             this.gameManager.MovePlayerBullet();
-            this.scoreTextBlock.Text = this.gameManager.GetScore().ToString();
+            this.scoreTextBlock.Text = this.gameManager.Score.ToString();
             this.checkGameWin();
         }
 

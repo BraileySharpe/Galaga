@@ -16,42 +16,26 @@ namespace Galaga.Model
         private const double Level1EnemyOffset = 250;
         private const double Level2EnemyOffset = 325;
         private const double Level3EnemyOffset = 400;
+        private const double Level4EnemyOffset = 475;
 
         private const int Level1EnemyScore = 100;
         private const int Level2EnemyScore = 150;
         private const int Level3EnemyScore = 200;
+        private const int Level4EnemyScore = 250;
 
-        private const int NumOfLevel1Enemies = 2;
-        private const int NumOfLevel2Enemies = 3;
+        private const int NumOfLevel1Enemies = 3;
+        private const int NumOfLevel2Enemies = 4;
         private const int NumOfLevel3Enemies = 4;
+        private const int NumOfLevel4Enemies = 5;
+
+        private readonly Canvas canvas;
+        private readonly List<Enemy> enemies;
 
         #endregion
 
         #region Properties
 
-        /// <summary>
-        ///     Gets the level1 enemies.
-        /// </summary>
-        /// <value>
-        ///     The level1 enemies.
-        /// </value>
-        public IList<Enemy> Level1Enemies { get; } = new List<Enemy>();
-
-        /// <summary>
-        ///     Gets the level2 enemies.
-        /// </summary>
-        /// <value>
-        ///     The level2 enemies.
-        /// </value>
-        public IList<Enemy> Level2Enemies { get; } = new List<Enemy>();
-
-        /// <summary>
-        ///     Gets the level3 enemies.
-        /// </summary>
-        /// <value>
-        ///     The level3 enemies.
-        /// </value>
-        public IList<Enemy> Level3Enemies { get; } = new List<Enemy>();
+        public IList<Enemy> Enemies => this.enemies;
 
         /// <summary>
         ///     Gets the count.
@@ -59,24 +43,20 @@ namespace Galaga.Model
         /// <value>
         ///     The count.
         /// </value>
-        public int Count => this.Level1Enemies.Count + this.Level2Enemies.Count + this.Level3Enemies.Count;
+        public int Count => this.enemies.Count;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
-        ///     Gets or sets the score.
+        ///     Initializes a new instance of the <see cref="EnemyManager" /> class.
         /// </summary>
-        /// <value>
-        ///     The score.
-        /// </value>
-        public int Score { get; set; } = 0;
-
-        /// <summary>
-        ///     Gets all in the game enemies.
-        /// </summary>
-        /// <value>
-        ///     All enemies.
-        /// </value>
-        public IList<IList<Enemy>> AllEnemies => new List<IList<Enemy>>
-            { this.Level1Enemies, this.Level2Enemies, this.Level3Enemies };
+        public EnemyManager(Canvas canvas)
+        {
+            this.enemies = new List<Enemy>();
+            this.canvas = canvas ?? throw new ArgumentNullException(nameof(canvas));
+        }
 
         #endregion
 
@@ -86,33 +66,22 @@ namespace Galaga.Model
         ///     Creates the and place enemies.
         ///     Note: For a new enemy to be added to the game, a list of enemies must be created and an offset must be provided.
         /// </summary>
-        /// <param name="canvas">The canvas to add enemies too.</param>
-        public void CreateAndPlaceEnemies(Canvas canvas)
+        public void CreateAndPlaceEnemies()
         {
-            this.createAndPlaceEnemiesByLevel(this.Level1Enemies, canvas, NumOfLevel1Enemies, new Level1EnemySprite(),
-                Level1EnemyOffset, Level1EnemyScore);
-            this.createAndPlaceEnemiesByLevel(this.Level2Enemies, canvas, NumOfLevel2Enemies, new Level2EnemySprite(),
-                Level2EnemyOffset, Level2EnemyScore);
-            this.createAndPlaceEnemiesByLevel(this.Level3Enemies, canvas, NumOfLevel3Enemies, new Level3EnemySprite(),
-                Level3EnemyOffset, Level3EnemyScore);
+            this.createAndPlaceEnemies(NumOfLevel1Enemies, new Level1EnemySprite(), Level1EnemyOffset,
+                Level1EnemyScore, false);
+            this.createAndPlaceEnemies(NumOfLevel2Enemies, new Level1EnemySprite(), Level2EnemyOffset,
+                Level2EnemyScore, false);
+            this.createAndPlaceEnemies(NumOfLevel3Enemies, new Level2EnemySprite(), Level3EnemyOffset,
+                Level3EnemyScore, true);
+            this.createAndPlaceEnemies(NumOfLevel4Enemies, new Level3EnemySprite(), Level4EnemyOffset, Level4EnemyScore, true);
         }
 
-        private void createAndPlaceEnemiesByLevel(IList<Enemy> enemyList, Canvas canvas, int numOfEnemies,
-            BaseSprite sprite, double yOffset, int score)
+        private void createAndPlaceEnemies(int numOfEnemies, BaseSprite sprite, double yOffset, int score, bool canShoot)
         {
             if (numOfEnemies < 1)
             {
                 throw new ArgumentException("Number of enemies must be greater than 0.");
-            }
-
-            if (score < 0)
-            {
-                throw new ArgumentException("Score must be greater than 0.");
-            }
-
-            if (canvas == null)
-            {
-                throw new ArgumentNullException(nameof(canvas));
             }
 
             if (sprite == null)
@@ -120,54 +89,43 @@ namespace Galaga.Model
                 throw new ArgumentNullException(nameof(sprite));
             }
 
-            if (enemyList == null)
-            {
-                throw new ArgumentNullException(nameof(enemyList));
-            }
-
-            enemyList.Clear();
-
             var totalSpriteWidth = numOfEnemies * sprite.Width + (numOfEnemies - 1) * Spacing;
-            var leftMargin = (canvas.Width - totalSpriteWidth) / 2;
+            var leftMargin = (this.canvas.Width - totalSpriteWidth) / 2;
 
             for (var i = 0; i < numOfEnemies; i++)
             {
-                var currEnemy = new Enemy((BaseSprite)Activator.CreateInstance(sprite.GetType())) { Score = score };
-                enemyList.Add(currEnemy);
-                canvas.Children.Add(currEnemy.Sprite);
+                Enemy currEnemy = canShoot
+                    ? new ShootingEnemy((BaseSprite)Activator.CreateInstance(sprite.GetType()))
+                    : new Enemy((BaseSprite)Activator.CreateInstance(sprite.GetType()));
+
+                currEnemy.Score = score;
+                this.enemies.Add(currEnemy);
+                this.canvas.Children.Add(currEnemy.Sprite);
 
                 var xPosition = leftMargin + i * (currEnemy.Width + Spacing);
                 currEnemy.X = xPosition;
-                currEnemy.Y = canvas.Height - currEnemy.Height - yOffset;
+                currEnemy.Y = this.canvas.Height - currEnemy.Height - yOffset;
             }
         }
 
         /// <summary>
         ///     Moves the enemies for the game left.
         /// </summary>
-        public void MoveEnemiesLeft()
-        {
-            foreach (var enemyList in this.AllEnemies)
-            {
-                foreach (var enemy in enemyList)
-                {
-                    enemy.MoveLeft();
-                }
-            }
-        }
+        public void MoveEnemiesLeft() => this.enemies.ForEach(enemy => enemy.MoveLeft());
 
         /// <summary>
         ///     Moves the enemies right.
         /// </summary>
-        public void MoveEnemiesRight()
+        public void MoveEnemiesRight() => this.enemies.ForEach(enemy => enemy.MoveRight());
+
+        /// <summary>
+        ///     Removes the enemy from the enemy list and the canvas.
+        /// </summary>
+        /// <param name="enemy">The enemy.</param>
+        public void RemoveEnemy(Enemy enemy)
         {
-            foreach (var enemyList in this.AllEnemies)
-            {
-                foreach (var enemy in enemyList)
-                {
-                    enemy.MoveRight();
-                }
-            }
+            this.enemies.Remove(enemy);
+            this.canvas.Children.Remove(enemy.Sprite);
         }
 
         #endregion

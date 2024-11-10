@@ -27,27 +27,5 @@ namespace Galaga.Model
         }
 
         #endregion
-
-        #region Methods
-
-        /// <summary>
-        ///     Checks if the bullet collides with the game object.
-        /// </summary>
-        /// <param name="gameObject">The game object.</param>
-        /// <returns>true if gameObject and the bullet intersect, false otherwise</returns>
-        public bool CollidesWith(GameObject gameObject)
-        {
-            if (gameObject == null)
-            {
-                return false;
-            }
-
-            return X < gameObject.X + gameObject.Width &&
-                   X + Width > gameObject.X &&
-                   Y < gameObject.Y + gameObject.Height &&
-                   Y + Height > gameObject.Y;
-        }
-
-        #endregion
     }
 }
