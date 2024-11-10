@@ -7,18 +7,17 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Canvas x:Name="canvas" Width="640" Height="480" Background="Black">
-        <TextBlock Text="SCORE" Height="31" Width="63" FontFamily="ModeNine" FontWeight="Bold" Canvas.Left="568"
-                   Canvas.Top="10" FontSize="20" Foreground="#FFD01919" HorizontalAlignment="Center"
-                   VerticalAlignment="Center" />
+    <Canvas x:Name="canvas" Width="720" Height="600" Background="Black">
+        <TextBlock Text="SCORE" Height="31" Width="63" FontFamily="ModeNine" FontWeight="Bold" Canvas.Left="648" FontSize="20" Foreground="#FFD01919" HorizontalAlignment="Center"
+                   VerticalAlignment="Top" Canvas.Top="10" />
         <TextBlock x:Name="scoreTextBlock" Text="0" Height="31" Width="79" FontFamily="ModeNine" FontWeight="Bold"
-                   Canvas.Left="551" Canvas.Top="36" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Top"
+                   Canvas.Left="631" Canvas.Top="29" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Top"
                    Foreground="White" TextAlignment="Right" />
         <TextBlock x:Name="gameOverTextBlock" Text="GAME OVER" Visibility="Collapsed" FontFamily="ModeNine"
-                   FontWeight="Bold" FontSize="50" Canvas.Left="166" Canvas.Top="215" Foreground="White"
+                   FontWeight="Bold" FontSize="50" Canvas.Left="221" Canvas.Top="275" Foreground="White"
                    HorizontalAlignment="Left" VerticalAlignment="Top" TextAlignment="Center" Width="315" />
         <TextBlock x:Name="youWinTextBlock" Text="YOU WIN!" Visibility="Collapsed" FontFamily="ModeNine"
-                   FontWeight="Bold" FontSize="50" Canvas.Left="197" Canvas.Top="215" Foreground="White"
-                   TextAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                   FontWeight="Bold" FontSize="50" Canvas.Left="237" Canvas.Top="275" Foreground="White"
+                   TextAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top" />
     </Canvas>
 </Page>
