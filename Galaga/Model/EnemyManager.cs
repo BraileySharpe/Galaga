@@ -63,18 +63,17 @@ namespace Galaga.Model
         #region Methods
 
         /// <summary>
-        ///     Creates the and place enemies.
-        ///     Note: For a new enemy to be added to the game, a list of enemies must be created and an offset must be provided.
+        ///     Creates and places enemies onto the canvas.
+        ///     Note: For a new enemy to be added to the game, an offset must be provided
         /// </summary>
         public void CreateAndPlaceEnemies()
         {
-            this.createAndPlaceEnemies(NumOfLevel1Enemies, new Level1EnemySprite(), Level1EnemyOffset,
-                Level1EnemyScore, false);
+            this.createAndPlaceEnemies(NumOfLevel1Enemies, new Level1EnemySprite(), Level1EnemyScore, false);
             this.createAndPlaceEnemies(NumOfLevel2Enemies, new Level1EnemySprite(), Level2EnemyOffset,
                 Level2EnemyScore, false);
-            this.createAndPlaceEnemies(NumOfLevel3Enemies, new Level2EnemySprite(), Level3EnemyOffset,
+            this.createAndPlaceEnemies(NumOfLevel3Enemies, new Level3EnemySprite(), Level3EnemyOffset,
                 Level3EnemyScore, true);
-            this.createAndPlaceEnemies(NumOfLevel4Enemies, new Level3EnemySprite(), Level4EnemyOffset, Level4EnemyScore, true);
+            this.createAndPlaceEnemies(NumOfLevel4Enemies, new Level4EnemySprite(), Level4EnemyOffset, Level4EnemyScore, true);
         }
 
         private void createAndPlaceEnemies(int numOfEnemies, BaseSprite sprite, double yOffset, int score, bool canShoot)
@@ -105,6 +104,37 @@ namespace Galaga.Model
                 var xPosition = leftMargin + i * (currEnemy.Width + Spacing);
                 currEnemy.X = xPosition;
                 currEnemy.Y = this.canvas.Height - currEnemy.Height - yOffset;
+            }
+        }
+
+        private void createAndPlaceEnemies(int numOfEnemies, BaseSprite sprite, int score, bool canShoot)
+        {
+            if (numOfEnemies < 1)
+            {
+                throw new ArgumentException("Number of enemies must be greater than 0.");
+            }
+
+            if (sprite == null)
+            {
+                throw new ArgumentNullException(nameof(sprite));
+            }
+
+            var totalSpriteWidth = numOfEnemies * sprite.Width + (numOfEnemies - 1) * Spacing;
+            var leftMargin = (this.canvas.Width - totalSpriteWidth) / 2;
+
+            for (var i = 0; i < numOfEnemies; i++)
+            {
+                Enemy currEnemy = canShoot
+                    ? new ShootingEnemy((BaseSprite)Activator.CreateInstance(sprite.GetType()))
+                    : new Enemy((BaseSprite)Activator.CreateInstance(sprite.GetType()));
+
+                currEnemy.Score = score;
+                this.enemies.Add(currEnemy);
+                this.canvas.Children.Add(currEnemy.Sprite);
+
+                var xPosition = leftMargin + i * (currEnemy.Width + Spacing);
+                currEnemy.X = xPosition;
+                currEnemy.Y = this.canvas.Height - currEnemy.Height - currEnemy.Sprite.Y;
             }
         }
 

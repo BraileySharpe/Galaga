@@ -32,6 +32,7 @@ namespace Galaga.View
 
         private int enemyTickCounter;
         private bool enemyMoveRight;
+        private bool spacePressedPreviously;
         private readonly HashSet<VirtualKey> activeKeys;
 
         #endregion
@@ -250,7 +251,15 @@ namespace Galaga.View
 
             if (this.activeKeys.Contains(VirtualKey.Space))
             {
-                this.gameManager.PlacePlayerBullet();
+                if (!this.spacePressedPreviously)
+                {
+                    this.gameManager.PlacePlayerBullet();
+                    this.spacePressedPreviously = true;
+                }
+            }
+            else
+            {
+                this.spacePressedPreviously = false;
             }
         }
 

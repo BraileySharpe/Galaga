@@ -11,6 +11,9 @@ namespace Galaga.View.Sprites
     /// <seealso cref="Galaga.View.Sprites.ISpriteRenderer" />
     public abstract partial class BaseSprite : ISpriteRenderer
     {
+
+        public int Y { get; protected set; }
+
         #region Constructors
 
         /// <summary>

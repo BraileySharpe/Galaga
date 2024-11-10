@@ -8,6 +8,7 @@
     /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector2" />
     public partial class Level1EnemySprite
     {
+
         #region Constructors
 
         /// <summary>
@@ -16,6 +17,7 @@
         public Level1EnemySprite()
         {
             this.InitializeComponent();
+            this.Y = 250;
         }
 
         #endregion
