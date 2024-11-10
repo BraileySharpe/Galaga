@@ -163,6 +163,22 @@ namespace Galaga.Model
             this.SpeedY = speedY;
         }
 
+        /// <summary>
+        ///     Checks if the target object collides with another game object.
+        /// </summary>
+        /// <param name="gameObject">The game object to compare with.</param>
+        /// <returns>true if gameObjects intersect, false otherwise</returns>
+        public bool CollidesWith(GameObject gameObject)
+        {
+            if (gameObject == null)
+            {
+                return false;
+            }
+
+            return this.X < gameObject.X + gameObject.Width && this.X + this.Width > gameObject.X &&
+                   this.Y < gameObject.Y + gameObject.Height && this.Y + this.Height > gameObject.Y;
+        }
+
         #endregion
     }
 }
