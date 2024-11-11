@@ -10,8 +10,8 @@
         #region Methods
 
         /// <summary>
-        /// Renders sprite at the specified (x,y) location in relation
-        /// to the top, left part of the canvas.
+        ///     Renders sprite at the specified (x,y) location in relation
+        ///     to the top, left part of the canvas.
         /// </summary>
         /// <param name="x">x location</param>
         /// <param name="y">y location</param>

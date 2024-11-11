@@ -9,11 +9,13 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Canvas x:Name="canvas" Width="720" Height="600" Background="Black">
-        <TextBlock Text="HIGH" Height="17" Width="58" FontFamily="ModeNine" FontWeight="Bold" Canvas.Left="614" FontSize="20" Foreground="#FFD01919" HorizontalAlignment="Left"
-                   VerticalAlignment="Top" Canvas.Top="11"/>
-        <TextBlock Text="SCORE" Height="17" Width="64" FontFamily="ModeNine" FontWeight="Bold" Canvas.Left="632" FontSize="20" Foreground="#FFD01919" HorizontalAlignment="Left"
-                   VerticalAlignment="Top" Canvas.Top="31"/>
-        <TextBlock x:Name="scoreTextBlock" Text="0" Height="31" Width="79" FontFamily="ModeNine" FontWeight="Bold"
+        <TextBlock Text="HIGH" Height="17" Width="58" FontFamily="ModeNine" FontWeight="Bold" Canvas.Left="614"
+                   FontSize="20" Foreground="#FFD01919" HorizontalAlignment="Left"
+                   VerticalAlignment="Top" Canvas.Top="11" />
+        <TextBlock Text="SCORE" Height="17" Width="64" FontFamily="ModeNine" FontWeight="Bold" Canvas.Left="632"
+                   FontSize="20" Foreground="#FFD01919" HorizontalAlignment="Left"
+                   VerticalAlignment="Top" Canvas.Top="31" />
+        <TextBlock x:Name="scoreTextBlock" Text="{Binding Score, Mode=OneWay}" Height="31" Width="79" FontFamily="ModeNine" FontWeight="Bold"
                    Canvas.Left="614" Canvas.Top="57" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Top"
                    Foreground="White" TextAlignment="Right" />
         <TextBlock x:Name="gameOverTextBlock" Text="GAME OVER" Visibility="Collapsed" FontFamily="ModeNine"

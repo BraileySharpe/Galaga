@@ -1,14 +1,14 @@
 ﻿<local:BaseSprite x:Class="Galaga.View.Sprites.Level3EnemySprite"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="using:Galaga.View.Sprites"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d"
-             d:DesignHeight="60"
-             d:DesignWidth="50"
-             Width="50"
-             Height="60">
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:local="using:Galaga.View.Sprites"
+                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                  mc:Ignorable="d"
+                  d:DesignHeight="60"
+                  d:DesignWidth="50"
+                  Width="50"
+                  Height="60">
 
     <UserControl.Resources>
         <SolidColorBrush x:Key="Lvl2BaseColor" Color="#F6F7F0" />
@@ -22,32 +22,32 @@
             <VisualStateGroup x:Name="SpriteStates">
                 <VisualState x:Name="BaseSprite">
                     <Storyboard>
-                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="BaseCanvas"
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="baseCanvas"
                                                        Storyboard.TargetProperty="Visibility">
-                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible"/>
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible" />
                         </ObjectAnimationUsingKeyFrames>
-                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="AlternateCanvas"
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="alternateCanvas"
                                                        Storyboard.TargetProperty="Visibility">
-                            <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed"/>
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed" />
                         </ObjectAnimationUsingKeyFrames>
                     </Storyboard>
                 </VisualState>
                 <VisualState x:Name="AlternateSprite">
                     <Storyboard>
-                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="AlternateCanvas"
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="alternateCanvas"
                                                        Storyboard.TargetProperty="Visibility">
-                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible"/>
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Visible" />
                         </ObjectAnimationUsingKeyFrames>
-                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="BaseCanvas"
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="baseCanvas"
                                                        Storyboard.TargetProperty="Visibility">
-                            <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed"/>
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed" />
                         </ObjectAnimationUsingKeyFrames>
                     </Storyboard>
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
-        <Canvas x:Name="BaseCanvas" Visibility="Visible">
+        <Canvas x:Name="baseCanvas" Visibility="Visible">
             <Rectangle Width="4" Height="8" Fill="{StaticResource Lvl2AccentColor}" Canvas.Left="19" Canvas.Top="6" />
             <Rectangle Width="4" Height="8" Fill="{StaticResource Lvl2AccentColor}" Canvas.Left="27" Canvas.Top="6" />
 
@@ -74,7 +74,7 @@
             <Rectangle Width="6" Height="14" Fill="{StaticResource Lvl2WingColor}" Canvas.Top="11" />
         </Canvas>
 
-        <Canvas x:Name="AlternateCanvas" Visibility="Collapsed">
+        <Canvas x:Name="alternateCanvas" Visibility="Collapsed">
             <Rectangle Width="4" Height="8" Fill="{StaticResource Lvl2AccentColor}" Canvas.Left="19" Canvas.Top="6" />
             <Rectangle Width="4" Height="8" Fill="{StaticResource Lvl2AccentColor}" Canvas.Left="27" Canvas.Top="6" />
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using Windows.UI.Xaml.Controls;
 
 namespace Galaga.Model
@@ -6,13 +7,14 @@ namespace Galaga.Model
     /// <summary>
     ///     Manages the Galaga game play.
     /// </summary>
-    public class GameManager
+    public class GameManager : INotifyPropertyChanged
     {
         #region Data members
 
         private readonly EnemyManager enemyManager;
         private readonly BulletManager bulletManager;
         private readonly PlayerManager playerManager;
+        private int score;
 
         #endregion
 
@@ -20,8 +22,22 @@ namespace Galaga.Model
 
         public int Score
         {
-            get => this.playerManager.Score;
-            set => this.playerManager.Score = value;
+            get => this.score;
+            set
+            {
+                if (this.score != value)
+                {
+                    this.score = value;
+                    this.OnPropertyChanged(nameof(this.Score));
+                }
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion

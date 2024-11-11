@@ -10,7 +10,11 @@ namespace Galaga.View.Sprites
     /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector2" />
     public sealed partial class Level4EnemySprite
     {
+        #region Data members
+
         private bool isUsingAlternateSprite;
+
+        #endregion
 
         #region Constructors
 
@@ -29,7 +33,7 @@ namespace Galaga.View.Sprites
         #region Methods
 
         /// <summary>
-        /// Toggles between the base sprite and the alternate sprite.
+        ///     Toggles between the base sprite and the alternate sprite.
         /// </summary>
         public void ToggleSprite()
         {

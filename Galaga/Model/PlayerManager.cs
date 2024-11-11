@@ -24,23 +24,23 @@ namespace Galaga.Model
         ///     Gets the player.
         /// </summary>
         /// <value>
-        /// The player.
+        ///     The player.
         /// </value>
         public Player Player { get; private set; }
 
         /// <summary>
-        /// Gets or sets the score.
+        ///     Gets or sets the score.
         /// </summary>
         /// <value>
-        /// The score.
+        ///     The score.
         /// </value>
         public int Score { get; set; } = 0;
 
         /// <summary>
-        /// Gets the lives.
+        ///     Gets the lives.
         /// </summary>
         /// <value>
-        /// The lives.
+        ///     The lives.
         /// </value>
         public int Lives { get; private set; } = 3;
 

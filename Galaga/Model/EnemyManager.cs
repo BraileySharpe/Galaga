@@ -25,19 +25,18 @@ namespace Galaga.Model
         private const int NumOfLevel4Enemies = 5;
 
         private readonly Canvas canvas;
-        private readonly IList<Enemy> enemies;
 
         #endregion
 
         #region Properties
 
         /// <summary>
-        /// Gets the enemies.
+        ///     Gets the enemies.
         /// </summary>
         /// <value>
-        /// The enemies.
+        ///     The enemies.
         /// </value>
-        public IList<Enemy> Enemies => this.enemies;
+        public IList<Enemy> Enemies { get; }
 
         /// <summary>
         ///     Gets the number of enemies left in the game.
@@ -45,7 +44,7 @@ namespace Galaga.Model
         /// <value>
         ///     The count.
         /// </value>
-        public int Count => this.enemies.Count;
+        public int Count => this.Enemies.Count;
 
         #endregion
 
@@ -56,7 +55,7 @@ namespace Galaga.Model
         /// </summary>
         public EnemyManager(Canvas canvas)
         {
-            this.enemies = new List<Enemy>();
+            this.Enemies = new List<Enemy>();
             this.canvas = canvas ?? throw new ArgumentNullException(nameof(canvas));
         }
 
@@ -98,7 +97,7 @@ namespace Galaga.Model
 
                 currEnemy.Score = score;
 
-                this.enemies.Add(currEnemy);
+                this.Enemies.Add(currEnemy);
                 this.canvas.Children.Add(currEnemy.Sprite);
 
                 var xPosition = leftMargin + i * (currEnemy.Width + Spacing);
@@ -112,8 +111,7 @@ namespace Galaga.Model
         /// </summary>
         public void MoveEnemiesLeft()
         {
-
-            foreach (var enemy in this.enemies)
+            foreach (var enemy in this.Enemies)
             {
                 enemy.MoveLeft();
             }
@@ -124,7 +122,7 @@ namespace Galaga.Model
         /// </summary>
         public void MoveEnemiesRight()
         {
-            foreach (var enemy in this.enemies)
+            foreach (var enemy in this.Enemies)
             {
                 enemy.MoveRight();
             }
@@ -136,18 +134,19 @@ namespace Galaga.Model
         /// <param name="enemy">The enemy.</param>
         public void RemoveEnemy(Enemy enemy)
         {
-            this.enemies.Remove(enemy);
+            this.Enemies.Remove(enemy);
             this.canvas.Children.Remove(enemy.Sprite);
         }
 
         public void ToggleSpritesForAnimation()
         {
-            foreach (var enemy in this.enemies)
+            foreach (var enemy in this.Enemies)
             {
                 if (enemy.Sprite is Level4EnemySprite enemySprite)
                 {
                     enemySprite.ToggleSprite();
-                } else if (enemy.Sprite is Level3EnemySprite enemySprite2)
+                }
+                else if (enemy.Sprite is Level3EnemySprite enemySprite2)
                 {
                     enemySprite2.ToggleSprite();
                 }

@@ -17,10 +17,10 @@ namespace Galaga.Model
         #region Properties
 
         /// <summary>
-        /// Gets or sets the score.
+        ///     Gets or sets the score.
         /// </summary>
         /// <value>
-        /// The score.
+        ///     The score.
         /// </value>
         public int Score { get; set; }
 

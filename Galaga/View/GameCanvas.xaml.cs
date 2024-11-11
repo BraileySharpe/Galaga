@@ -58,6 +58,7 @@ namespace Galaga.View
             Window.Current.CoreWindow.KeyUp += this.coreWindowOnKeyUp;
 
             this.gameManager = new GameManager(this.canvas);
+            this.DataContext = this.gameManager;
         }
 
         #endregion
@@ -141,7 +142,6 @@ namespace Galaga.View
         private void playerBulletTimerTick(object sender, object e)
         {
             this.gameManager.MovePlayerBullet();
-            this.scoreTextBlock.Text = this.gameManager.Score.ToString();
             this.checkGameWin();
         }
 
