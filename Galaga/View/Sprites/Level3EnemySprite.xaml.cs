@@ -1,11 +1,9 @@
 ﻿namespace Galaga.View.Sprites
 {
     /// <summary>
-    ///     The level 2 enemy sprite.
+    ///     Level 3 enemy sprite.
     /// </summary>
-    /// <seealso cref="Windows.UI.Xaml.Controls.UserControl" />
-    /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector" />
-    /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector2" />
+    /// <seealso cref="Galaga.View.Sprites.BaseSprite" />
     public sealed partial class Level3EnemySprite
     {
         #region Constructors
@@ -16,6 +14,7 @@
         public Level3EnemySprite()
         {
             this.InitializeComponent();
+            this.Y = 400;
         }
 
         #endregion

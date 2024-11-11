@@ -16,6 +16,7 @@
         public Level4EnemySprite()
         {
             this.InitializeComponent();
+            this.Y = 475;
         }
 
         #endregion

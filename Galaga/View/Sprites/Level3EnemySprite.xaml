@@ -1,4 +1,4 @@
-﻿<local:Level1EnemySprite
+﻿<local:BaseSprite
     x:Class="Galaga.View.Sprites.Level3EnemySprite"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -42,4 +42,4 @@
         <Rectangle Width="6" Height="14" Fill="{StaticResource Lvl2WingColor}" Canvas.Left="44" Canvas.Top="11" />
         <Rectangle Width="6" Height="14" Fill="{StaticResource Lvl2WingColor}" Canvas.Top="11" />
     </Canvas>
-</local:Level1EnemySprite>
+</local:BaseSprite>
