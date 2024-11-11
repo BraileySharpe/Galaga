@@ -9,13 +9,44 @@ namespace Galaga.Model
     /// </summary>
     public class PlayerManager
     {
+        #region Data members
+
         private const double PlayerOffsetFromBottom = 30;
         private readonly Canvas canvas;
         private readonly double canvasHeight;
         private readonly double canvasWidth;
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        ///     Gets the player.
+        /// </summary>
+        /// <value>
+        /// The player.
+        /// </value>
         public Player Player { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the score.
+        /// </summary>
+        /// <value>
+        /// The score.
+        /// </value>
         public int Score { get; set; } = 0;
+
+        /// <summary>
+        /// Gets the lives.
+        /// </summary>
+        /// <value>
+        /// The lives.
+        /// </value>
         public int Lives { get; private set; } = 3;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="PlayerManager" /> class.
@@ -28,6 +59,10 @@ namespace Galaga.Model
             this.canvasWidth = canvas.Width;
             this.initializePlayer();
         }
+
+        #endregion
+
+        #region Methods
 
         private void initializePlayer()
         {
@@ -85,5 +120,7 @@ namespace Galaga.Model
                 this.Player.MoveRight();
             }
         }
+
+        #endregion
     }
 }

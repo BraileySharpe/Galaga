@@ -17,29 +17,30 @@ namespace Galaga.Model
         private readonly EnemyManager enemyManager;
         private readonly GameManager gameManager;
         private readonly PlayerManager playerManager;
-        private Canvas canvas;
+        private readonly Canvas canvas;
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BulletManager"/> class.
+        ///     Initializes a new instance of the <see cref="BulletManager" /> class.
         /// </summary>
         /// <param name="enemyManager">The enemy manager.</param>
         /// <param name="playerManager">The player manager.</param>
         /// <param name="canvas">The canvas.</param>
         /// <param name="gameManager">The game manager.</param>
         /// <exception cref="System.ArgumentNullException">
-        /// enemyManager
-        /// or
-        /// gameManager
-        /// or
-        /// playerManager
-        /// or
-        /// canvas
+        ///     enemyManager
+        ///     or
+        ///     gameManager
+        ///     or
+        ///     playerManager
+        ///     or
+        ///     canvas
         /// </exception>
-        public BulletManager(EnemyManager enemyManager, PlayerManager playerManager, Canvas canvas, GameManager gameManager)
+        public BulletManager(EnemyManager enemyManager, PlayerManager playerManager, Canvas canvas,
+            GameManager gameManager)
         {
             this.enemyManager = enemyManager ?? throw new ArgumentNullException(nameof(enemyManager));
             this.gameManager = gameManager ?? throw new ArgumentNullException(nameof(gameManager));
@@ -63,7 +64,8 @@ namespace Galaga.Model
             {
                 var playerBullet = new Bullet(new PlayerBulletSprite());
                 this.canvas.Children.Add(playerBullet.Sprite);
-                playerBullet.X = this.playerManager.Player.X + this.playerManager.Player.Width / 2.0 - playerBullet.Width / 2.0;
+                playerBullet.X = this.playerManager.Player.X + this.playerManager.Player.Width / 2.0 -
+                                 playerBullet.Width / 2.0;
                 playerBullet.Y = this.playerManager.Player.Y - playerBullet.Height;
                 this.activePlayerBullets.Add(playerBullet);
             }
@@ -74,7 +76,7 @@ namespace Galaga.Model
         /// </summary>
         public void MovePlayerBullet()
         {
-            for (int i = this.activePlayerBullets.Count - 1; i >= 0; i--)
+            for (var i = this.activePlayerBullets.Count - 1; i >= 0; i--)
             {
                 var bullet = this.activePlayerBullets[i];
                 bullet.MoveUp();
@@ -140,7 +142,7 @@ namespace Galaga.Model
         /// </summary>
         public void MoveEnemyBullet()
         {
-            for (int i = this.activeEnemyBullets.Count - 1; i >= 0; i--)
+            for (var i = this.activeEnemyBullets.Count - 1; i >= 0; i--)
             {
                 var bullet = this.activeEnemyBullets[i];
                 bullet.MoveDown();

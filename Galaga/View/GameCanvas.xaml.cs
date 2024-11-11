@@ -90,7 +90,7 @@ namespace Galaga.View
             };
             this.playerBulletCooldownTimer.Tick += (sender, e) =>
             {
-                canShoot = true;
+                this.canShoot = true;
                 this.playerBulletCooldownTimer.Stop();
             };
         }
@@ -165,7 +165,7 @@ namespace Galaga.View
         {
             foreach (var sprite in this.canvas.Children)
             {
-                if (sprite is PlayerSprite player)
+                if (sprite is PlayerSprite)
                 {
                     return true;
                 }
@@ -241,6 +241,8 @@ namespace Galaga.View
                     this.gameManager.MoveEnemiesLeft();
                 }
             }
+
+            this.gameManager.ToggleSpritesForAnimation();
         }
 
         private void setUpGameLoopTimer()

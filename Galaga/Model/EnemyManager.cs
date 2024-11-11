@@ -25,7 +25,7 @@ namespace Galaga.Model
         private const int NumOfLevel4Enemies = 5;
 
         private readonly Canvas canvas;
-        private readonly List<Enemy> enemies;
+        private readonly IList<Enemy> enemies;
 
         #endregion
 
@@ -40,7 +40,7 @@ namespace Galaga.Model
         public IList<Enemy> Enemies => this.enemies;
 
         /// <summary>
-        ///     Gets the count.
+        ///     Gets the number of enemies left in the game.
         /// </summary>
         /// <value>
         ///     The count.
@@ -66,7 +66,6 @@ namespace Galaga.Model
 
         /// <summary>
         ///     Creates and places enemies onto the canvas.
-        ///     Note: For a new enemy to be added to the game, an offset must be provided
         /// </summary>
         public void CreateAndPlaceEnemies()
         {
@@ -98,6 +97,7 @@ namespace Galaga.Model
                     : new Enemy((BaseSprite)Activator.CreateInstance(sprite.GetType()));
 
                 currEnemy.Score = score;
+
                 this.enemies.Add(currEnemy);
                 this.canvas.Children.Add(currEnemy.Sprite);
 
@@ -112,7 +112,11 @@ namespace Galaga.Model
         /// </summary>
         public void MoveEnemiesLeft()
         {
-            this.enemies.ForEach(enemy => enemy.MoveLeft());
+
+            foreach (var enemy in this.enemies)
+            {
+                enemy.MoveLeft();
+            }
         }
 
         /// <summary>
@@ -120,7 +124,10 @@ namespace Galaga.Model
         /// </summary>
         public void MoveEnemiesRight()
         {
-            this.enemies.ForEach(enemy => enemy.MoveRight());
+            foreach (var enemy in this.enemies)
+            {
+                enemy.MoveRight();
+            }
         }
 
         /// <summary>
@@ -131,6 +138,20 @@ namespace Galaga.Model
         {
             this.enemies.Remove(enemy);
             this.canvas.Children.Remove(enemy.Sprite);
+        }
+
+        public void ToggleSpritesForAnimation()
+        {
+            foreach (var enemy in this.enemies)
+            {
+                if (enemy.Sprite is Level4EnemySprite enemySprite)
+                {
+                    enemySprite.ToggleSprite();
+                } else if (enemy.Sprite is Level3EnemySprite enemySprite2)
+                {
+                    enemySprite2.ToggleSprite();
+                }
+            }
         }
 
         #endregion

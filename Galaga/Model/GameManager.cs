@@ -10,10 +10,19 @@ namespace Galaga.Model
     {
         #region Data members
 
-        private readonly Canvas canvas;
         private readonly EnemyManager enemyManager;
         private readonly BulletManager bulletManager;
         private readonly PlayerManager playerManager;
+
+        #endregion
+
+        #region Properties
+
+        public int Score
+        {
+            get => this.playerManager.Score;
+            set => this.playerManager.Score = value;
+        }
 
         #endregion
 
@@ -26,23 +35,16 @@ namespace Galaga.Model
         /// <exception cref="System.ArgumentNullException">canvas</exception>
         public GameManager(Canvas canvas)
         {
-            this.canvas = canvas ?? throw new ArgumentNullException(nameof(canvas));
+            if (canvas == null)
+            {
+                throw new ArgumentNullException(nameof(canvas));
+            }
 
-            this.enemyManager = new EnemyManager(this.canvas);
-            this.playerManager = new PlayerManager(this.canvas);
-            this.bulletManager = new BulletManager(this.enemyManager, this.playerManager, this.canvas, this);
+            this.enemyManager = new EnemyManager(canvas);
+            this.playerManager = new PlayerManager(canvas);
+            this.bulletManager = new BulletManager(this.enemyManager, this.playerManager, canvas, this);
 
             this.initializeGame();
-        }
-
-        #endregion
-
-        #region Properties
-
-        public int Score
-        {
-            get => this.playerManager.Score;
-            set => this.playerManager.Score = value;
         }
 
         #endregion
@@ -97,6 +99,11 @@ namespace Galaga.Model
         public int GetRemainingEnemyCount()
         {
             return this.enemyManager.Count;
+        }
+
+        public void ToggleSpritesForAnimation()
+        {
+            this.enemyManager.ToggleSpritesForAnimation();
         }
 
         #endregion

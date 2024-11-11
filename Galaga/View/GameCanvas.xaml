@@ -3,7 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:Custom="using:Galaga.View.Sprites"
+    xmlns:custom="using:Galaga.View.Sprites"
     x:Class="Galaga.View.GameCanvas"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -22,8 +22,8 @@
         <TextBlock x:Name="youWinTextBlock" Text="YOU WIN!" Visibility="Collapsed" FontFamily="ModeNine"
                    FontWeight="Bold" FontSize="50" Canvas.Left="237" Canvas.Top="275" Foreground="White"
                    TextAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top" />
-        <Custom:PlayerLifeIcon Canvas.Left="682" Canvas.Top="172" />
-        <Custom:PlayerLifeIcon Canvas.Left="648" Canvas.Top="172" />
-        <Custom:PlayerLifeIcon Canvas.Left="614" Canvas.Top="172" />
+        <custom:PlayerLifeIcon Canvas.Left="682" Canvas.Top="172" />
+        <custom:PlayerLifeIcon Canvas.Left="648" Canvas.Top="172" />
+        <custom:PlayerLifeIcon Canvas.Left="614" Canvas.Top="172" />
     </Canvas>
 </Page>
