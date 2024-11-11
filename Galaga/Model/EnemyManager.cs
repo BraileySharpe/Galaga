@@ -15,9 +15,9 @@ namespace Galaga.Model
         private const double Spacing = 15;
 
         private const int Level1EnemyScore = 100;
-        private const int Level2EnemyScore = 150;
-        private const int Level3EnemyScore = 200;
-        private const int Level4EnemyScore = 250;
+        private const int Level2EnemyScore = 200;
+        private const int Level3EnemyScore = 300;
+        private const int Level4EnemyScore = 400;
 
         private const int NumOfLevel1Enemies = 3;
         private const int NumOfLevel2Enemies = 4;

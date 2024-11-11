@@ -20,6 +20,7 @@ namespace Galaga.View
 
         public const int InitialTickEnemyMovement = 5;
         public const int TicksBeforeEnemyDirectionChange = 10;
+        private const int PlayerBulletCooldownMilliseconds = 300;
 
         private readonly GameManager gameManager;
         private readonly Random random;
@@ -29,10 +30,12 @@ namespace Galaga.View
         private DispatcherTimer enemyBulletMovementTimer;
         private DispatcherTimer playerBulletTimer;
         private DispatcherTimer gameLoopTimer;
+        private DispatcherTimer playerBulletCooldownTimer;
 
         private int enemyTickCounter;
         private bool enemyMoveRight;
         private bool spacePressedPreviously;
+        private bool canShoot = true;
         private readonly HashSet<VirtualKey> activeKeys;
 
         #endregion
@@ -45,7 +48,6 @@ namespace Galaga.View
         public GameCanvas()
         {
             this.InitializeComponent();
-
             this.random = new Random();
             this.activeKeys = new HashSet<VirtualKey>();
 
@@ -77,6 +79,20 @@ namespace Galaga.View
             this.setUpEnemyMovementTimer();
             this.setUpEnemyBulletTimer();
             this.setUpGameLoopTimer();
+            this.setUpPlayerBulletCooldownTimer();
+        }
+
+        private void setUpPlayerBulletCooldownTimer()
+        {
+            this.playerBulletCooldownTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromMilliseconds(PlayerBulletCooldownMilliseconds)
+            };
+            this.playerBulletCooldownTimer.Tick += (sender, e) =>
+            {
+                canShoot = true;
+                this.playerBulletCooldownTimer.Stop();
+            };
         }
 
         private void setUpEnemyBulletTimer()
@@ -251,10 +267,12 @@ namespace Galaga.View
 
             if (this.activeKeys.Contains(VirtualKey.Space))
             {
-                if (!this.spacePressedPreviously)
+                if (!this.spacePressedPreviously && this.canShoot)
                 {
                     this.gameManager.PlacePlayerBullet();
+                    this.canShoot = false;
                     this.spacePressedPreviously = true;
+                    this.playerBulletCooldownTimer.Start();
                 }
             }
             else

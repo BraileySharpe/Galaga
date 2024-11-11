@@ -1,5 +1,6 @@
 ﻿using System;
 using Windows.UI.Xaml.Controls;
+using Galaga.View.Sprites;
 
 namespace Galaga.Model
 {
@@ -50,6 +51,15 @@ namespace Galaga.Model
             {
                 this.Lives--;
                 this.canvas.Children.Add(this.Player.Sprite);
+                foreach (var sprite in this.canvas.Children)
+                {
+                    if (sprite is PlayerLifeIcon playerLifeIcon)
+                    {
+                        this.canvas.Children.Remove(playerLifeIcon);
+                        break;
+                    }
+                }
+
                 this.placePlayerNearBottomOfBackgroundCentered();
             }
         }

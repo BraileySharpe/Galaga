@@ -1,0 +1,58 @@
+﻿<local:BaseSprite
+    x:Class="Galaga.View.Sprites.PlayerLifeIcon"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Galaga.View.Sprites"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Height="30"
+    Width="29">
+
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="ShipBaseColor" Color="#E6EDEF" />
+        <SolidColorBrush x:Key="CockpitColor" Color="#F13738" />
+        <SolidColorBrush x:Key="EngineFireColor" Color="Red" />
+        <SolidColorBrush x:Key="WingTipColor" Color="#F13738" />
+        <SolidColorBrush x:Key="AccentColor" Color="#0076C0" />
+    </UserControl.Resources>
+
+    <Canvas>
+        <Rectangle Width="3" Height="30" Fill="{StaticResource ShipBaseColor}" Canvas.Left="13" />
+        <Rectangle Width="7" Height="16" Fill="{StaticResource ShipBaseColor}" Canvas.Top="8" Canvas.Left="11" />
+        <Rectangle Width="13" Height="11" Fill="{StaticResource ShipBaseColor}" Canvas.Top="13" Canvas.Left="8" />
+        <Rectangle Width="3" Height="13" Fill="{StaticResource ShipBaseColor}" Canvas.Left="5" Canvas.Top="11" />
+        <Rectangle Width="3" Height="13" Fill="{StaticResource ShipBaseColor}" Canvas.Left="21" Canvas.Top="11" />
+        <Rectangle Width="8" Height="8" Fill="{StaticResource ShipBaseColor}" Canvas.Left="16" Canvas.Top="16" />
+        <Rectangle Width="8" Height="8" Fill="{StaticResource ShipBaseColor}" Canvas.Left="5" Canvas.Top="16" />
+        <Rectangle Width="3" Height="11" Fill="{StaticResource ShipBaseColor}" Canvas.Left="26" Canvas.Top="19" />
+        <Rectangle Width="3" Height="11" Fill="{StaticResource ShipBaseColor}" Canvas.Top="19"
+                   HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <Rectangle Width="5" Height="6" Fill="{StaticResource ShipBaseColor}" Canvas.Top="21" />
+        <Rectangle Width="5" Height="6" Fill="{StaticResource ShipBaseColor}" Canvas.Top="21" Canvas.Left="24" />
+        <Rectangle Width="3" Height="8" Fill="{StaticResource ShipBaseColor}" Canvas.Left="13" Canvas.Top="22" />
+        <Rectangle Width="5" Height="3" Fill="{StaticResource ShipBaseColor}" Canvas.Top="21" Canvas.Left="3" />
+        <Rectangle Width="6" Height="3" Fill="{StaticResource ShipBaseColor}" Canvas.Top="21" Canvas.Left="20" />
+
+        <Rectangle Width="3" Height="3" Fill="{StaticResource WingTipColor}" Canvas.Top="8" Canvas.Left="5" />
+        <Rectangle Width="3" Height="3" Fill="{StaticResource WingTipColor}" Canvas.Left="21" Canvas.Top="8" />
+        <Rectangle Width="3" Height="3" Fill="{StaticResource WingTipColor}" Canvas.Top="16" HorizontalAlignment="Left"
+                   VerticalAlignment="Top" />
+        <Rectangle Width="3" Height="3" Fill="{StaticResource WingTipColor}" Canvas.Top="16" Canvas.Left="26" />
+
+        <Rectangle Width="3" Height="3" Fill="{StaticResource AccentColor}" Canvas.Left="8" Canvas.Top="13" />
+        <Rectangle Width="3" Height="3" Fill="{StaticResource AccentColor}" Canvas.Top="16" Canvas.Left="5" />
+        <Rectangle Width="3" Height="3" Fill="{StaticResource AccentColor}" Canvas.Left="18" Canvas.Top="13" />
+        <Rectangle Width="3" Height="3" Fill="{StaticResource AccentColor}" Canvas.Left="21" Canvas.Top="16" />
+
+        <Rectangle Width="3" Height="6" Fill="{StaticResource CockpitColor}" Canvas.Left="13" Canvas.Top="13" />
+        <Rectangle Width="2" Height="5" Fill="{StaticResource CockpitColor}" Canvas.Left="16" Canvas.Top="16" />
+        <Rectangle Width="2" Height="5" Fill="{StaticResource CockpitColor}" Canvas.Left="11" Canvas.Top="16" />
+        <Rectangle Width="7" Height="3" Fill="{StaticResource CockpitColor}" Canvas.Left="11" Canvas.Top="16" />
+
+        <Rectangle Width="5" Height="3" Fill="{StaticResource EngineFireColor}" Canvas.Left="8" Canvas.Top="24" />
+        <Rectangle Width="5" Height="3" Fill="{StaticResource EngineFireColor}" Canvas.Left="16" Canvas.Top="24" />
+
+    </Canvas>
+
+</local:BaseSprite>

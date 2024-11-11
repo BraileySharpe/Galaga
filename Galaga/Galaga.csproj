@@ -155,6 +155,9 @@
     <Compile Include="View\Sprites\Level4EnemySprite.xaml.cs">
       <DependentUpon>Level4EnemySprite.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Sprites\PlayerLifeIcon.xaml.cs">
+      <DependentUpon>PlayerLifeIcon.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Sprites\PlayerSprite.xaml.cs">
       <DependentUpon>PlayerSprite.xaml</DependentUpon>
     </Compile>
@@ -208,6 +211,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Sprites\Level4EnemySprite.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Sprites\PlayerLifeIcon.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

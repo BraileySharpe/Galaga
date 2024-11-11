@@ -6,40 +6,40 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    d:DesignHeight="60"
-    d:DesignWidth="50"
-    Height="60"
-    Width="50">
+    d:DesignHeight="50"
+    d:DesignWidth="42"
+    Height="50"
+    Width="42">
 
     <UserControl.Resources>
         <SolidColorBrush x:Key="Lvl2AccentColor" Color="#E04600" />
     </UserControl.Resources>
 
-        <Canvas>
-        <Rectangle Width="24" Height="15" Fill="{StaticResource Lvl1BaseColor}" Canvas.Left="13" Canvas.Top="12" />
-        <Rectangle Width="14" Height="26" Fill="{StaticResource Lvl1BaseColor}" Canvas.Left="18" Canvas.Top="26" />
-        <Rectangle Width="4" Height="6" Fill="{StaticResource Lvl1BaseColor}" Canvas.Left="23" Canvas.Top="8" />
+    <Canvas>
+        <Rectangle Width="20" Height="12" Fill="{StaticResource Lvl1BaseColor}" Canvas.Left="11" Canvas.Top="10" />
+        <Rectangle Width="12" Height="21" Fill="{StaticResource Lvl1BaseColor}" Canvas.Left="15" Canvas.Top="22" />
+        <Rectangle Width="4" Height="5" Fill="{StaticResource Lvl1BaseColor}" Canvas.Left="19" Canvas.Top="7" />
 
-        <Rectangle Width="10" Height="5" Fill="{StaticResource Lvl2AccentColor}" Canvas.Left="27" Canvas.Top="17" />
-        <Rectangle Width="10" Height="5" Fill="{StaticResource Lvl2AccentColor}" Canvas.Left="13" Canvas.Top="17" />
-        <Rectangle Width="5" Height="10" Fill="{StaticResource Lvl2AccentColor}" Canvas.Left="27" Canvas.Top="12" />
-        <Rectangle Width="5" Height="10" Fill="{StaticResource Lvl2AccentColor}" Canvas.Left="18" Canvas.Top="12" />
+        <Rectangle Width="8" Height="4" Fill="{StaticResource Lvl2AccentColor}" Canvas.Left="23" Canvas.Top="14" />
+        <Rectangle Width="8" Height="4" Fill="{StaticResource Lvl2AccentColor}" Canvas.Left="11" Canvas.Top="14" />
+        <Rectangle Width="4" Height="8" Fill="{StaticResource Lvl2AccentColor}" Canvas.Left="23" Canvas.Top="10" />
+        <Rectangle Width="4" Height="8" Fill="{StaticResource Lvl2AccentColor}" Canvas.Left="15" Canvas.Top="10" />
 
-        <Rectangle Width="14" Height="10" Fill="{StaticResource Lvl2AccentColor}" Canvas.Left="18" Canvas.Top="32" />
-        <Rectangle Width="14" Height="5" Fill="{StaticResource Lvl2AccentColor}" Canvas.Left="18" Canvas.Top="47" />
-        <Rectangle Width="4" Height="6" Fill="{StaticResource Lvl2AccentColor}" Canvas.Left="23" Canvas.Top="51" />
+        <Rectangle Width="12" Height="8" Fill="{StaticResource Lvl2AccentColor}" Canvas.Left="15" Canvas.Top="27" />
+        <Rectangle Width="12" Height="4" Fill="{StaticResource Lvl2AccentColor}" Canvas.Left="15" Canvas.Top="39" />
+        <Rectangle Width="4" Height="5" Fill="{StaticResource Lvl2AccentColor}" Canvas.Left="19" Canvas.Top="41" />
 
-        <Rectangle Width="10" Height="10" Fill="{StaticResource Lvl1WingColor}" Canvas.Left="8" Canvas.Top="27" />
-        <Rectangle Width="10" Height="10" Fill="{StaticResource Lvl1WingColor}" Canvas.Left="32" Canvas.Top="27" />
-        <Rectangle Width="13" Height="28" Fill="{StaticResource Lvl1WingColor}" Canvas.Top="32" />
-        <Rectangle Width="13" Height="28" Fill="{StaticResource Lvl1WingColor}" Canvas.Left="37" Canvas.Top="32" />
+        <Rectangle Width="8" Height="9" Fill="{StaticResource Lvl1WingColor}" Canvas.Left="7" Canvas.Top="22" />
+        <Rectangle Width="8" Height="9" Fill="{StaticResource Lvl1WingColor}" Canvas.Left="27" Canvas.Top="22" />
+        <Rectangle Width="11" Height="23" Fill="{StaticResource Lvl1WingColor}" Canvas.Top="27" />
+        <Rectangle Width="11" Height="23" Fill="{StaticResource Lvl1WingColor}" Canvas.Left="31" Canvas.Top="27" />
 
-        <Rectangle Width="5" Height="5" Fill="{StaticResource Lvl1AntennaColor}" Canvas.Left="8" Canvas.Top="12" />
-        <Rectangle Width="5" Height="5" Fill="{StaticResource ResourceKey=Lvl1AntennaColor}" Canvas.Left="37"
-                   Canvas.Top="12" />
-        <Rectangle Width="5" Height="12" Fill="{StaticResource ResourceKey=Lvl1AntennaColor}" Canvas.Left="3" />
-        <Rectangle Width="5" Height="12" Fill="{StaticResource ResourceKey=Lvl1AntennaColor}" Canvas.Left="42" />
-        <Rectangle Width="5" Height="10" Fill="{StaticResource Lvl1AntennaColor}" Canvas.Left="13" Canvas.Top="2" />
-        <Rectangle Width="5" Height="10" Fill="{StaticResource Lvl1AntennaColor}" Canvas.Left="32" Canvas.Top="2" />
+        <Rectangle Width="4" Height="4" Fill="{StaticResource Lvl1AntennaColor}" Canvas.Left="7" Canvas.Top="10" />
+        <Rectangle Width="4" Height="4" Fill="{StaticResource ResourceKey=Lvl1AntennaColor}" Canvas.Left="31"
+                   Canvas.Top="10" />
+        <Rectangle Width="5" Height="10" Fill="{StaticResource ResourceKey=Lvl1AntennaColor}" Canvas.Left="2" />
+        <Rectangle Width="4" Height="10" Fill="{StaticResource ResourceKey=Lvl1AntennaColor}" Canvas.Left="35" />
+        <Rectangle Width="4" Height="8" Fill="{StaticResource Lvl1AntennaColor}" Canvas.Left="11" Canvas.Top="2" />
+        <Rectangle Width="4" Height="8" Fill="{StaticResource Lvl1AntennaColor}" Canvas.Left="27" Canvas.Top="2" />
     </Canvas>
 </local:Level1EnemySprite>

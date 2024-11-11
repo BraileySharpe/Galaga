@@ -1,7 +1,7 @@
 ﻿namespace Galaga.View.Sprites
 {
     /// <summary>
-    ///     The Player's Sprite.
+    ///     The Player Sprite.
     /// </summary>
     /// <seealso cref="Galaga.View.Sprites.BaseSprite" />
     /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector" />
