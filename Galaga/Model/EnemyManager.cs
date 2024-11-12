@@ -44,7 +44,7 @@ namespace Galaga.Model
         /// <value>
         ///     The count.
         /// </value>
-        public int Count => this.Enemies.Count;
+        public int RemainingEnemies => this.Enemies.Count;
 
         #endregion
 

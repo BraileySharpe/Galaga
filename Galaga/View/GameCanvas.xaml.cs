@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Windows.Foundation;
 using Windows.System;
 using Windows.UI.Core;
@@ -58,7 +59,8 @@ namespace Galaga.View
             Window.Current.CoreWindow.KeyUp += this.coreWindowOnKeyUp;
 
             this.gameManager = new GameManager(this.canvas);
-            this.DataContext = this.gameManager;
+            DataContext = this.gameManager;
+            this.gameManager.PropertyChanged += this.OnGameManagerPropertyChanged;
         }
 
         #endregion
@@ -126,7 +128,6 @@ namespace Galaga.View
         private void bulletMovementTimerTick(object sender, object e)
         {
             this.gameManager.MoveEnemyBullet();
-            this.checkGameOver();
         }
 
         private void setUpPlayerBulletTimer()
@@ -142,36 +143,19 @@ namespace Galaga.View
         private void playerBulletTimerTick(object sender, object e)
         {
             this.gameManager.MovePlayerBullet();
-            this.checkGameWin();
         }
 
-        private void checkGameWin()
+        private void OnGameManagerPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (this.gameManager.GetRemainingEnemyCount() == 0)
-            {
-                this.endGame(this.youWinTextBlock);
-            }
-        }
-
-        private void checkGameOver()
-        {
-            if (!this.playerExists())
+            if (e.PropertyName == nameof(this.gameManager.HasLost) && this.gameManager.HasLost)
             {
                 this.endGame(this.gameOverTextBlock);
             }
-        }
 
-        private bool playerExists()
-        {
-            foreach (var sprite in this.canvas.Children)
+            if (e.PropertyName == nameof(this.gameManager.HasWon) && this.gameManager.HasWon)
             {
-                if (sprite is PlayerSprite)
-                {
-                    return true;
-                }
+                this.endGame(this.youWinTextBlock);
             }
-
-            return false;
         }
 
         private void endGame(TextBlock endgameTextBlock)
@@ -281,6 +265,8 @@ namespace Galaga.View
             {
                 this.spacePressedPreviously = false;
             }
+
+            this.gameManager.CheckGameStatus();
         }
 
         private void coreWindowOnKeyDown(CoreWindow sender, KeyEventArgs args)

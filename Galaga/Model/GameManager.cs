@@ -14,7 +14,8 @@ namespace Galaga.Model
         private readonly EnemyManager enemyManager;
         private readonly BulletManager bulletManager;
         private readonly PlayerManager playerManager;
-        private int score;
+        private bool hasWon;
+        private bool hasLost;
 
         #endregion
 
@@ -22,13 +23,39 @@ namespace Galaga.Model
 
         public int Score
         {
-            get => this.score;
+            get => this.playerManager.Score;
             set
             {
-                if (this.score != value)
+                if (this.playerManager.Score != value)
                 {
-                    this.score = value;
+                    this.playerManager.Score = value;
                     this.OnPropertyChanged(nameof(this.Score));
+                }
+            }
+        }
+
+        public bool HasWon
+        {
+            get => this.hasWon;
+            set
+            {
+                if (this.hasWon != value)
+                {
+                    this.hasWon = value;
+                    this.OnPropertyChanged(nameof(this.HasWon));
+                }
+            }
+        }
+
+        public bool HasLost
+        {
+            get => this.hasLost;
+            set
+            {
+                if (this.hasLost != value)
+                {
+                    this.hasLost = value;
+                    this.OnPropertyChanged(nameof(this.HasLost));
                 }
             }
         }
@@ -72,54 +99,92 @@ namespace Galaga.Model
             this.enemyManager.CreateAndPlaceEnemies();
         }
 
+        /// <summary>
+        /// Moves the player left.
+        /// </summary>
         public void MovePlayerLeft()
         {
             this.playerManager.MovePlayerLeft();
         }
 
+        /// <summary>
+        /// Moves the player right.
+        /// </summary>
         public void MovePlayerRight()
         {
             this.playerManager.MovePlayerRight();
         }
 
+        /// <summary>
+        /// Moves the enemies left.
+        /// </summary>
         public void MoveEnemiesLeft()
         {
             this.enemyManager.MoveEnemiesLeft();
         }
 
+        /// <summary>
+        /// Moves the enemies right.
+        /// </summary>
         public void MoveEnemiesRight()
         {
             this.enemyManager.MoveEnemiesRight();
         }
 
+        /// <summary>
+        /// Places the player bullet.
+        /// </summary>
         public void PlacePlayerBullet()
         {
             this.bulletManager.PlacePlayerBullet();
         }
 
+        /// <summary>
+        /// Moves the player bullet.
+        /// </summary>
         public void MovePlayerBullet()
         {
             this.bulletManager.MovePlayerBullet();
         }
 
+        /// <summary>
+        /// Places the enemy bullet.
+        /// </summary>
         public void PlaceEnemyBullet()
         {
             this.bulletManager.EnemyPlaceBullet();
         }
 
+        /// <summary>
+        /// Moves the enemy bullet.
+        /// </summary>
         public void MoveEnemyBullet()
         {
             this.bulletManager.MoveEnemyBullet();
         }
 
-        public int GetRemainingEnemyCount()
-        {
-            return this.enemyManager.Count;
-        }
-
+        /// <summary>
+        /// Toggles the sprites for animation.
+        /// </summary>
         public void ToggleSpritesForAnimation()
         {
             this.enemyManager.ToggleSpritesForAnimation();
+        }
+
+        /// <summary>
+        ///     Checks the game status to see whether the game has been won or lost.
+        /// </summary>
+        public void CheckGameStatus()
+        {
+            if (this.playerManager.Lives <= 0 && !this.hasLost)
+            {
+                this.HasLost = true;
+            }
+
+            if (this.enemyManager.RemainingEnemies == 0 && !this.hasWon)
+            {
+                this.HasWon = true;
+            }
         }
 
         #endregion

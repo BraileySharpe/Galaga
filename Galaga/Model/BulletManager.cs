@@ -157,7 +157,7 @@ namespace Galaga.Model
                 this.canvas.Children.Remove(bullet.Sprite);
                 this.activeEnemyBullets.RemoveAt(index);
 
-                if (this.playerManager.Lives > 1)
+                if (this.playerManager.Lives > 0)
                 {
                     this.canvas.Children.Remove(this.playerManager.Player.Sprite);
                     this.playerManager.RespawnPlayer();
@@ -165,7 +165,7 @@ namespace Galaga.Model
                 else
                 {
                     this.canvas.Children.Remove(this.playerManager.Player.Sprite);
-                    // Game over logic could go here.
+                    this.gameManager.CheckGameStatus();
                 }
             }
             else if (bullet.Y > this.canvas.Height)
