@@ -7,20 +7,6 @@ namespace Galaga.Model
     /// </summary>
     public class ShootingEnemy : Enemy
     {
-        #region Properties
-
-        /// <summary>
-        ///     Gets a value indicating whether this enemy is capable of shooting.
-        /// </summary>
-        public bool CanShoot { get; private set; }
-
-        /// <summary>
-        ///     Tracks the current sprite state for animation.
-        /// </summary>
-        private bool IsAlternateSprite { get; set; }
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
@@ -29,28 +15,6 @@ namespace Galaga.Model
         /// <param name="sprite">The enemy sprite.</param>
         public ShootingEnemy(BaseSprite sprite) : base(sprite)
         {
-            this.CanShoot = true;
-            this.IsAlternateSprite = false;
-        }
-
-        #endregion
-
-        #region Methods
-
-        /// <summary>
-        ///     Enables this enemy to shoot.
-        /// </summary>
-        public void EnableShooting()
-        {
-            this.CanShoot = true;
-        }
-
-        /// <summary>
-        ///     Disables this enemy from shooting.
-        /// </summary>
-        public void DisableShooting()
-        {
-            this.CanShoot = false;
         }
 
         #endregion

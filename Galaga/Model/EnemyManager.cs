@@ -12,7 +12,7 @@ namespace Galaga.Model
     {
         #region Data members
 
-        private const double Spacing = 15;
+        private const double EnemySpacing = 15;
 
         private const int Level1EnemyScore = 100;
         private const int Level2EnemyScore = 200;
@@ -33,17 +33,11 @@ namespace Galaga.Model
         /// <summary>
         ///     Gets the enemies.
         /// </summary>
-        /// <value>
-        ///     The enemies.
-        /// </value>
         public IList<Enemy> Enemies { get; }
 
         /// <summary>
         ///     Gets the number of enemies left in the game.
         /// </summary>
-        /// <value>
-        ///     The count.
-        /// </value>
         public int RemainingEnemies => this.Enemies.Count;
 
         #endregion
@@ -68,13 +62,13 @@ namespace Galaga.Model
         /// </summary>
         public void CreateAndPlaceEnemies()
         {
-            this.createAndPlaceEnemies(NumOfLevel1Enemies, new Level1EnemySprite(), Level1EnemyScore, false);
-            this.createAndPlaceEnemies(NumOfLevel2Enemies, new Level2EnemySprite(), Level2EnemyScore, false);
-            this.createAndPlaceEnemies(NumOfLevel3Enemies, new Level3EnemySprite(), Level3EnemyScore, true);
-            this.createAndPlaceEnemies(NumOfLevel4Enemies, new Level4EnemySprite(), Level4EnemyScore, true);
+            this.createEnemiesForLevel(NumOfLevel1Enemies, new Level1EnemySprite(), Level1EnemyScore, false);
+            this.createEnemiesForLevel(NumOfLevel2Enemies, new Level2EnemySprite(), Level2EnemyScore, false);
+            this.createEnemiesForLevel(NumOfLevel3Enemies, new Level3EnemySprite(), Level3EnemyScore, true);
+            this.createEnemiesForLevel(NumOfLevel4Enemies, new Level4EnemySprite(), Level4EnemyScore, true);
         }
 
-        private void createAndPlaceEnemies(int numOfEnemies, BaseSprite sprite, int score, bool canShoot)
+        private void createEnemiesForLevel(int numOfEnemies, BaseSprite sprite, int score, bool canShoot)
         {
             if (numOfEnemies < 1)
             {
@@ -86,8 +80,8 @@ namespace Galaga.Model
                 throw new ArgumentNullException(nameof(sprite));
             }
 
-            var totalSpriteWidth = numOfEnemies * sprite.Width + (numOfEnemies - 1) * Spacing;
-            var leftMargin = (this.canvas.Width - totalSpriteWidth) / 2;
+            var totalEnemyWidth = numOfEnemies * sprite.Width + (numOfEnemies - 1) * EnemySpacing;
+            var leftMargin = (this.canvas.Width - totalEnemyWidth) / 2;
 
             for (var i = 0; i < numOfEnemies; i++)
             {
@@ -100,14 +94,14 @@ namespace Galaga.Model
                 this.Enemies.Add(currEnemy);
                 this.canvas.Children.Add(currEnemy.Sprite);
 
-                var xPosition = leftMargin + i * (currEnemy.Width + Spacing);
+                var xPosition = leftMargin + i * (currEnemy.Width + EnemySpacing);
                 currEnemy.X = xPosition;
                 currEnemy.Y = this.canvas.Height - currEnemy.Height - currEnemy.Sprite.Y;
             }
         }
 
         /// <summary>
-        ///     Moves the enemies for the game left.
+        ///     Moves all enemies left on the canvas.
         /// </summary>
         public void MoveEnemiesLeft()
         {
@@ -118,7 +112,7 @@ namespace Galaga.Model
         }
 
         /// <summary>
-        ///     Moves the enemies right.
+        ///     Moves all enemies right on the canvas.
         /// </summary>
         public void MoveEnemiesRight()
         {
@@ -131,24 +125,27 @@ namespace Galaga.Model
         /// <summary>
         ///     Removes the enemy from the enemy list and the canvas.
         /// </summary>
-        /// <param name="enemy">The enemy.</param>
+        /// <param name="enemy">The enemy to remove.</param>
         public void RemoveEnemy(Enemy enemy)
         {
             this.Enemies.Remove(enemy);
             this.canvas.Children.Remove(enemy.Sprite);
         }
 
+        /// <summary>
+        ///     Toggles sprites for animation (for level 3 and 4 enemies).
+        /// </summary>
         public void ToggleSpritesForAnimation()
         {
             foreach (var enemy in this.Enemies)
             {
-                if (enemy.Sprite is Level4EnemySprite enemySprite)
+                if (enemy.Sprite is Level4EnemySprite level4Sprite)
                 {
-                    enemySprite.ToggleSprite();
+                    level4Sprite.ToggleSprite();
                 }
-                else if (enemy.Sprite is Level3EnemySprite enemySprite2)
+                else if (enemy.Sprite is Level3EnemySprite level3Sprite)
                 {
-                    enemySprite2.ToggleSprite();
+                    level3Sprite.ToggleSprite();
                 }
             }
         }

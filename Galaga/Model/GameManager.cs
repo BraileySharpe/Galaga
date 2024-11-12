@@ -5,7 +5,7 @@ using Windows.UI.Xaml.Controls;
 namespace Galaga.Model
 {
     /// <summary>
-    ///     Manages the Galaga game play.
+    ///     Manages the Galaga gameplay.
     /// </summary>
     public class GameManager : INotifyPropertyChanged
     {
@@ -21,6 +21,12 @@ namespace Galaga.Model
 
         #region Properties
 
+        /// <summary>
+        ///     Gets or sets the score.
+        /// </summary>
+        /// <value>
+        ///     The score.
+        /// </value>
         public int Score
         {
             get => this.playerManager.Score;
@@ -34,6 +40,12 @@ namespace Galaga.Model
             }
         }
 
+        /// <summary>
+        ///     Gets or sets a value indicating whether this instance has won.
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if this instance has won; otherwise, <c>false</c>.
+        /// </value>
         public bool HasWon
         {
             get => this.hasWon;
@@ -47,6 +59,12 @@ namespace Galaga.Model
             }
         }
 
+        /// <summary>
+        ///     Gets or sets a value indicating whether this instance has lost.
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if this instance has lost; otherwise, <c>false</c>.
+        /// </value>
         public bool HasLost
         {
             get => this.hasLost;
@@ -58,13 +76,6 @@ namespace Galaga.Model
                     this.OnPropertyChanged(nameof(this.HasLost));
                 }
             }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion
@@ -94,13 +105,28 @@ namespace Galaga.Model
 
         #region Methods
 
+        /// <summary>
+        ///     Occurs when a property value changes.
+        /// </summary>
+        /// <returns></returns>
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        ///     Called when [property changed].
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         private void initializeGame()
         {
             this.enemyManager.CreateAndPlaceEnemies();
         }
 
         /// <summary>
-        /// Moves the player left.
+        ///     Moves the player left.
         /// </summary>
         public void MovePlayerLeft()
         {
@@ -108,7 +134,7 @@ namespace Galaga.Model
         }
 
         /// <summary>
-        /// Moves the player right.
+        ///     Moves the player right.
         /// </summary>
         public void MovePlayerRight()
         {
@@ -116,7 +142,7 @@ namespace Galaga.Model
         }
 
         /// <summary>
-        /// Moves the enemies left.
+        ///     Moves the enemies left.
         /// </summary>
         public void MoveEnemiesLeft()
         {
@@ -124,7 +150,7 @@ namespace Galaga.Model
         }
 
         /// <summary>
-        /// Moves the enemies right.
+        ///     Moves the enemies right.
         /// </summary>
         public void MoveEnemiesRight()
         {
@@ -132,7 +158,7 @@ namespace Galaga.Model
         }
 
         /// <summary>
-        /// Places the player bullet.
+        ///     Places the player bullet.
         /// </summary>
         public void PlacePlayerBullet()
         {
@@ -140,7 +166,7 @@ namespace Galaga.Model
         }
 
         /// <summary>
-        /// Moves the player bullet.
+        ///     Moves the player bullet.
         /// </summary>
         public void MovePlayerBullet()
         {
@@ -148,7 +174,7 @@ namespace Galaga.Model
         }
 
         /// <summary>
-        /// Places the enemy bullet.
+        ///     Places the enemy bullet.
         /// </summary>
         public void PlaceEnemyBullet()
         {
@@ -156,7 +182,7 @@ namespace Galaga.Model
         }
 
         /// <summary>
-        /// Moves the enemy bullet.
+        ///     Moves the enemy bullet.
         /// </summary>
         public void MoveEnemyBullet()
         {
@@ -164,7 +190,7 @@ namespace Galaga.Model
         }
 
         /// <summary>
-        /// Toggles the sprites for animation.
+        ///     Toggles the sprites for animation.
         /// </summary>
         public void ToggleSpritesForAnimation()
         {

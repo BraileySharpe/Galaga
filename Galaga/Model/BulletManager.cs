@@ -12,6 +12,11 @@ namespace Galaga.Model
     {
         #region Data members
 
+        private const int MaxActivePlayerBullets = 3;
+        private const int BulletYOffset = 20;
+        private const int EnemyBulletSpeedY = 15;
+        private const int BulletBoundary = 0;
+
         private readonly IList<Bullet> activeEnemyBullets;
         private readonly IList<Bullet> activePlayerBullets;
         private readonly EnemyManager enemyManager;
@@ -60,13 +65,13 @@ namespace Galaga.Model
         /// </summary>
         public void PlacePlayerBullet()
         {
-            if (this.activePlayerBullets.Count < 3)
+            if (this.activePlayerBullets.Count < MaxActivePlayerBullets)
             {
                 var playerBullet = new Bullet(new PlayerBulletSprite());
                 this.canvas.Children.Add(playerBullet.Sprite);
                 playerBullet.X = this.playerManager.Player.X + this.playerManager.Player.Width / 2.0 -
                                  playerBullet.Width / 2.0;
-                playerBullet.Y = this.playerManager.Player.Y - playerBullet.Height;
+                playerBullet.Y = this.playerManager.Player.Y - playerBullet.Height - BulletYOffset;
                 this.activePlayerBullets.Add(playerBullet);
             }
         }
@@ -86,7 +91,7 @@ namespace Galaga.Model
 
         private void checkPlayerBulletCollision(Bullet bullet, int index)
         {
-            if (bullet.Y + bullet.Height < 0)
+            if (bullet.Y + bullet.Height < BulletBoundary)
             {
                 this.canvas.Children.Remove(bullet.Sprite);
                 this.activePlayerBullets.RemoveAt(index);
@@ -131,7 +136,7 @@ namespace Galaga.Model
                 Y = enemy.Y + enemy.Height
             };
 
-            bullet.SetSpeed(0, 15);
+            bullet.SetSpeed(0, EnemyBulletSpeedY);
 
             this.activeEnemyBullets.Add(bullet);
             this.canvas.Children.Add(bullet.Sprite);

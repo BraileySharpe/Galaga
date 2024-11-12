@@ -19,10 +19,15 @@ namespace Galaga.View
     {
         #region Data members
 
-        public const int InitialTickEnemyMovement = 5;
-        public const int TicksBeforeEnemyDirectionChange = 10;
+        // Constants for game behavior
+        private const int InitialEnemyMovementTick = 5;
+        private const int EnemyDirectionChangeTicks = 10;
         private const int PlayerBulletCooldownMilliseconds = 300;
+        private const int EnemyBulletMovementIntervalMilliseconds = 100;
+        private const int EnemyMovementIntervalMilliseconds = 350;
+        private const int GameLoopTimerIntervalMilliseconds = 16;
 
+        // The game manager and other timers
         private readonly GameManager gameManager;
         private readonly Random random;
 
@@ -103,7 +108,7 @@ namespace Galaga.View
             this.enemyBulletTimer = new DispatcherTimer();
             this.enemyBulletMovementTimer = new DispatcherTimer
             {
-                Interval = new TimeSpan(0, 0, 0, 0, 100)
+                Interval = TimeSpan.FromMilliseconds(EnemyBulletMovementIntervalMilliseconds)
             };
 
             this.setRandomEnemyTimeInterval();
@@ -134,7 +139,7 @@ namespace Galaga.View
         {
             this.playerBulletTimer = new DispatcherTimer
             {
-                Interval = new TimeSpan(0, 0, 0, 0, 10)
+                Interval = TimeSpan.FromMilliseconds(10)
             };
             this.playerBulletTimer.Tick += this.playerBulletTimerTick;
             this.playerBulletTimer.Start();
@@ -190,7 +195,7 @@ namespace Galaga.View
         {
             this.enemyMovementTimer = new DispatcherTimer
             {
-                Interval = new TimeSpan(0, 0, 0, 0, 350)
+                Interval = TimeSpan.FromMilliseconds(EnemyMovementIntervalMilliseconds)
             };
             this.enemyMovementTimer.Tick += this.enemyMovement_TimerTick;
             this.enemyMovementTimer.Start();
@@ -200,18 +205,18 @@ namespace Galaga.View
         {
             this.enemyTickCounter++;
 
-            if (this.enemyTickCounter <= InitialTickEnemyMovement)
+            if (this.enemyTickCounter <= InitialEnemyMovementTick)
             {
                 this.gameManager.MoveEnemiesLeft();
             }
-            else if (this.enemyTickCounter < TicksBeforeEnemyDirectionChange)
+            else if (this.enemyTickCounter < EnemyDirectionChangeTicks)
             {
-                this.enemyTickCounter = TicksBeforeEnemyDirectionChange;
+                this.enemyTickCounter = EnemyDirectionChangeTicks;
             }
 
-            if (this.enemyTickCounter >= TicksBeforeEnemyDirectionChange)
+            if (this.enemyTickCounter >= EnemyDirectionChangeTicks)
             {
-                if (this.enemyTickCounter % TicksBeforeEnemyDirectionChange == 0)
+                if (this.enemyTickCounter % EnemyDirectionChangeTicks == 0)
                 {
                     this.enemyMoveRight = !this.enemyMoveRight;
                 }
@@ -233,7 +238,7 @@ namespace Galaga.View
         {
             this.gameLoopTimer = new DispatcherTimer
             {
-                Interval = TimeSpan.FromMilliseconds(16)
+                Interval = TimeSpan.FromMilliseconds(GameLoopTimerIntervalMilliseconds)
             };
             this.gameLoopTimer.Tick += this.gameLoopTimer_Tick;
             this.gameLoopTimer.Start();
