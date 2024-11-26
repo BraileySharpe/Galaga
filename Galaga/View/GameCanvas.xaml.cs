@@ -19,15 +19,9 @@ namespace Galaga.View
     {
         #region Data members
 
-        // Constants for game behavior
         private const int InitialEnemyMovementTick = 5;
         private const int EnemyDirectionChangeTicks = 10;
-        private const int PlayerBulletCooldownMilliseconds = 300;
-        private const int EnemyBulletMovementIntervalMilliseconds = 100;
-        private const int EnemyMovementIntervalMilliseconds = 350;
-        private const int GameLoopTimerIntervalMilliseconds = 16;
 
-        // The game manager and other timers
         private readonly GameManager gameManager;
         private readonly Random random;
 
@@ -83,7 +77,7 @@ namespace Galaga.View
 
         private void initializeTimers()
         {
-            this.setUpPlayerBulletTimer();
+            this.setUpPlayerBulletMovementTimer();
             this.setUpEnemyMovementTimer();
             this.setUpEnemyBulletTimer();
             this.setUpGameLoopTimer();
@@ -94,7 +88,7 @@ namespace Galaga.View
         {
             this.playerBulletCooldownTimer = new DispatcherTimer
             {
-                Interval = TimeSpan.FromMilliseconds(PlayerBulletCooldownMilliseconds)
+                Interval = TimeSpan.FromMilliseconds(TimerManager.PlayerBulletCooldownMilliseconds)
             };
             this.playerBulletCooldownTimer.Tick += (sender, e) =>
             {
@@ -108,7 +102,7 @@ namespace Galaga.View
             this.enemyBulletTimer = new DispatcherTimer();
             this.enemyBulletMovementTimer = new DispatcherTimer
             {
-                Interval = TimeSpan.FromMilliseconds(EnemyBulletMovementIntervalMilliseconds)
+                Interval = TimeSpan.FromMilliseconds(TimerManager.EnemyBulletMovementIntervalMilliseconds)
             };
 
             this.setRandomEnemyTimeInterval();
@@ -135,7 +129,7 @@ namespace Galaga.View
             this.gameManager.MoveEnemyBullet();
         }
 
-        private void setUpPlayerBulletTimer()
+        private void setUpPlayerBulletMovementTimer()
         {
             this.playerBulletTimer = new DispatcherTimer
             {
@@ -195,7 +189,7 @@ namespace Galaga.View
         {
             this.enemyMovementTimer = new DispatcherTimer
             {
-                Interval = TimeSpan.FromMilliseconds(EnemyMovementIntervalMilliseconds)
+                Interval = TimeSpan.FromMilliseconds(TimerManager.EnemyMovementIntervalMilliseconds)
             };
             this.enemyMovementTimer.Tick += this.enemyMovement_TimerTick;
             this.enemyMovementTimer.Start();
@@ -238,7 +232,7 @@ namespace Galaga.View
         {
             this.gameLoopTimer = new DispatcherTimer
             {
-                Interval = TimeSpan.FromMilliseconds(GameLoopTimerIntervalMilliseconds)
+                Interval = TimeSpan.FromMilliseconds(TimerManager.GameLoopTimerIntervalMilliseconds)
             };
             this.gameLoopTimer.Tick += this.gameLoopTimer_Tick;
             this.gameLoopTimer.Start();

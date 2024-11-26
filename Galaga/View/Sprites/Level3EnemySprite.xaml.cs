@@ -10,12 +10,6 @@ namespace Galaga.View.Sprites
     /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector2" />
     public sealed partial class Level3EnemySprite
     {
-        #region Data members
-
-        private bool isUsingAlternateSprite;
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
@@ -25,28 +19,6 @@ namespace Galaga.View.Sprites
         {
             this.InitializeComponent();
             Y = 400;
-            this.isUsingAlternateSprite = false;
-        }
-
-        #endregion
-
-        #region Methods
-
-        /// <summary>
-        ///     Toggles between the base sprite and the alternate sprite.
-        /// </summary>
-        public void ToggleSprite()
-        {
-            if (this.isUsingAlternateSprite)
-            {
-                VisualStateManager.GoToState(this, "BaseSprite", true);
-            }
-            else
-            {
-                VisualStateManager.GoToState(this, "AlternateSprite", true);
-            }
-
-            this.isUsingAlternateSprite = !this.isUsingAlternateSprite;
         }
 
         #endregion

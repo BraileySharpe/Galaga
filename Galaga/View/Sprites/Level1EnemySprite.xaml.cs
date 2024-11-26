@@ -1,11 +1,17 @@
-﻿namespace Galaga.View.Sprites
+﻿using Windows.UI.Xaml.Controls;
+
+namespace Galaga.View.Sprites
 {
-    /// <summary>
-    ///     Level 1 Enemy Sprite.
-    /// </summary>
-    /// <seealso cref="Galaga.View.Sprites.BaseSprite" />
+//
     public partial class Level1EnemySprite
     {
+        #region Properties
+
+        protected Canvas BaseCanvas => this.baseCanvas;
+        protected Canvas AlternateCanvas => this.alternateCanvas;
+
+        #endregion
+
         #region Constructors
 
         /// <summary>

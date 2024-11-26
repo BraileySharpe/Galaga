@@ -139,13 +139,9 @@ namespace Galaga.Model
         {
             foreach (var enemy in this.Enemies)
             {
-                if (enemy.Sprite is Level4EnemySprite level4Sprite)
+                if (enemy.Sprite is AnimatedSprite enemySprite)
                 {
-                    level4Sprite.ToggleSprite();
-                }
-                else if (enemy.Sprite is Level3EnemySprite level3Sprite)
-                {
-                    level3Sprite.ToggleSprite();
+                    enemySprite.ToggleSprite();
                 }
             }
         }

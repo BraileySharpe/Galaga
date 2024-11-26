@@ -129,10 +129,14 @@
     <Compile Include="Model\Player.cs" />
     <Compile Include="Model\PlayerManager.cs" />
     <Compile Include="Model\ShootingEnemy.cs" />
+    <Compile Include="Model\TimeManager.cs" />
     <Compile Include="View\GameCanvas.xaml.cs">
       <DependentUpon>GameCanvas.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="View\Sprites\AnimatedSprite.xaml.cs">
+      <DependentUpon>AnimatedSprite.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Sprites\Level2EnemySprite.xaml.cs">
       <DependentUpon>Level2EnemySprite.xaml</DependentUpon>
     </Compile>
@@ -183,6 +187,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="View\GameCanvas.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Sprites\AnimatedSprite.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,18 +1,11 @@
-﻿<local:Level1EnemySprite
-    x:Class="Galaga.View.Sprites.Level2EnemySprite"
+﻿<local:BaseSprite
+    x:Class="Galaga.View.Sprites.AnimatedSprite"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Galaga.View.Sprites"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    d:DesignHeight="50"
-    d:DesignWidth="60"
-    Height="50"
-    Width="60">
-
-    <UserControl.Resources>
-            <SolidColorBrush x:Key="Lvl2AccentColor" Color="#E04600" />
-    </UserControl.Resources>
-
-</local:Level1EnemySprite>
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+</local:BaseSprite>
