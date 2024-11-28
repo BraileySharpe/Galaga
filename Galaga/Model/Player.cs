@@ -26,5 +26,22 @@ namespace Galaga.Model
         }
 
         #endregion
+
+        #region Methods
+
+        /// <summary>
+        ///     Player shoots a bullet.
+        /// </summary>
+        /// <returns></returns>
+        public Bullet Shoot()
+        {
+            var bullet = new Bullet(new PlayerBulletSprite());
+            bullet.X = X + Width / 2.0 - bullet.Width / 2.0;
+            bullet.Y = Y - bullet.Height;
+
+            return bullet;
+        }
+
+        #endregion
     }
 }

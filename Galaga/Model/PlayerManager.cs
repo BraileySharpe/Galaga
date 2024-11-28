@@ -121,6 +121,14 @@ namespace Galaga.Model
             }
         }
 
+        /// <summary>
+        ///     Player Shoots a bullet.
+        /// </summary>
+        public Bullet Shoot()
+        {
+            return this.Player.Shoot();
+        }
+
         #endregion
     }
 }

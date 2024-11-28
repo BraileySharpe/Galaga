@@ -11,6 +11,7 @@ namespace Galaga.Model
     {
         #region Data members
 
+        private readonly Canvas canvas;
         private readonly EnemyManager enemyManager;
         private readonly BulletManager bulletManager;
         private readonly PlayerManager playerManager;
@@ -94,9 +95,11 @@ namespace Galaga.Model
                 throw new ArgumentNullException(nameof(canvas));
             }
 
+            this.canvas = canvas;
+
             this.enemyManager = new EnemyManager(canvas);
             this.playerManager = new PlayerManager(canvas);
-            this.bulletManager = new BulletManager(this.enemyManager, this.playerManager, canvas, this);
+            this.bulletManager = new BulletManager(canvas);
 
             this.initializeGame();
         }
@@ -162,7 +165,8 @@ namespace Galaga.Model
         /// </summary>
         public void PlacePlayerBullet()
         {
-            this.bulletManager.PlacePlayerBullet();
+            var bullet = this.playerManager.Shoot();
+            this.bulletManager.PlacePlayerBullet(bullet);
         }
 
         /// <summary>
@@ -170,7 +174,11 @@ namespace Galaga.Model
         /// </summary>
         public void MovePlayerBullet()
         {
-            this.bulletManager.MovePlayerBullet();
+            var collidingBullet = this.bulletManager.MovePlayerBullet(this.enemyManager.Enemies);
+            if (collidingBullet != null)
+            {
+                this.Score += this.enemyManager.CheckWhichEnemyIsShot(collidingBullet);
+            }
         }
 
         /// <summary>
@@ -178,7 +186,15 @@ namespace Galaga.Model
         /// </summary>
         public void PlaceEnemyBullet()
         {
-            this.bulletManager.EnemyPlaceBullet();
+            if (this.enemyManager.RemainingShootingEnemies != 0)
+            {
+                var random = new Random();
+                var randomIndex = random.Next(0, this.enemyManager.RemainingShootingEnemies);
+                var enemy = this.enemyManager.ShootingEnemies[randomIndex];
+
+                var bullet = enemy.Shoot();
+                this.bulletManager.EnemyPlaceBullet(bullet);
+            }
         }
 
         /// <summary>
@@ -186,7 +202,19 @@ namespace Galaga.Model
         /// </summary>
         public void MoveEnemyBullet()
         {
-            this.bulletManager.MoveEnemyBullet();
+            if (this.bulletManager.MoveEnemyBullet(this.playerManager.Player))
+            {
+                if (this.playerManager.Lives > 0)
+                {
+                    this.canvas.Children.Remove(this.playerManager.Player.Sprite);
+                    this.playerManager.RespawnPlayer();
+                }
+                else
+                {
+                    this.canvas.Children.Remove(this.playerManager.Player.Sprite);
+                    this.CheckGameStatus();
+                }
+            }
         }
 
         /// <summary>

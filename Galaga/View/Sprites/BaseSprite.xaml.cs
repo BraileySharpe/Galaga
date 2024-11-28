@@ -13,6 +13,12 @@ namespace Galaga.View.Sprites
     {
         #region Properties
 
+        /// <summary>
+        /// Gets or sets the y.
+        /// </summary>
+        /// <value>
+        /// The y.
+        /// </value>
         public int Y { get; protected set; }
 
         #endregion
