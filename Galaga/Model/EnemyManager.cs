@@ -20,10 +20,12 @@ namespace Galaga.Model
         private const int Level3EnemyScore = 300;
         private const int Level4EnemyScore = 400;
 
-        private const int NumOfLevel1Enemies = 3;
-        private const int NumOfLevel2Enemies = 4;
-        private const int NumOfLevel3Enemies = 4;
-        private const int NumOfLevel4Enemies = 5;
+        private const int Level1EnemyIndex = 0;
+        private const int Level2EnemyIndex = 1;
+        private const int Level3EnemyIndex = 2;
+        private const int Level4EnemyIndex = 3;
+
+        public LevelData levelData;
 
         private readonly Canvas canvas;
 
@@ -64,6 +66,7 @@ namespace Galaga.Model
         {
             this.Enemies = new List<Enemy>();
             this.canvas = canvas ?? throw new ArgumentNullException(nameof(canvas));
+            this.levelData = new LevelData();
         }
 
         #endregion
@@ -76,10 +79,11 @@ namespace Galaga.Model
         /// </summary>
         public void CreateAndPlaceEnemies()
         {
-            this.createEnemiesForLevel(NumOfLevel1Enemies, new Level1EnemySprite(), Level1EnemyScore, false);
-            this.createEnemiesForLevel(NumOfLevel2Enemies, new Level2EnemySprite(), Level2EnemyScore, false);
-            this.createEnemiesForLevel(NumOfLevel3Enemies, new Level3EnemySprite(), Level3EnemyScore, true);
-            this.createEnemiesForLevel(NumOfLevel4Enemies, new Level4EnemySprite(), Level4EnemyScore, true);
+            var numEnemiesInLevel = this.levelData.GetNumEnemiesForCurrentLevel();
+            this.createEnemiesForLevel(numEnemiesInLevel[Level1EnemyIndex], new Level1EnemySprite(), Level1EnemyScore, false);
+            this.createEnemiesForLevel(numEnemiesInLevel[Level2EnemyIndex], new Level2EnemySprite(), Level2EnemyScore, false);
+            this.createEnemiesForLevel(numEnemiesInLevel[Level3EnemyIndex], new Level3EnemySprite(), Level3EnemyScore, true);
+            this.createEnemiesForLevel(numEnemiesInLevel[Level4EnemyIndex], new Level4EnemySprite(), Level4EnemyScore, true);
         }
 
         private void createEnemiesForLevel(int numOfEnemies, BaseSprite sprite, int score, bool canShoot)

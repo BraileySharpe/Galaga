@@ -122,6 +122,7 @@
     </Compile>
     <Compile Include="Model\Bullet.cs" />
     <Compile Include="Model\BulletManager.cs" />
+    <Compile Include="Model\LevelData.cs" />
     <Compile Include="Model\GlobalEnums.cs" />
     <Compile Include="Model\CollisionManager.cs" />
     <Compile Include="Model\Enemy.cs" />

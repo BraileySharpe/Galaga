@@ -237,7 +237,20 @@ namespace Galaga.Model
 
             if (this.enemyManager.RemainingEnemies == 0 && !this.hasWon)
             {
-                this.HasWon = true;
+                switch (this.enemyManager.levelData.CurrentLevel)
+                {
+                    case GlobalEnums.GameLevel.LEVEL1:
+                        this.enemyManager.levelData.MoveToNextLevel();
+                        this.enemyManager.CreateAndPlaceEnemies();
+                        break;
+                    case GlobalEnums.GameLevel.LEVEL2:
+                        this.enemyManager.levelData.MoveToNextLevel();
+                        this.enemyManager.CreateAndPlaceEnemies();
+                        break;
+                    case GlobalEnums.GameLevel.LEVEL3:
+                        this.HasWon = true;
+                        break;
+                }
             }
         }
 
