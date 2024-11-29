@@ -63,7 +63,7 @@ namespace Galaga.Model
                 for (var i = 0; i <= this.activePlayerBullets.Count - 1; i++)
                 {
                     var bullet = this.activePlayerBullets[i];
-                    bullet.MoveUp();
+                    bullet.Move();
 
                     var playerHitEnemy = this.collisionManager.CheckEnemyCollision(bullet, enemies);
 
@@ -105,7 +105,7 @@ namespace Galaga.Model
             for (var i = this.activeEnemyBullets.Count - 1; i >= 0; i--)
             {
                 var bullet = this.activeEnemyBullets[i];
-                bullet.MoveDown();
+                bullet.Move();
                 if (bullet.Y > this.canvas.Height)
                 {
                     this.canvas.Children.Remove(bullet.Sprite);
