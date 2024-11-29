@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using Windows.Foundation;
 using Windows.System;
@@ -17,47 +16,34 @@ namespace Galaga.View
     /// </summary>
     public sealed partial class GameCanvas
     {
-        #region Data members
-
-        private const int InitialEnemyMovementTick = 5;
-        private const int EnemyDirectionChangeTicks = 10;
+        #region Data Members
 
         private readonly GameManager gameManager;
-        private readonly Random random;
-
-        private DispatcherTimer enemyBulletTimer;
-        private DispatcherTimer enemyMovementTimer;
-        private DispatcherTimer enemyBulletMovementTimer;
-        private DispatcherTimer playerBulletTimer;
-        private DispatcherTimer gameLoopTimer;
-        private DispatcherTimer playerBulletCooldownTimer;
-
-        private int enemyTickCounter;
-        private bool enemyMoveRight;
+        private readonly TimeManager timeManager;
+        private readonly HashSet<VirtualKey> activeKeys;
         private bool spacePressedPreviously;
         private bool canShoot = true;
-        private readonly HashSet<VirtualKey> activeKeys;
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="GameCanvas" /> class.
+        ///     Initializes a new instance of the <see cref="GameCanvas"/> class.
         /// </summary>
         public GameCanvas()
         {
             this.InitializeComponent();
-            this.random = new Random();
             this.activeKeys = new HashSet<VirtualKey>();
 
-            this.initializeTimers();
             this.setupWindowPreferences();
+
+            this.gameManager = new GameManager(this.canvas);
+            this.timeManager = new TimeManager(this);
+            this.timeManager.InitializeTimers();
 
             Window.Current.CoreWindow.KeyDown += this.coreWindowOnKeyDown;
             Window.Current.CoreWindow.KeyUp += this.coreWindowOnKeyUp;
-
-            this.gameManager = new GameManager(this.canvas);
             DataContext = this.gameManager;
             this.gameManager.PropertyChanged += this.OnGameManagerPropertyChanged;
         }
@@ -75,170 +61,7 @@ namespace Galaga.View
             ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(Width, Height));
         }
 
-        private void initializeTimers()
-        {
-            this.setUpPlayerBulletMovementTimer();
-            this.setUpEnemyMovementTimer();
-            this.setUpEnemyBulletTimer();
-            this.setUpGameLoopTimer();
-            this.setUpPlayerBulletCooldownTimer();
-        }
-
-        private void setUpPlayerBulletCooldownTimer()
-        {
-            this.playerBulletCooldownTimer = new DispatcherTimer
-            {
-                Interval = TimeSpan.FromMilliseconds(TimerManager.PlayerBulletCooldownMilliseconds)
-            };
-            this.playerBulletCooldownTimer.Tick += (sender, e) =>
-            {
-                this.canShoot = true;
-                this.playerBulletCooldownTimer.Stop();
-            };
-        }
-
-        private void setUpEnemyBulletTimer()
-        {
-            this.enemyBulletTimer = new DispatcherTimer();
-            this.enemyBulletMovementTimer = new DispatcherTimer
-            {
-                Interval = TimeSpan.FromMilliseconds(TimerManager.EnemyBulletMovementIntervalMilliseconds)
-            };
-
-            this.setRandomEnemyTimeInterval();
-            this.enemyBulletTimer.Tick += this.bulletTimerTick;
-            this.enemyBulletMovementTimer.Tick += this.bulletMovementTimerTick;
-
-            this.enemyBulletMovementTimer.Start();
-            this.enemyBulletTimer.Start();
-        }
-
-        private void setRandomEnemyTimeInterval()
-        {
-            this.enemyBulletTimer.Interval = TimeSpan.FromMilliseconds(this.random.Next(250, 2500));
-        }
-
-        private void bulletTimerTick(object sender, object e)
-        {
-            this.gameManager.PlaceEnemyBullet();
-            this.setRandomEnemyTimeInterval();
-        }
-
-        private void bulletMovementTimerTick(object sender, object e)
-        {
-            this.gameManager.MoveEnemyBullet();
-        }
-
-        private void setUpPlayerBulletMovementTimer()
-        {
-            this.playerBulletTimer = new DispatcherTimer
-            {
-                Interval = TimeSpan.FromMilliseconds(10)
-            };
-            this.playerBulletTimer.Tick += this.playerBulletTimerTick;
-            this.playerBulletTimer.Start();
-        }
-
-        private void playerBulletTimerTick(object sender, object e)
-        {
-            this.gameManager.MovePlayerBullet();
-        }
-
-        private void OnGameManagerPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(this.gameManager.HasLost) && this.gameManager.HasLost)
-            {
-                this.endGame(this.gameOverTextBlock);
-            }
-
-            if (e.PropertyName == nameof(this.gameManager.HasWon) && this.gameManager.HasWon)
-            {
-                this.endGame(this.youWinTextBlock);
-            }
-        }
-
-        private void endGame(TextBlock endgameTextBlock)
-        {
-            this.disableAllSprites();
-            this.stopAllTimers();
-
-            endgameTextBlock.Visibility = Visibility.Visible;
-        }
-
-        private void stopAllTimers()
-        {
-            this.gameLoopTimer.Stop();
-            this.enemyMovementTimer.Stop();
-            this.enemyBulletTimer.Stop();
-            this.enemyBulletMovementTimer.Stop();
-            this.playerBulletTimer.Stop();
-        }
-
-        private void disableAllSprites()
-        {
-            foreach (var sprite in this.canvas.Children)
-            {
-                if (sprite is BaseSprite baseSprite)
-                {
-                    baseSprite.Visibility = Visibility.Collapsed;
-                }
-            }
-        }
-
-        private void setUpEnemyMovementTimer()
-        {
-            this.enemyMovementTimer = new DispatcherTimer
-            {
-                Interval = TimeSpan.FromMilliseconds(TimerManager.EnemyMovementIntervalMilliseconds)
-            };
-            this.enemyMovementTimer.Tick += this.enemyMovement_TimerTick;
-            this.enemyMovementTimer.Start();
-        }
-
-        private void enemyMovement_TimerTick(object sender, object e)
-        {
-            this.enemyTickCounter++;
-
-            if (this.enemyTickCounter <= InitialEnemyMovementTick)
-            {
-                this.gameManager.MoveEnemiesLeft();
-            }
-            else if (this.enemyTickCounter < EnemyDirectionChangeTicks)
-            {
-                this.enemyTickCounter = EnemyDirectionChangeTicks;
-            }
-
-            if (this.enemyTickCounter >= EnemyDirectionChangeTicks)
-            {
-                if (this.enemyTickCounter % EnemyDirectionChangeTicks == 0)
-                {
-                    this.enemyMoveRight = !this.enemyMoveRight;
-                }
-
-                if (this.enemyMoveRight)
-                {
-                    this.gameManager.MoveEnemiesRight();
-                }
-                else
-                {
-                    this.gameManager.MoveEnemiesLeft();
-                }
-            }
-
-            this.gameManager.ToggleSpritesForAnimation();
-        }
-
-        private void setUpGameLoopTimer()
-        {
-            this.gameLoopTimer = new DispatcherTimer
-            {
-                Interval = TimeSpan.FromMilliseconds(TimerManager.GameLoopTimerIntervalMilliseconds)
-            };
-            this.gameLoopTimer.Tick += this.gameLoopTimer_Tick;
-            this.gameLoopTimer.Start();
-        }
-
-        private void gameLoopTimer_Tick(object sender, object e)
+        public void GameLoop()
         {
             if (this.activeKeys.Contains(VirtualKey.Left))
             {
@@ -257,7 +80,7 @@ namespace Galaga.View
                     this.gameManager.PlacePlayerBullet();
                     this.canShoot = false;
                     this.spacePressedPreviously = true;
-                    this.playerBulletCooldownTimer.Start();
+                    this.timeManager.StartPlayerBulletCooldown();
                 }
             }
             else
@@ -268,6 +91,41 @@ namespace Galaga.View
             this.gameManager.CheckGameStatus();
         }
 
+        public void MovePlayerBullet()
+        {
+            this.gameManager.MovePlayerBullet();
+        }
+
+        public void PlaceEnemyBullet()
+        {
+            this.gameManager.PlaceEnemyBullet();
+        }
+
+        public void MoveEnemyBullet()
+        {
+            this.gameManager.MoveEnemyBullet();
+        }
+
+        public void MoveEnemiesLeft()
+        {
+            this.gameManager.MoveEnemiesLeft();
+        }
+
+        public void MoveEnemiesRight()
+        {
+            this.gameManager.MoveEnemiesRight();
+        }
+
+        public void ToggleSpritesForAnimation()
+        {
+            this.gameManager.ToggleSpritesForAnimation();
+        }
+
+        public void EnablePlayerShooting()
+        {
+            this.canShoot = true;
+        }
+
         private void coreWindowOnKeyDown(CoreWindow sender, KeyEventArgs args)
         {
             this.activeKeys.Add(args.VirtualKey);
@@ -276,6 +134,38 @@ namespace Galaga.View
         private void coreWindowOnKeyUp(CoreWindow sender, KeyEventArgs args)
         {
             this.activeKeys.Remove(args.VirtualKey);
+        }
+
+        private void OnGameManagerPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(this.gameManager.HasLost) && this.gameManager.HasLost)
+            {
+                this.endGame(this.gameOverTextBlock);
+            }
+
+            if (e.PropertyName == nameof(this.gameManager.HasWon) && this.gameManager.HasWon)
+            {
+                this.endGame(this.youWinTextBlock);
+            }
+        }
+
+        private void endGame(TextBlock endgameTextBlock)
+        {
+            this.disableAllSprites();
+            this.timeManager.StopAllTimers();
+
+            endgameTextBlock.Visibility = Visibility.Visible;
+        }
+
+        private void disableAllSprites()
+        {
+            foreach (var sprite in this.canvas.Children)
+            {
+                if (sprite is BaseSprite baseSprite)
+                {
+                    baseSprite.Visibility = Visibility.Collapsed;
+                }
+            }
         }
 
         #endregion

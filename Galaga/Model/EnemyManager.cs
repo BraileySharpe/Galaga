@@ -58,6 +58,8 @@ namespace Galaga.Model
         /// <summary>
         ///     Initializes a new instance of the <see cref="EnemyManager" /> class.
         /// </summary>
+        /// <param name="canvas">The canvas.</param>
+        /// <exception cref="System.ArgumentNullException">canvas</exception>
         public EnemyManager(Canvas canvas)
         {
             this.Enemies = new List<Enemy>();
@@ -69,7 +71,8 @@ namespace Galaga.Model
         #region Methods
 
         /// <summary>
-        ///     Creates and places enemies onto the canvas.
+        ///     Creates and places enemies onto the canvas. Enemies are created per level, and each level can have a varying number
+        ///     of enemies, sprites, scores, and shooting capabilities.
         /// </summary>
         public void CreateAndPlaceEnemies()
         {
@@ -155,7 +158,7 @@ namespace Galaga.Model
                 if (bullet.CollidesWith(enemy))
                 {
                     this.RemoveEnemy(enemy);
-                    this.canvas.Children.Remove(bullet.Sprite);
+                    this.canvas.Children.Remove(enemy.Sprite);
                     return enemy.Score;
                 }
             }

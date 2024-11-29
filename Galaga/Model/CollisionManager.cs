@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Windows.UI.Xaml.Controls;
+﻿using System.Collections.Generic;
 
 namespace Galaga.Model
 {
@@ -9,31 +7,20 @@ namespace Galaga.Model
     /// </summary>
     public class CollisionManager
     {
-        private readonly Canvas canvas;
+        #region Methods
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CollisionManager"/> class.
+        ///     Checks if an object collides with any enemy in the list.
         /// </summary>
-        /// <param name="canvas">The canvas.</param>
-        /// <exception cref="System.ArgumentNullException">canvas</exception>
-        public CollisionManager(Canvas canvas)
-        {
-            this.canvas = canvas ?? throw new ArgumentNullException(nameof(canvas));
-        }
-
-        /// <summary>
-        ///     Checks if a bullet collides with any enemy in the list.
-        /// </summary>
-        /// <param name="bullet">The bullet.</param>
+        /// <param name="obj">The obj to check collision</param>
         /// <param name="enemies">The list of enemies.</param>
-        /// <returns>The enemy that collided with the bullet, or null if no collision occurred.</returns>
-        public bool CheckEnemyCollision(Bullet bullet, IList<Enemy> enemies)
+        /// <returns>True if an enemy is hit, false otherwise</returns>
+        public bool CheckEnemyCollision(GameObject obj, IEnumerable<Enemy> enemies)
         {
             foreach (var enemy in enemies)
             {
-                if (bullet.CollidesWith(enemy))
+                if (obj.CollidesWith(enemy))
                 {
-                    this.canvas.Children.Remove(enemy.Sprite);
                     return true;
                 }
             }
@@ -42,14 +29,16 @@ namespace Galaga.Model
         }
 
         /// <summary>
-        ///     Checks if an enemy bullet collides with the player.
+        ///     Checks if an object collides with the player.
         /// </summary>
-        /// <param name="bullet">The bullet.</param>
+        /// <param name="obj">The object to check collision</param>
         /// <param name="player">The player.</param>
         /// <returns>True if the bullet collides with the player, otherwise false.</returns>
-        public bool CheckPlayerCollision(Bullet bullet, Player player)
+        public bool CheckPlayerCollision(GameObject obj, Player player)
         {
-            return bullet.CollidesWith(player);
+            return obj.CollidesWith(player);
         }
+
+        #endregion
     }
 }

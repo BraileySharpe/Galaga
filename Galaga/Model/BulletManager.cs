@@ -31,7 +31,7 @@ namespace Galaga.Model
         public BulletManager(Canvas canvas)
         {
             this.canvas = canvas ?? throw new ArgumentNullException(nameof(canvas));
-            this.collisionManager = new CollisionManager(canvas);
+            this.collisionManager = new CollisionManager();
         }
 
         #endregion
@@ -41,6 +41,7 @@ namespace Galaga.Model
         /// <summary>
         ///     Places a new player bullet onto the Canvas if less than 3 are active.
         /// </summary>
+        /// <param name="bullet">The bullet.</param>
         public void PlacePlayerBullet(Bullet bullet)
         {
             if (this.activePlayerBullets.Count < MaxActivePlayerBullets)
@@ -51,7 +52,7 @@ namespace Galaga.Model
         }
 
         /// <summary>
-        ///     Moves the player bullet.
+        ///     Moves the player bullet, checks if an enemy is hit, and returns the bullet that hit an enemy.
         /// </summary>
         /// <param name="enemies">The enemies.</param>
         /// <returns>The bullet that hit an enemy, null if no enemies hit</returns>
@@ -87,7 +88,8 @@ namespace Galaga.Model
         /// <summary>
         ///     Places an enemy bullet on a random enemy.
         /// </summary>
-        public void EnemyPlaceBullet(Bullet bullet)
+        /// <param name="bullet">The bullet.</param>
+        public void PlaceEnemyBullet(Bullet bullet)
         {
             this.activeEnemyBullets.Add(bullet);
             this.canvas.Children.Add(bullet.Sprite);
@@ -97,7 +99,7 @@ namespace Galaga.Model
         ///     Moves all active enemy bullets downward.
         /// </summary>
         /// <param name="player">The player.</param>
-        /// <returns></returns>
+        /// <returns>true if the bullet hits the player, false otherwise</returns>
         public bool MoveEnemyBullet(Player player)
         {
             for (var i = this.activeEnemyBullets.Count - 1; i >= 0; i--)
@@ -112,6 +114,8 @@ namespace Galaga.Model
 
                 if (this.collisionManager.CheckPlayerCollision(bullet, player))
                 {
+                    this.canvas.Children.Remove(bullet.Sprite);
+                    this.activeEnemyBullets.RemoveAt(i);
                     return true;
                 }
             }

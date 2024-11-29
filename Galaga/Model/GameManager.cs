@@ -193,7 +193,7 @@ namespace Galaga.Model
                 var enemy = this.enemyManager.ShootingEnemies[randomIndex];
 
                 var bullet = enemy.Shoot();
-                this.bulletManager.EnemyPlaceBullet(bullet);
+                this.bulletManager.PlaceEnemyBullet(bullet);
             }
         }
 
