@@ -10,7 +10,7 @@ namespace Galaga.Model
         #region Data members
 
         private const int SpeedXDirection = 0;
-        private const int SpeedYDirection = 15;
+        private int SpeedYDirection = 15;
 
         #endregion
 
@@ -20,10 +20,24 @@ namespace Galaga.Model
         ///     Initializes a new instance of the <see cref="Bullet" /> class.
         /// </summary>
         /// <param name="sprite">The sprite to set for the bullet.</param>
-        public Bullet(BaseSprite sprite)
+        public Bullet(BaseSprite sprite, GlobalEnums.CharacterType type)
         {
             Sprite = sprite;
-            SetSpeed(SpeedXDirection, SpeedYDirection);
+
+            if (type == GlobalEnums.CharacterType.PLAYER)
+            {
+                SpeedYDirection = -SpeedYDirection;
+            }
+
+            SetSpeed(SpeedXDirection, this.SpeedYDirection);
+        }
+
+        /// <summary>
+        ///     Move the bullet.
+        /// </summary>
+        public void Move()
+        {
+            this.Y += this.SpeedY;
         }
 
         #endregion
