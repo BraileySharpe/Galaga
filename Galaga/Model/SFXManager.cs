@@ -15,8 +15,12 @@ namespace Galaga.Model
     {
         #region Data members
 
+        private readonly Dictionary<string, List<MediaPlayer>> soundEffectPools;
         private readonly Dictionary<string, StorageFile> soundFiles;
+        private TaskCompletionSource<bool> preloadTaskCompletionSource;
 
+        private const int InitialPoolSize = 5;
+      
         #endregion
 
         #region Constructors
@@ -26,8 +30,11 @@ namespace Galaga.Model
         /// </summary>
         public SFXManager()
         {
-            this.soundFiles = new Dictionary<string, StorageFile>();
-            this.loadSounds();
+
+            soundEffectPools = new Dictionary<string, List<MediaPlayer>>();
+            soundFiles = new Dictionary<string, StorageFile>();
+            preloadTaskCompletionSource = new TaskCompletionSource<bool>();
+            LoadSounds();
         }
 
         #endregion
@@ -41,14 +48,18 @@ namespace Galaga.Model
                 var assetsFolder = await Package.Current.InstalledLocation.GetFolderAsync("Assets");
                 var audioFolder = await assetsFolder.GetFolderAsync("Audio");
 
-                await this.addSoundFile("enemy_death", audioFolder);
-                await this.addSoundFile("enemy_shoot", audioFolder);
-                await this.addSoundFile("player_death", audioFolder);
-                await this.addSoundFile("player_shoot", audioFolder);
+
+                await AddSoundEffect("enemy_death", audioFolder);
+                await AddSoundEffect("enemy_shoot", audioFolder);
+                await AddSoundEffect("player_death", audioFolder);
+                await AddSoundEffect("player_shoot", audioFolder);
+
+                preloadTaskCompletionSource.SetResult(true);
+
             }
             catch (Exception exception)
             {
-                throw new Exception("Error loading sound effects", exception);
+                preloadTaskCompletionSource.SetException(new Exception("Error loading sound effects", exception));
             }
         }
 
@@ -56,8 +67,22 @@ namespace Galaga.Model
         {
             try
             {
-                var file = await audioFolder.GetFileAsync(key + ".wav");
-                this.soundFiles.Add(key, file);
+                StorageFile file = await audioFolder.GetFileAsync(key + ".wav");
+                soundFiles.Add(key, file);
+
+                List<MediaPlayer> pool = new List<MediaPlayer>();
+                for (int i = 0; i < InitialPoolSize; i++)
+                {
+                    MediaPlayer player = new MediaPlayer()
+                    {
+                        Source = Windows.Media.Core.MediaSource.CreateFromStorageFile(file),
+                        Volume = 0.25
+                    };
+
+                    pool.Add(player);
+                }
+
+                soundEffectPools.Add(key, pool);
             }
             catch (Exception exception)
             {
@@ -66,25 +91,72 @@ namespace Galaga.Model
         }
 
         /// <summary>
+        ///     Wait untill all sounds are preloaded
+        /// </summary>
+        public async Task WaitForPreloadingAsync()
+        {
+            await preloadTaskCompletionSource.Task;
+        }
+
+        /// <summary>
         ///     Plays a sound effect.
         /// </summary>
         /// <param name="key">Key of the sound effect to play.</param>
         public void Play(string key)
         {
-            if (this.soundFiles.TryGetValue(key, out var file))
+
+            if (soundEffectPools.TryGetValue(key, out var pool))
             {
-                var mediaPlayer = new MediaPlayer
+                MediaPlayer availablePlayer = pool.Find(p => p.CurrentState == MediaPlayerState.Closed
+                                                    || p.CurrentState == MediaPlayerState.Paused);
+
+                if (availablePlayer == null)
                 {
-                    Source = MediaSource.CreateFromStorageFile(file)
-                };
+                    MediaPlayer newPlayer = this.createNewThread(key);
+                    pool.Add(newPlayer);
+                }
 
-                mediaPlayer.MediaEnded += (sender, args) => { mediaPlayer.Dispose(); };
-
-                mediaPlayer.Play();
+                availablePlayer?.Play();
             }
             else
             {
-                throw new ArgumentException($"Sound effect '{key}' not found.");
+                throw new ArgumentException($"Sound effect not found: {key}");
+            }
+        }
+
+        private MediaPlayer createNewThread(string key)
+        {
+            if (soundFiles.TryGetValue(key, out var file))
+            {
+                MediaPlayer player = new MediaPlayer()
+                {
+                    Source = Windows.Media.Core.MediaSource.CreateFromStorageFile(file),
+                    Volume = 0.25
+                };
+
+                return player;
+            }
+
+            throw new ArgumentException($"Invalid key: {key}");
+        }
+
+        /// <summary>
+        ///     Stops a sound effect.
+        /// </summary>
+        /// <param name="key">
+        ///     The key of the sound effect to stop.
+        /// </param>
+        public void Stop(string key)
+        {
+            if (soundEffectPools.TryGetValue(key, out var pool))
+            {
+                foreach (var player in pool)
+                {
+                    if (player.CurrentState == MediaPlayerState.Playing)
+                    {
+                        player.Pause();
+                    }
+                }
             }
         }
 

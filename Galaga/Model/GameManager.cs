@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 
 namespace Galaga.Model
@@ -99,7 +100,7 @@ namespace Galaga.Model
             this.bulletManager = new BulletManager(canvas);
             this.sfxManager = new SFXManager();
 
-            this.initializeGame();
+            InitializeGame();
         }
 
         #endregion
@@ -121,9 +122,16 @@ namespace Galaga.Model
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void initializeGame()
+        private async void InitializeGame()
         {
-            this.enemyManager.CreateAndPlaceEnemies();
+            try
+            {
+                await sfxManager.WaitForPreloadingAsync();
+            }
+            catch (Exception exception)
+            {
+                throw new TimeoutException("Error preloading sfx", exception);
+            }
         }
 
         /// <summary>
