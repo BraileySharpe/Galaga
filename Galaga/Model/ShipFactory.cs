@@ -9,9 +9,9 @@ namespace Galaga.Model
 {
     public class ShipFactory
     {
-        public static GameObject createShip(GlobalEnums.ShipType shipType)
+        public static GameObject createShip(GlobalEnums.ShipType characterType)
         {
-            switch (shipType)
+            switch (characterType)
             {
                 case GlobalEnums.ShipType.PLAYER:
                     return new Player();
