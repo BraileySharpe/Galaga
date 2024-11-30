@@ -1,10 +1,10 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Windows.ApplicationModel;
+using Windows.Media.Core;
 using Windows.Media.Playback;
 using Windows.Storage;
-
 
 namespace Galaga.Model
 {
@@ -13,28 +13,38 @@ namespace Galaga.Model
     /// </summary>
     public class SFXManager
     {
-        private readonly Dictionary<string, MediaPlayer> soundEffets;
+        #region Data members
+
+        private readonly Dictionary<string, StorageFile> soundFiles;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///     Constructor for the SFXManager class.
         /// </summary>
         public SFXManager()
         {
-            soundEffets = new Dictionary<string, MediaPlayer>();
-            LoadSounds();
+            this.soundFiles = new Dictionary<string, StorageFile>();
+            this.loadSounds();
         }
 
-        private async void LoadSounds()
+        #endregion
+
+        #region Methods
+
+        private async void loadSounds()
         {
             try
             {
-                StorageFolder assetsFolder = await Windows.ApplicationModel.Package.Current.InstalledLocation.GetFolderAsync("Assets");
-                StorageFolder audioFolder = await assetsFolder.GetFolderAsync("Audio");
+                var assetsFolder = await Package.Current.InstalledLocation.GetFolderAsync("Assets");
+                var audioFolder = await assetsFolder.GetFolderAsync("Audio");
 
-                await AddSoundEffect("enemy_death", audioFolder);
-                await AddSoundEffect("enemy_shoot", audioFolder);
-                await AddSoundEffect("player_death", audioFolder);
-                await AddSoundEffect("player_shoot", audioFolder);
+                await this.addSoundFile("enemy_death", audioFolder);
+                await this.addSoundFile("enemy_shoot", audioFolder);
+                await this.addSoundFile("player_death", audioFolder);
+                await this.addSoundFile("player_shoot", audioFolder);
             }
             catch (Exception exception)
             {
@@ -42,51 +52,42 @@ namespace Galaga.Model
             }
         }
 
-        private async Task AddSoundEffect(string key, StorageFolder audioFolder)
+        private async Task addSoundFile(string key, StorageFolder audioFolder)
         {
             try
             {
-                StorageFile file = await audioFolder.GetFileAsync(key + ".wav");
-                MediaPlayer player = new MediaPlayer()
-                {
-                    Source = Windows.Media.Core.MediaSource.CreateFromStorageFile(file)
-                };
-
-                soundEffets.Add(key, player);
+                var file = await audioFolder.GetFileAsync(key + ".wav");
+                this.soundFiles.Add(key, file);
             }
             catch (Exception exception)
             {
-                throw new Exception("Error loading sound effect " + key, exception);
+                throw new Exception("Error loading sound file " + key, exception);
             }
-
         }
 
         /// <summary>
         ///     Plays a sound effect.
         /// </summary>
-        /// <param name="key">
-        ///     Key of the sound effect to play.
-        /// </param>
+        /// <param name="key">Key of the sound effect to play.</param>
         public void Play(string key)
         {
-            if (soundEffets.ContainsKey(key))
+            if (this.soundFiles.TryGetValue(key, out var file))
             {
-                soundEffets[key].Play();
+                var mediaPlayer = new MediaPlayer
+                {
+                    Source = MediaSource.CreateFromStorageFile(file)
+                };
+
+                mediaPlayer.MediaEnded += (sender, args) => { mediaPlayer.Dispose(); };
+
+                mediaPlayer.Play();
+            }
+            else
+            {
+                throw new ArgumentException($"Sound effect '{key}' not found.");
             }
         }
 
-        /// <summary>
-        ///     Stops a sound effect.
-        /// </summary>
-        /// <param name="key">
-        ///     The key of the sound effect to stop.
-        /// </param>
-        public void Stop(string key)
-        {
-            if (soundEffets.TryGetValue(key, out var player))
-            {
-                player.Pause();
-            }
-        }
+        #endregion
     }
 }

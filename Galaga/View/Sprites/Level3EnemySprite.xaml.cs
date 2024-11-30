@@ -1,9 +1,7 @@
-﻿using Windows.UI.Xaml;
-
-namespace Galaga.View.Sprites
+﻿namespace Galaga.View.Sprites
 {
     /// <summary>
-    ///     The level 3 enemy sprite.
+    ///     The Level 3 enemy sprite.
     /// </summary>
     /// <seealso cref="Galaga.View.Sprites.BaseSprite" />
     /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector" />
