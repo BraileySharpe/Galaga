@@ -39,7 +39,7 @@ namespace Galaga.Model
         #region Methods
 
         /// <summary>
-        /// Places a new player bullet onto the Canvas if less than 3 are active.
+        ///     Places a new player bullet onto the Canvas if less than 3 are active.
         /// </summary>
         /// <param name="bullet">The bullet.</param>
         /// <returns>True if a bullet was placed, false otherwise</returns>
@@ -62,27 +62,24 @@ namespace Galaga.Model
         /// <returns>The bullet that hit an enemy, null if no enemies hit</returns>
         public Bullet MovePlayerBullet(IList<Enemy> enemies)
         {
-            if (this.activeEnemyBullets.Count != 0)
+            for (var i = 0; i <= this.activePlayerBullets.Count - 1; i++)
             {
-                for (var i = 0; i <= this.activePlayerBullets.Count - 1; i++)
+                var bullet = this.activePlayerBullets[i];
+                bullet.Move();
+
+                var playerHitEnemy = this.collisionManager.CheckEnemyCollision(bullet, enemies);
+
+                if (bullet.Y + bullet.Height < 0)
                 {
-                    var bullet = this.activePlayerBullets[i];
-                    bullet.Move();
+                    this.canvas.Children.Remove(bullet.Sprite);
+                    this.activePlayerBullets.RemoveAt(i);
+                }
 
-                    var playerHitEnemy = this.collisionManager.CheckEnemyCollision(bullet, enemies);
-
-                    if (bullet.Y + bullet.Height < 0)
-                    {
-                        this.canvas.Children.Remove(bullet.Sprite);
-                        this.activePlayerBullets.RemoveAt(i);
-                    }
-
-                    if (playerHitEnemy)
-                    {
-                        this.canvas.Children.Remove(bullet.Sprite);
-                        this.activePlayerBullets.RemoveAt(i);
-                        return bullet;
-                    }
+                if (playerHitEnemy)
+                {
+                    this.canvas.Children.Remove(bullet.Sprite);
+                    this.activePlayerBullets.RemoveAt(i);
+                    return bullet;
                 }
             }
 
