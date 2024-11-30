@@ -182,6 +182,7 @@ namespace Galaga.Model
             if (collidingBullet != null)
             {
                 this.Score += this.enemyManager.CheckWhichEnemyIsShot(collidingBullet);
+                this.sfxManager.Play("enemy_death");
             }
         }
 
@@ -209,6 +210,7 @@ namespace Galaga.Model
         {
             if (this.bulletManager.MoveEnemyBullet(this.playerManager.Player))
             {
+                this.sfxManager.Play("player_death");
                 if (this.playerManager.Lives > 0)
                 {
                     this.canvas.Children.Remove(this.playerManager.Player.Sprite);
