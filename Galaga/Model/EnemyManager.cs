@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using Windows.UI.Xaml.Controls;
 using Galaga.View.Sprites;
@@ -9,7 +10,7 @@ namespace Galaga.Model
     /// <summary>
     ///     Manager for enemies in the game.
     /// </summary>
-    public class EnemyManager
+    public class EnemyManager : INotifyPropertyChanged
     {
         #region Data members
 
@@ -21,13 +22,27 @@ namespace Galaga.Model
         private const int Level4EnemyIndex = 3;
 
         private readonly RoundData roundData;
-        private ShootingEnemy bonusEnemy;
+        private BonusEnemy bonusEnemy;
+        private bool hasBonusEnemyStartedMoving;
 
         private readonly Canvas canvas;
 
         #endregion
 
         #region Properties
+
+        public bool HasBonusEnemyStartedMoving
+        {
+            get => this.hasBonusEnemyStartedMoving;
+            set
+            {
+                if (this.hasBonusEnemyStartedMoving != value)
+                {
+                    this.hasBonusEnemyStartedMoving = value;
+                    this.OnPropertyChanged(nameof(this.HasBonusEnemyStartedMoving));
+                }
+            }
+        }
 
         /// <summary>
         ///     Gets the enemies.
@@ -42,7 +57,7 @@ namespace Galaga.Model
         /// <summary>
         ///     Gets the number of enemies left in the game.
         /// </summary>
-        public int RemainingEnemies => this.Enemies.Count;
+        public int RemainingEnemies => this.Enemies.Count(enemy => !(enemy is BonusEnemy));
 
         /// <summary>
         ///     Gets the remaining shooting enemies.
@@ -70,6 +85,17 @@ namespace Galaga.Model
 
         #region Methods
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        ///     Called when [property changed].
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         /// <summary>
         ///     Creates and places enemies onto the canvas.
         /// </summary>
@@ -85,6 +111,7 @@ namespace Galaga.Model
             this.createEnemiesForRound(GlobalEnums.ShipType.Lvl4Enemy, numEnemiesForCurrentRound[Level4EnemyIndex],
                 new Level4EnemySprite().Width);
             this.createBonusEnemyForRound(GlobalEnums.ShipType.BonusEnemy);
+            this.hasBonusEnemyStartedMoving = false;
         }
 
         private void createEnemiesForRound(GlobalEnums.ShipType shipType, int numOfEnemies, double spriteWidth)
@@ -132,7 +159,7 @@ namespace Galaga.Model
         }
 
         /// <summary>
-        ///     Moves the bonus enemy.
+        ///     Moves the bonus enemy, returns true if enemy has just started moving
         /// </summary>
         public void MoveBonusEnemy()
         {
@@ -142,6 +169,11 @@ namespace Galaga.Model
             {
                 this.canvas.Children.Remove(this.bonusEnemy.Sprite);
                 this.Enemies.Remove(this.bonusEnemy);
+            }
+
+            if (!this.hasBonusEnemyStartedMoving)
+            {
+                this.HasBonusEnemyStartedMoving = true;
             }
         }
 
@@ -184,11 +216,11 @@ namespace Galaga.Model
         }
 
         /// <summary>
-        ///     Checks the which enemy is shot, removes it, and returns its score.
+        ///     Checks the which enemy is shot, removes it, and returns it.
         /// </summary>
         /// <param name="bullet">The bullet to compare collision.</param>
-        /// <returns>The score of the hit enemy, else 0 if there is nothing to be returned</returns>
-        public int CheckWhichEnemyIsShot(Bullet bullet)
+        /// <returns>The enemy that was hit, and null if no enemies were hit</returns>
+        public Enemy CheckWhichEnemyIsShot(Bullet bullet)
         {
             if (bullet == null)
             {
@@ -200,11 +232,11 @@ namespace Galaga.Model
                 if (bullet.CollidesWith(enemy))
                 {
                     this.RemoveEnemy(enemy);
-                    return enemy.Score;
+                    return enemy;
                 }
             }
 
-            return 0;
+            return null;
         }
 
         /// <summary>

@@ -8,7 +8,7 @@ namespace Galaga.View.Sprites
     ///     Sprite to enable animation.
     /// </summary>
     /// <seealso cref="Galaga.View.Sprites.BaseSprite" />
-    public partial class AnimatedSprite : BaseSprite
+    public partial class AnimatedSprite
     {
         #region Data members
 

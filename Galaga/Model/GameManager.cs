@@ -15,7 +15,7 @@ namespace Galaga.Model
         private readonly EnemyManager enemyManager;
         private readonly BulletManager bulletManager;
         private readonly PlayerManager playerManager;
-        private readonly SFXManager sfxManager;
+        private readonly SfxManager sfxManager;
         private readonly RoundData roundData;
         private bool hasWon;
         private bool hasLost;
@@ -117,9 +117,19 @@ namespace Galaga.Model
             this.enemyManager = new EnemyManager(canvas, this.roundData);
             this.playerManager = new PlayerManager(canvas);
             this.bulletManager = new BulletManager(canvas);
-            this.sfxManager = new SFXManager();
+            this.sfxManager = new SfxManager();
+
+            this.enemyManager.PropertyChanged += this.EnemyManagerOnPropertyChanged;
 
             this.initializeGame();
+        }
+
+        private void EnemyManagerOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(this.enemyManager.HasBonusEnemyStartedMoving) && this.enemyManager.HasBonusEnemyStartedMoving)
+            {
+                this.sfxManager.Play("bonusenemy_sound");
+            }
         }
 
         #endregion
@@ -215,8 +225,17 @@ namespace Galaga.Model
             var collidingBullet = this.bulletManager.MovePlayerBullet(this.enemyManager.Enemies);
             if (collidingBullet != null)
             {
-                this.Score += this.enemyManager.CheckWhichEnemyIsShot(collidingBullet);
-                this.sfxManager.Play("enemy_death");
+                var enemy = this.enemyManager.CheckWhichEnemyIsShot(collidingBullet);
+                if (enemy != null)
+                {
+                    this.sfxManager.Play("enemy_death");
+                    this.Score += enemy.Score;
+
+                    if (enemy is BonusEnemy)
+                    {
+                        this.playerManager.GainExtraLife();
+                    }
+                }
             }
         }
 
@@ -245,7 +264,7 @@ namespace Galaga.Model
             if (this.bulletManager.MoveEnemyBullet(this.playerManager.Player))
             {
                 this.sfxManager.Play("player_death");
-                if (this.playerManager.Lives > 0)
+                if (this.playerManager.RemainingLives > 0)
                 {
                     this.canvas.Children.Remove(this.playerManager.Player.Sprite);
                     this.playerManager.RespawnPlayer();
@@ -271,10 +290,10 @@ namespace Galaga.Model
         /// </summary>
         public void CheckGameStatus()
         {
-            if (this.playerManager.Lives <= 0 && !this.hasLost)
+            if (this.playerManager.RemainingLives <= 0 && !this.hasLost)
             {
-                this.HasLost = true;
                 this.sfxManager.Play("gameover_lose");
+                this.HasLost = true;
             }
 
             if (this.enemyManager.RemainingEnemies == 0 && !this.hasWon)
@@ -294,8 +313,9 @@ namespace Galaga.Model
                         this.EndOfRound = false;
                         break;
                     case GlobalEnums.GameRound.Round3:
-                        this.HasWon = true;
                         this.sfxManager.Play("gameover_win");
+                        this.HasWon = true;
+
                         break;
                 }
             }

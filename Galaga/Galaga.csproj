@@ -123,7 +123,8 @@
     <Compile Include="Model\BonusEnemy.cs" />
     <Compile Include="Model\Bullet.cs" />
     <Compile Include="Model\BulletManager.cs" />
-    <Compile Include="Model\SFXManager.cs" />
+    <Compile Include="Model\PlayerLife.cs" />
+    <Compile Include="Model\SfxManager.cs" />
     <Compile Include="Model\RoundData.cs" />
     <Compile Include="Model\GlobalEnums.cs" />
     <Compile Include="Model\CollisionManager.cs" />
