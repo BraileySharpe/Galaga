@@ -129,6 +129,7 @@ namespace Galaga.Model
         /// </summary>
         public Bullet Shoot()
         {
+
             return this.Player.Shoot();
         }
 

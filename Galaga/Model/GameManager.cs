@@ -15,6 +15,7 @@ namespace Galaga.Model
         private readonly EnemyManager enemyManager;
         private readonly BulletManager bulletManager;
         private readonly PlayerManager playerManager;
+        private readonly SFXManager sfxManager;
         private readonly LevelData levelData;
         private bool hasWon;
         private bool hasLost;
@@ -101,6 +102,7 @@ namespace Galaga.Model
             this.enemyManager = new EnemyManager(canvas, this.levelData);
             this.playerManager = new PlayerManager(canvas);
             this.bulletManager = new BulletManager(canvas);
+            this.sfxManager = new SFXManager();
 
             this.initializeGame();
         }
@@ -167,6 +169,7 @@ namespace Galaga.Model
         public void PlacePlayerBullet()
         {
             var bullet = this.playerManager.Shoot();
+            this.sfxManager.Play("player_shoot");
             this.bulletManager.PlacePlayerBullet(bullet);
         }
 
@@ -179,6 +182,7 @@ namespace Galaga.Model
             if (collidingBullet != null)
             {
                 this.Score += this.enemyManager.CheckWhichEnemyIsShot(collidingBullet);
+                this.sfxManager.Play("enemy_death");
             }
         }
 
@@ -194,6 +198,7 @@ namespace Galaga.Model
                 var enemy = this.enemyManager.ShootingEnemies[randomIndex];
 
                 var bullet = enemy.Shoot();
+                this.sfxManager.Play("enemy_shoot");
                 this.bulletManager.PlaceEnemyBullet(bullet);
             }
         }
@@ -205,6 +210,7 @@ namespace Galaga.Model
         {
             if (this.bulletManager.MoveEnemyBullet(this.playerManager.Player))
             {
+                this.sfxManager.Play("player_death");
                 if (this.playerManager.Lives > 0)
                 {
                     this.canvas.Children.Remove(this.playerManager.Player.Sprite);
