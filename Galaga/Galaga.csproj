@@ -141,6 +141,9 @@
     <Compile Include="View\Sprites\AnimatedSprite.xaml.cs">
       <DependentUpon>AnimatedSprite.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Sprites\BonusEnemySprite.xaml.cs">
+      <DependentUpon>BonusEnemySprite.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Sprites\Level2EnemySprite.xaml.cs">
       <DependentUpon>Level2EnemySprite.xaml</DependentUpon>
     </Compile>
@@ -211,6 +214,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Sprites\AnimatedSprite.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Sprites\BonusEnemySprite.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

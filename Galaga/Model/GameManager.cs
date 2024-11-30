@@ -92,12 +92,7 @@ namespace Galaga.Model
         /// <exception cref="System.ArgumentNullException">canvas</exception>
         public GameManager(Canvas canvas)
         {
-            if (canvas == null)
-            {
-                throw new ArgumentNullException(nameof(canvas));
-            }
-
-            this.canvas = canvas;
+            this.canvas = canvas ?? throw new ArgumentNullException(nameof(canvas));
             this.levelData = new LevelData();
             this.enemyManager = new EnemyManager(canvas, this.levelData);
             this.playerManager = new PlayerManager(canvas);
@@ -169,8 +164,10 @@ namespace Galaga.Model
         public void PlacePlayerBullet()
         {
             var bullet = this.playerManager.Shoot();
-            this.sfxManager.Play("player_shoot");
-            this.bulletManager.PlacePlayerBullet(bullet);
+            if (this.bulletManager.PlacePlayerBullet(bullet))
+            {
+                this.sfxManager.Play("player_shoot");
+            }
         }
 
         /// <summary>
