@@ -1,25 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Galaga.Model
+﻿namespace Galaga.Model
 {
     /// <summary>
     ///     Represents the global enums for the game.
     /// </summary>
     public class GlobalEnums
     {
+        #region Types and Delegates
+
         /// <summary>
         ///     Represents the type of the character.
         /// </summary>
-        public enum  CharacterType
+        public enum CharacterType
         {
             /// <summary>
             ///     Represents the player.
             /// </summary>
             PLAYER,
+
             /// <summary>
             ///     Represents the enemy.
             /// </summary>
@@ -27,7 +24,7 @@ namespace Galaga.Model
         }
 
         /// <summary>
-        ///    Represents the game level.
+        ///     Represents the game level.
         /// </summary>
         public enum GameLevel
         {
@@ -35,14 +32,46 @@ namespace Galaga.Model
             ///     Level 1.
             /// </summary>
             LEVEL1,
+
             /// <summary>
-            ///    Level 2.
+            ///     Level 2.
             /// </summary>
             LEVEL2,
+
             /// <summary>
-            ///    Level 3.
+            ///     Level 3.
             /// </summary>
             LEVEL3
         }
+
+        public enum ShipType
+        {
+            /// <summary>
+            ///     Represents the player ship.
+            /// </summary>
+            PLAYER,
+
+            /// <summary>
+            ///     Represents the level 1 enemy ship.
+            /// </summary>
+            LVL1ENEMY,
+
+            /// <summary>
+            ///     Represents the level 2 enemy ship.
+            /// </summary>
+            LVL2ENEMY,
+
+            /// <summary>
+            ///     Represents the level 3 enemy ship.
+            /// </summary>
+            LVL3ENEMY,
+
+            /// <summary>
+            ///     Represents the level 4 enemy ship.
+            /// </summary>
+            LVL4ENEMY
+        }
+
+        #endregion
     }
 }

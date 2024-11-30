@@ -18,7 +18,7 @@
         <TextBlock Text="{Binding Score, Mode=OneWay}" Height="31" Width="79" FontFamily="ModeNine" FontWeight="Bold"
                    Canvas.Left="791" Canvas.Top="55" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Top"
                    Foreground="White" TextAlignment="Right" />
-        <TextBlock x:Name="gameOverTextBlock" Text="GAME OVER" Visibility="Visible" FontFamily="ModeNine"
+        <TextBlock x:Name="gameOverTextBlock" Text="GAME OVER" Visibility="Collapsed" FontFamily="ModeNine"
                    FontWeight="Bold" FontSize="50" Canvas.Left="275" Canvas.Top="275" Foreground="White"
                    HorizontalAlignment="Left" VerticalAlignment="Center" TextAlignment="Center" Width="315"/>
         <TextBlock x:Name="youWinTextBlock" Text="YOU WIN!" Visibility="Collapsed" FontFamily="ModeNine"

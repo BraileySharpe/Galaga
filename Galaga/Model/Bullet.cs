@@ -20,11 +20,11 @@ namespace Galaga.Model
         ///     Initializes a new instance of the <see cref="Bullet" /> class.
         /// </summary>
         /// <param name="sprite">The sprite to set for the bullet.</param>
-        public Bullet(BaseSprite sprite, GlobalEnums.CharacterType type)
+        public Bullet(BaseSprite sprite, GlobalEnums.ShipType type)
         {
             Sprite = sprite;
 
-            if (type == GlobalEnums.CharacterType.PLAYER)
+            if (type == GlobalEnums.ShipType.PLAYER)
             {
                 this.speedYDirection = -this.speedYDirection;
             }

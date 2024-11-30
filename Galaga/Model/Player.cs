@@ -35,7 +35,7 @@ namespace Galaga.Model
         /// <returns></returns>
         public Bullet Shoot()
         {
-            var bullet = new Bullet(new PlayerBulletSprite(), GlobalEnums.CharacterType.PLAYER);
+            var bullet = new Bullet(new PlayerBulletSprite(), GlobalEnums.ShipType.PLAYER);
             bullet.X = X + Width / 2.0 - bullet.Width / 2.0;
             bullet.Y = Y - bullet.Height;
 
