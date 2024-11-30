@@ -69,7 +69,12 @@
             /// <summary>
             ///     Represents the level 4 enemy ship.
             /// </summary>
-            LVL4ENEMY
+            LVL4ENEMY,
+
+            /// <summary>
+            ///     Represent the bonus enemy ship.
+            /// </summary>
+            BONUSENEMY
         }
 
         #endregion
