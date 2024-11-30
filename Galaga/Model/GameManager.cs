@@ -274,6 +274,7 @@ namespace Galaga.Model
             if (this.playerManager.Lives <= 0 && !this.hasLost)
             {
                 this.HasLost = true;
+                this.sfxManager.Play("gameover_lose");
             }
 
             if (this.enemyManager.RemainingEnemies == 0 && !this.hasWon)
@@ -294,6 +295,7 @@ namespace Galaga.Model
                         break;
                     case GlobalEnums.GameRound.Round3:
                         this.HasWon = true;
+                        this.sfxManager.Play("gameover_win");
                         break;
                 }
             }

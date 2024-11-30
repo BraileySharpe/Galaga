@@ -17,7 +17,7 @@ namespace Galaga.Model
 
         private const int InitialPoolSize = 5;
 
-        private const double Volume = 0.25;
+        private const double Volume = 0.20;
 
         private readonly Dictionary<string, List<MediaPlayer>> soundEffectPools;
         private readonly Dictionary<string, StorageFile> soundFiles;
@@ -53,6 +53,8 @@ namespace Galaga.Model
                 await this.addSoundEffect("enemy_shoot", audioFolder);
                 await this.addSoundEffect("player_death", audioFolder);
                 await this.addSoundEffect("player_shoot", audioFolder);
+                await this.addSoundEffect("gameover_lose", audioFolder);
+                await this.addSoundEffect("gameover_win", audioFolder);
 
                 this.preloadTaskCompletionSource.SetResult(true);
             }
