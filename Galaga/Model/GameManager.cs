@@ -119,18 +119,7 @@ namespace Galaga.Model
             this.bulletManager = new BulletManager(canvas);
             this.sfxManager = new SfxManager();
 
-            this.enemyManager.PropertyChanged += this.EnemyManager_PropertyChanged;
-
             this.initializeGame();
-        }
-
-        private void EnemyManager_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(this.enemyManager.HasBonusEnemyStartedMoving) &&
-                this.enemyManager.HasBonusEnemyStartedMoving)
-            {
-                this.sfxManager.Play("bonusenemy_sound");
-            }
         }
 
         #endregion

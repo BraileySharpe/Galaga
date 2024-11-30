@@ -55,7 +55,6 @@ namespace Galaga.Model
                 await this.addSoundEffect("player_shoot", audioFolder);
                 await this.addSoundEffect("gameover_lose", audioFolder);
                 await this.addSoundEffect("gameover_win", audioFolder);
-                await this.addSoundEffect("bonusenemy_sound", audioFolder);
 
                 this.preloadTaskCompletionSource.SetResult(true);
             }
@@ -155,7 +154,7 @@ namespace Galaga.Model
             {
                 foreach (var player in pool)
                 {
-                    if (player.PlaybackSession.PlaybackState == MediaPlaybackState.Playing)
+                    if (player.CurrentState == MediaPlayerState.Playing)
                     {
                         player.Pause();
                     }
