@@ -15,11 +15,6 @@ namespace Galaga.Model
 
         private const double EnemySpacing = 15;
 
-        private const int Level1EnemyScore = 100;
-        private const int Level2EnemyScore = 200;
-        private const int Level3EnemyScore = 300;
-        private const int Level4EnemyScore = 400;
-
         private const int Level1EnemyIndex = 0;
         private const int Level2EnemyIndex = 1;
         private const int Level3EnemyIndex = 2;
@@ -75,44 +70,37 @@ namespace Galaga.Model
         #region Methods
 
         /// <summary>
-        ///     Creates and places enemies onto the canvas. Enemies are created per level, and each level can have a varying number
-        ///     of enemies, sprites, scores, and shooting capabilities.
+        ///     Creates and places enemies onto the canvas.
         /// </summary>
         public void CreateAndPlaceEnemies()
         {
             var numEnemiesInLevel = this.levelData.GetNumEnemiesForCurrentLevel();
-            this.createEnemiesForLevel(numEnemiesInLevel[Level1EnemyIndex], new Level1EnemySprite(), Level1EnemyScore,
-                false);
-            this.createEnemiesForLevel(numEnemiesInLevel[Level2EnemyIndex], new Level2EnemySprite(), Level2EnemyScore,
-                false);
-            this.createEnemiesForLevel(numEnemiesInLevel[Level3EnemyIndex], new Level3EnemySprite(), Level3EnemyScore,
-                true);
-            this.createEnemiesForLevel(numEnemiesInLevel[Level4EnemyIndex], new Level4EnemySprite(), Level4EnemyScore,
-                true);
+            this.createEnemiesForLevel(GlobalEnums.ShipType.LVL1ENEMY, numEnemiesInLevel[Level1EnemyIndex],
+                new Level1EnemySprite().Width);
+            this.createEnemiesForLevel(GlobalEnums.ShipType.LVL2ENEMY, numEnemiesInLevel[Level2EnemyIndex],
+                new Level2EnemySprite().Width);
+            this.createEnemiesForLevel(GlobalEnums.ShipType.LVL3ENEMY, numEnemiesInLevel[Level3EnemyIndex],
+                new Level3EnemySprite().Width);
+            this.createEnemiesForLevel(GlobalEnums.ShipType.LVL4ENEMY, numEnemiesInLevel[Level4EnemyIndex],
+                new Level4EnemySprite().Width);
         }
 
-        private void createEnemiesForLevel(int numOfEnemies, BaseSprite sprite, int score, bool canShoot)
+        private void createEnemiesForLevel(GlobalEnums.ShipType shipType, int numOfEnemies, double spriteWidth)
         {
             if (numOfEnemies < 1)
             {
                 throw new ArgumentException("Number of enemies must be greater than 0.");
             }
 
-            if (sprite == null)
-            {
-                throw new ArgumentNullException(nameof(sprite));
-            }
-
-            var totalEnemyWidth = numOfEnemies * sprite.Width + (numOfEnemies - 1) * EnemySpacing;
+            var totalEnemyWidth = numOfEnemies * spriteWidth + (numOfEnemies - 1) * EnemySpacing;
             var leftMargin = (this.canvas.Width - totalEnemyWidth) / 2;
 
             for (var i = 0; i < numOfEnemies; i++)
             {
-                var currEnemy = canShoot
-                    ? new ShootingEnemy((BaseSprite)Activator.CreateInstance(sprite.GetType()))
-                    : new Enemy((BaseSprite)Activator.CreateInstance(sprite.GetType()));
-
-                currEnemy.Score = score;
+                if (!(ShipFactory.CreateShip(shipType) is Enemy currEnemy))
+                {
+                    throw new ArgumentException("Invalid enemy type.");
+                }
 
                 this.Enemies.Add(currEnemy);
                 this.canvas.Children.Add(currEnemy.Sprite);
