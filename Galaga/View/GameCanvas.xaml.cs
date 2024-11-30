@@ -29,7 +29,7 @@ namespace Galaga.View
         #region Constructors
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="GameCanvas"/> class.
+        ///     Initializes a new instance of the <see cref="GameCanvas" /> class.
         /// </summary>
         public GameCanvas()
         {
@@ -61,6 +61,9 @@ namespace Galaga.View
             ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(Width, Height));
         }
 
+        /// <summary>
+        ///     Loops the game at a set interval to track player input and game state.
+        /// </summary>
         public void GameLoop()
         {
             if (this.activeKeys.Contains(VirtualKey.Left))
@@ -91,36 +94,57 @@ namespace Galaga.View
             this.gameManager.CheckGameStatus();
         }
 
+        /// <summary>
+        ///     Moves the player bullet.
+        /// </summary>
         public void MovePlayerBullet()
         {
             this.gameManager.MovePlayerBullet();
         }
 
+        /// <summary>
+        ///     Places the enemy bullet.
+        /// </summary>
         public void PlaceEnemyBullet()
         {
             this.gameManager.PlaceEnemyBullet();
         }
 
+        /// <summary>
+        ///     Moves the enemy bullet.
+        /// </summary>
         public void MoveEnemyBullet()
         {
             this.gameManager.MoveEnemyBullet();
         }
 
+        /// <summary>
+        ///     Moves the enemies left.
+        /// </summary>
         public void MoveEnemiesLeft()
         {
             this.gameManager.MoveEnemiesLeft();
         }
 
+        /// <summary>
+        ///     Moves the enemies right.
+        /// </summary>
         public void MoveEnemiesRight()
         {
             this.gameManager.MoveEnemiesRight();
         }
 
+        /// <summary>
+        ///     Toggles the sprites for animation.
+        /// </summary>
         public void ToggleSpritesForAnimation()
         {
             this.gameManager.ToggleSpritesForAnimation();
         }
 
+        /// <summary>
+        ///     Enables the player shooting.
+        /// </summary>
         public void EnablePlayerShooting()
         {
             this.canShoot = true;

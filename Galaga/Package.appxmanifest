@@ -32,7 +32,7 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="Galaga.App">
       <uap:VisualElements
-        DisplayName="Galaga by Brailey Sharpe A3"
+        DisplayName="Galaga by Sharpe and Bridges"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
         Description="Galaga"
