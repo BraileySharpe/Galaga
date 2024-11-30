@@ -66,9 +66,12 @@ namespace Galaga.Model
 
         private void initializePlayer()
         {
-            this.Player = new Player();
-            this.canvas.Children.Add(this.Player.Sprite);
-            this.placePlayerNearBottomOfBackgroundCentered();
+            this.Player = ShipFactory.CreateShip(GlobalEnums.ShipType.PLAYER) as Player;
+            if (this.Player != null)
+            {
+                this.canvas.Children.Add(this.Player.Sprite);
+                this.placePlayerNearBottomOfBackgroundCentered();
+            }
         }
 
         private void placePlayerNearBottomOfBackgroundCentered()
