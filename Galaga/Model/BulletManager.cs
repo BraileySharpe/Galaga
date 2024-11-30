@@ -39,16 +39,20 @@ namespace Galaga.Model
         #region Methods
 
         /// <summary>
-        ///     Places a new player bullet onto the Canvas if less than 3 are active.
+        /// Places a new player bullet onto the Canvas if less than 3 are active.
         /// </summary>
         /// <param name="bullet">The bullet.</param>
-        public void PlacePlayerBullet(Bullet bullet)
+        /// <returns>True if a bullet was placed, false otherwise</returns>
+        public bool PlacePlayerBullet(Bullet bullet)
         {
             if (this.activePlayerBullets.Count < MaxActivePlayerBullets)
             {
                 this.canvas.Children.Add(bullet.Sprite);
                 this.activePlayerBullets.Add(bullet);
+                return true;
             }
+
+            return false;
         }
 
         /// <summary>

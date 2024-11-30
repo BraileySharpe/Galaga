@@ -1,10 +1,10 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Windows.ApplicationModel;
+using Windows.Media.Core;
 using Windows.Media.Playback;
 using Windows.Storage;
-
 
 namespace Galaga.Model
 {
@@ -13,29 +13,41 @@ namespace Galaga.Model
     /// </summary>
     public class SFXManager
     {
+        #region Data members
+
         private readonly Dictionary<string, List<MediaPlayer>> soundEffectPools;
         private readonly Dictionary<string, StorageFile> soundFiles;
         private TaskCompletionSource<bool> preloadTaskCompletionSource;
 
         private const int InitialPoolSize = 5;
+      
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///     Constructor for the SFXManager class.
         /// </summary>
         public SFXManager()
         {
+
             soundEffectPools = new Dictionary<string, List<MediaPlayer>>();
             soundFiles = new Dictionary<string, StorageFile>();
             preloadTaskCompletionSource = new TaskCompletionSource<bool>();
             LoadSounds();
         }
 
-        private async void LoadSounds()
+        #endregion
+
+        #region Methods
+
+        private async void loadSounds()
         {
             try
             {
-                StorageFolder assetsFolder = await Windows.ApplicationModel.Package.Current.InstalledLocation.GetFolderAsync("Assets");
-                StorageFolder audioFolder = await assetsFolder.GetFolderAsync("Audio");
+                var assetsFolder = await Package.Current.InstalledLocation.GetFolderAsync("Assets");
+                var audioFolder = await assetsFolder.GetFolderAsync("Audio");
+
 
                 await AddSoundEffect("enemy_death", audioFolder);
                 await AddSoundEffect("enemy_shoot", audioFolder);
@@ -43,6 +55,7 @@ namespace Galaga.Model
                 await AddSoundEffect("player_shoot", audioFolder);
 
                 preloadTaskCompletionSource.SetResult(true);
+
             }
             catch (Exception exception)
             {
@@ -50,7 +63,7 @@ namespace Galaga.Model
             }
         }
 
-        private async Task AddSoundEffect(string key, StorageFolder audioFolder)
+        private async Task addSoundFile(string key, StorageFolder audioFolder)
         {
             try
             {
@@ -63,7 +76,7 @@ namespace Galaga.Model
                     MediaPlayer player = new MediaPlayer()
                     {
                         Source = Windows.Media.Core.MediaSource.CreateFromStorageFile(file),
-                        Volume = 0.5
+                        Volume = 0.25
                     };
 
                     pool.Add(player);
@@ -73,9 +86,8 @@ namespace Galaga.Model
             }
             catch (Exception exception)
             {
-                throw new Exception("Error loading sound effect " + key, exception);
+                throw new Exception("Error loading sound file " + key, exception);
             }
-
         }
 
         /// <summary>
@@ -89,11 +101,10 @@ namespace Galaga.Model
         /// <summary>
         ///     Plays a sound effect.
         /// </summary>
-        /// <param name="key">
-        ///     Key of the sound effect to play.
-        /// </param>
+        /// <param name="key">Key of the sound effect to play.</param>
         public void Play(string key)
         {
+
             if (soundEffectPools.TryGetValue(key, out var pool))
             {
                 MediaPlayer availablePlayer = pool.Find(p => p.CurrentState == MediaPlayerState.Closed
@@ -120,7 +131,7 @@ namespace Galaga.Model
                 MediaPlayer player = new MediaPlayer()
                 {
                     Source = Windows.Media.Core.MediaSource.CreateFromStorageFile(file),
-                    Volume = 0.5
+                    Volume = 0.25
                 };
 
                 return player;
@@ -148,5 +159,7 @@ namespace Galaga.Model
                 }
             }
         }
+
+        #endregion
     }
 }

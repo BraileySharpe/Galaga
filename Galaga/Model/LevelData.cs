@@ -10,6 +10,8 @@ namespace Galaga.Model
     {
         #region Data members
 
+        private const int NumberOfBonusEnemiesPerLevel = 1;
+
         private const int NumberOfLevel1EnemiesInLevel1 = 3;
         private const int NumberOfLevel2EnemiesInLevel1 = 4;
         private const int NumberOfLevel3EnemiesInLevel1 = 4;
@@ -64,9 +66,9 @@ namespace Galaga.Model
 
         private void initializeGameData()
         {
-            this.initializeLevelData(GlobalEnums.GameLevel.LEVEL1, new[] { NumberOfLevel1EnemiesInLevel1, NumberOfLevel2EnemiesInLevel1, NumberOfLevel3EnemiesInLevel1, NumberOfLevel4EnemiesInLevel1 });
-            this.initializeLevelData(GlobalEnums.GameLevel.LEVEL2, new[] { NumberOfLevel1EnemiesInLevel2, NumberOfLevel2EnemiesInLevel2, NumberOfLevel3EnemiesInLevel2, NumberOfLevel4EnemiesInLevel2 });
-            this.initializeLevelData(GlobalEnums.GameLevel.LEVEL3, new[] { NumberOfLevel1EnemiesInLevel3, NumberOfLevel2EnemiesInLevel3, NumberOfLevel3EnemiesInLevel3, NumberOfLevel4EnemiesInLevel3 });
+            this.initializeLevelData(GlobalEnums.GameLevel.LEVEL1, new[] { NumberOfLevel1EnemiesInLevel1, NumberOfLevel2EnemiesInLevel1, NumberOfLevel3EnemiesInLevel1, NumberOfLevel4EnemiesInLevel1, NumberOfBonusEnemiesPerLevel });
+            this.initializeLevelData(GlobalEnums.GameLevel.LEVEL2, new[] { NumberOfLevel1EnemiesInLevel2, NumberOfLevel2EnemiesInLevel2, NumberOfLevel3EnemiesInLevel2, NumberOfLevel4EnemiesInLevel2, NumberOfBonusEnemiesPerLevel });
+            this.initializeLevelData(GlobalEnums.GameLevel.LEVEL3, new[] { NumberOfLevel1EnemiesInLevel3, NumberOfLevel2EnemiesInLevel3, NumberOfLevel3EnemiesInLevel3, NumberOfLevel4EnemiesInLevel3, NumberOfBonusEnemiesPerLevel });
         }
 
         private void initializeLevelData(GlobalEnums.GameLevel gameLevel, int[] numOfEnemiesPerRow)

@@ -1,7 +1,7 @@
 ﻿namespace Galaga.View.Sprites
 {
     /// <summary>
-    ///     Level 2 enemy sprite.
+    ///     The Level 2 enemy sprite.
     /// </summary>
     /// <seealso cref="Galaga.View.Sprites.Level1EnemySprite" />
     public sealed partial class Level2EnemySprite

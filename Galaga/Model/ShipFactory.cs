@@ -11,6 +11,7 @@ namespace Galaga.Model
         private const int Level2EnemyScore = 200;
         private const int Level3EnemyScore = 300;
         private const int Level4EnemyScore = 400;
+        private const int BonusEnemyScore = 500;
 
         #endregion
 
@@ -47,6 +48,11 @@ namespace Galaga.Model
                     return new ShootingEnemy(new Level4EnemySprite())
                     {
                         Score = Level4EnemyScore
+                    };
+                case GlobalEnums.ShipType.BONUSENEMY:
+                    return new Enemy(new BonusEnemySprite())
+                    {
+                        Score = BonusEnemyScore
                     };
                 default:
                     throw new NotSupportedException($"{shipType} is not supported as a ship type.");

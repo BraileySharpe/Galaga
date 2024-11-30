@@ -129,8 +129,15 @@ namespace Galaga.Model
         /// </summary>
         public Bullet Shoot()
         {
-
             return this.Player.Shoot();
+        }
+
+        /// <summary>
+        ///     Increases Player's life count by 1.
+        /// </summary>
+        public void GainExtraLife()
+        {
+            this.Lives++;
         }
 
         #endregion

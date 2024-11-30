@@ -8,7 +8,7 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Canvas x:Name="canvas" Width="900" Height="600" Background="Black">
+    <Canvas x:Name="canvas" Width="900" Height="650" Background="Black">
         <TextBlock Text="HIGH" Height="17" Width="58" FontFamily="ModeNine" FontWeight="Bold" Canvas.Left="791"
                    FontSize="20" Foreground="#FFD01919" HorizontalAlignment="Left"
                    VerticalAlignment="Top" Canvas.Top="9" />
