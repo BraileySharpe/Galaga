@@ -33,7 +33,7 @@ namespace Galaga.Model
         /// <returns>The enemy bullet</returns>
         public Bullet Shoot()
         {
-            var bullet = new Bullet(new EnemyBulletSprite(), GlobalEnums.ShipType.ENEMY);
+            var bullet = new Bullet(new EnemyBulletSprite(), GlobalEnums.CharacterType.ENEMY);
 
             bullet.X = X + Width / 2.0 - bullet.Width / 2.0;
             bullet.Y = Y + Height;
