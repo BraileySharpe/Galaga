@@ -15,7 +15,7 @@ namespace Galaga.Model
         private readonly EnemyManager enemyManager;
         private readonly BulletManager bulletManager;
         private readonly PlayerManager playerManager;
-        private readonly SFXManager sfxManager;
+        private readonly SfxManager sfxManager;
         private readonly RoundData roundData;
         private bool hasWon;
         private bool hasLost;
@@ -117,9 +117,20 @@ namespace Galaga.Model
             this.enemyManager = new EnemyManager(canvas, this.roundData);
             this.playerManager = new PlayerManager(canvas);
             this.bulletManager = new BulletManager(canvas);
-            this.sfxManager = new SFXManager();
+            this.sfxManager = new SfxManager();
+
+            this.enemyManager.PropertyChanged += this.EnemyManager_PropertyChanged;
 
             this.initializeGame();
+        }
+
+        private void EnemyManager_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(this.enemyManager.HasBonusEnemyStartedMoving) &&
+                this.enemyManager.HasBonusEnemyStartedMoving)
+            {
+                this.sfxManager.Play("bonusenemy_sound");
+            }
         }
 
         #endregion

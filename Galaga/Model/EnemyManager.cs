@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using Windows.UI.Xaml.Controls;
 using Galaga.View.Sprites;
@@ -9,7 +10,7 @@ namespace Galaga.Model
     /// <summary>
     ///     Manager for enemies in the game.
     /// </summary>
-    public class EnemyManager
+    public class EnemyManager : INotifyPropertyChanged
     {
         #region Data members
 
@@ -22,12 +23,26 @@ namespace Galaga.Model
 
         private readonly RoundData roundData;
         private BonusEnemy bonusEnemy;
+        private bool hasBonusEnemyStartedMoving;
 
         private readonly Canvas canvas;
 
         #endregion
 
         #region Properties
+
+        public bool HasBonusEnemyStartedMoving
+        {
+            get => this.hasBonusEnemyStartedMoving;
+            set
+            {
+                if (this.hasBonusEnemyStartedMoving != value)
+                {
+                    this.hasBonusEnemyStartedMoving = value;
+                    this.OnPropertyChanged(nameof(this.HasBonusEnemyStartedMoving));
+                }
+            }
+        }
 
         /// <summary>
         ///     Gets the enemies.
@@ -70,6 +85,17 @@ namespace Galaga.Model
 
         #region Methods
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        ///     Called when [property changed].
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         /// <summary>
         ///     Creates and places enemies onto the canvas.
         /// </summary>
@@ -85,6 +111,7 @@ namespace Galaga.Model
             this.createEnemiesForRound(GlobalEnums.ShipType.Lvl4Enemy, numEnemiesForCurrentRound[Level4EnemyIndex],
                 new Level4EnemySprite().Width);
             this.createBonusEnemyForRound(GlobalEnums.ShipType.BonusEnemy);
+            this.hasBonusEnemyStartedMoving = false;
         }
 
         private void createEnemiesForRound(GlobalEnums.ShipType shipType, int numOfEnemies, double spriteWidth)
@@ -132,7 +159,7 @@ namespace Galaga.Model
         }
 
         /// <summary>
-        ///     Moves the bonus enemy.
+        ///     Moves the bonus enemy, returns true if enemy has just started moving
         /// </summary>
         public void MoveBonusEnemy()
         {
@@ -142,6 +169,11 @@ namespace Galaga.Model
             {
                 this.canvas.Children.Remove(this.bonusEnemy.Sprite);
                 this.Enemies.Remove(this.bonusEnemy);
+            }
+
+            if (!this.hasBonusEnemyStartedMoving)
+            {
+                this.HasBonusEnemyStartedMoving = true;
             }
         }
 
