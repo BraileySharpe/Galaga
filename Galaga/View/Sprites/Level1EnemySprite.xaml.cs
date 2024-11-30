@@ -2,7 +2,12 @@
 
 namespace Galaga.View.Sprites
 {
-//
+    /// <summary>
+    ///     The Level 1 Enemy Sprite.
+    /// </summary>
+    /// <seealso cref="Galaga.View.Sprites.AnimatedSprite" />
+    /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector" />
+    /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector2" />
     public partial class Level1EnemySprite
     {
         #region Properties

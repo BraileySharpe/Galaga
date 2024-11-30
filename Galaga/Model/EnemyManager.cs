@@ -19,6 +19,7 @@ namespace Galaga.Model
         private const int Level2EnemyIndex = 1;
         private const int Level3EnemyIndex = 2;
         private const int Level4EnemyIndex = 3;
+        private const int BonusEnemyIndex = 4;
 
         private readonly LevelData levelData;
 
@@ -83,6 +84,12 @@ namespace Galaga.Model
                 new Level3EnemySprite().Width);
             this.createEnemiesForLevel(GlobalEnums.ShipType.LVL4ENEMY, numEnemiesInLevel[Level4EnemyIndex],
                 new Level4EnemySprite().Width);
+            this.createBonusEnemyForLevel(GlobalEnums.ShipType.BONUSENEMY, numEnemiesInLevel[BonusEnemyIndex]);
+        }
+
+        private void createBonusEnemyForLevel(GlobalEnums.ShipType shipType, int numOfEnemies)
+        {
+
         }
 
         private void createEnemiesForLevel(GlobalEnums.ShipType shipType, int numOfEnemies, double spriteWidth)
