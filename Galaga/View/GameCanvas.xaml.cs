@@ -7,7 +7,6 @@ using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Galaga.Model;
-using Galaga.View.Sprites;
 
 namespace Galaga.View
 {

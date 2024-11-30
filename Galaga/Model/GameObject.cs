@@ -1,5 +1,4 @@
-﻿using System;
-using Windows.Foundation;
+﻿using Windows.Foundation;
 using Galaga.View.Sprites;
 
 namespace Galaga.Model

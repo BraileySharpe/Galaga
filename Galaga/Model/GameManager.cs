@@ -119,7 +119,17 @@ namespace Galaga.Model
             this.bulletManager = new BulletManager(canvas);
             this.sfxManager = new SfxManager();
 
+            this.enemyManager.PropertyChanged += this.EnemyManagerOnPropertyChanged;
+
             this.initializeGame();
+        }
+
+        private void EnemyManagerOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(this.enemyManager.HasBonusEnemyStartedMoving) && this.enemyManager.HasBonusEnemyStartedMoving)
+            {
+                this.sfxManager.Play("bonusenemy_sound");
+            }
         }
 
         #endregion
@@ -282,8 +292,8 @@ namespace Galaga.Model
         {
             if (this.playerManager.RemainingLives <= 0 && !this.hasLost)
             {
-                this.HasLost = true;
                 this.sfxManager.Play("gameover_lose");
+                this.HasLost = true;
             }
 
             if (this.enemyManager.RemainingEnemies == 0 && !this.hasWon)
@@ -303,8 +313,9 @@ namespace Galaga.Model
                         this.EndOfRound = false;
                         break;
                     case GlobalEnums.GameRound.Round3:
-                        this.HasWon = true;
                         this.sfxManager.Play("gameover_win");
+                        this.HasWon = true;
+
                         break;
                 }
             }
