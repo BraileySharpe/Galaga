@@ -18,6 +18,7 @@ namespace Galaga.Model
         private TaskCompletionSource<bool> preloadTaskCompletionSource;
 
         private const int InitialPoolSize = 5;
+        private const double Volume = 0.25;
 
         /// <summary>
         ///     Constructor for the SFXManager class.
@@ -63,7 +64,7 @@ namespace Galaga.Model
                     MediaPlayer player = new MediaPlayer()
                     {
                         Source = Windows.Media.Core.MediaSource.CreateFromStorageFile(file),
-                        Volume = 0.5
+                        Volume = Volume
                     };
 
                     pool.Add(player);
