@@ -8,24 +8,24 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Canvas x:Name="canvas" Width="720" Height="600" Background="Black">
-        <TextBlock Text="HIGH" Height="17" Width="58" FontFamily="ModeNine" FontWeight="Bold" Canvas.Left="614"
+    <Canvas x:Name="canvas" Width="900" Height="600" Background="Black">
+        <TextBlock Text="HIGH" Height="17" Width="58" FontFamily="ModeNine" FontWeight="Bold" Canvas.Left="791"
                    FontSize="20" Foreground="#FFD01919" HorizontalAlignment="Left"
-                   VerticalAlignment="Top" Canvas.Top="11" />
-        <TextBlock Text="SCORE" Height="17" Width="64" FontFamily="ModeNine" FontWeight="Bold" Canvas.Left="632"
+                   VerticalAlignment="Top" Canvas.Top="9" />
+        <TextBlock Text="SCORE" Height="17" Width="64" FontFamily="ModeNine" FontWeight="Bold" Canvas.Left="809"
                    FontSize="20" Foreground="#FFD01919" HorizontalAlignment="Left"
-                   VerticalAlignment="Top" Canvas.Top="31" />
+                   VerticalAlignment="Top" Canvas.Top="29" />
         <TextBlock Text="{Binding Score, Mode=OneWay}" Height="31" Width="79" FontFamily="ModeNine" FontWeight="Bold"
-                   Canvas.Left="614" Canvas.Top="57" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Top"
+                   Canvas.Left="791" Canvas.Top="55" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Top"
                    Foreground="White" TextAlignment="Right" />
-        <TextBlock x:Name="gameOverTextBlock" Text="GAME OVER" Visibility="Collapsed" FontFamily="ModeNine"
-                   FontWeight="Bold" FontSize="50" Canvas.Left="221" Canvas.Top="275" Foreground="White"
-                   HorizontalAlignment="Left" VerticalAlignment="Top" TextAlignment="Center" Width="315" />
+        <TextBlock x:Name="gameOverTextBlock" Text="GAME OVER" Visibility="Visible" FontFamily="ModeNine"
+                   FontWeight="Bold" FontSize="50" Canvas.Left="275" Canvas.Top="275" Foreground="White"
+                   HorizontalAlignment="Left" VerticalAlignment="Center" TextAlignment="Center" Width="315"/>
         <TextBlock x:Name="youWinTextBlock" Text="YOU WIN!" Visibility="Collapsed" FontFamily="ModeNine"
-                   FontWeight="Bold" FontSize="50" Canvas.Left="237" Canvas.Top="275" Foreground="White"
-                   TextAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top" />
-        <custom:PlayerLifeIcon Canvas.Left="682" Canvas.Top="172" />
-        <custom:PlayerLifeIcon Canvas.Left="648" Canvas.Top="172" />
-        <custom:PlayerLifeIcon Canvas.Left="614" Canvas.Top="172" />
+                   FontWeight="Bold" FontSize="50" Canvas.Left="327" Canvas.Top="275" Foreground="White"
+                   TextAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Center" />
+        <custom:PlayerLifeIcon Canvas.Left="859" Canvas.Top="170" />
+        <custom:PlayerLifeIcon Canvas.Left="825" Canvas.Top="170" />
+        <custom:PlayerLifeIcon Canvas.Left="791" Canvas.Top="170" />
     </Canvas>
 </Page>
