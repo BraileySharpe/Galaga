@@ -15,29 +15,27 @@ namespace Galaga.Model
     {
         #region Data members
 
-        private readonly Dictionary<string, List<MediaPlayer>> soundEffectPools;
-        private readonly Dictionary<string, StorageFile> soundFiles;
-        private TaskCompletionSource<bool> preloadTaskCompletionSource;
-
         private const int InitialPoolSize = 5;
 
         private const double Volume = 0.25;
 
+        private readonly Dictionary<string, List<MediaPlayer>> soundEffectPools;
+        private readonly Dictionary<string, StorageFile> soundFiles;
+        private readonly TaskCompletionSource<bool> preloadTaskCompletionSource;
+
         #endregion
 
         #region Constructors
-
 
         /// <summary>
         ///     Constructor for the SFXManager class.
         /// </summary>
         public SFXManager()
         {
-
-            soundEffectPools = new Dictionary<string, List<MediaPlayer>>();
-            soundFiles = new Dictionary<string, StorageFile>();
-            preloadTaskCompletionSource = new TaskCompletionSource<bool>();
-            LoadSounds();
+            this.soundEffectPools = new Dictionary<string, List<MediaPlayer>>();
+            this.soundFiles = new Dictionary<string, StorageFile>();
+            this.preloadTaskCompletionSource = new TaskCompletionSource<bool>();
+            this.loadSounds();
         }
 
         #endregion
@@ -51,34 +49,32 @@ namespace Galaga.Model
                 var assetsFolder = await Package.Current.InstalledLocation.GetFolderAsync("Assets");
                 var audioFolder = await assetsFolder.GetFolderAsync("Audio");
 
+                await this.addSoundEffect("enemy_death", audioFolder);
+                await this.addSoundEffect("enemy_shoot", audioFolder);
+                await this.addSoundEffect("player_death", audioFolder);
+                await this.addSoundEffect("player_shoot", audioFolder);
 
-                await AddSoundEffect("enemy_death", audioFolder);
-                await AddSoundEffect("enemy_shoot", audioFolder);
-                await AddSoundEffect("player_death", audioFolder);
-                await AddSoundEffect("player_shoot", audioFolder);
-
-                preloadTaskCompletionSource.SetResult(true);
-
+                this.preloadTaskCompletionSource.SetResult(true);
             }
             catch (Exception exception)
             {
-                preloadTaskCompletionSource.SetException(new Exception("Error loading sound effects", exception));
+                this.preloadTaskCompletionSource.SetException(new Exception("Error loading sound effects", exception));
             }
         }
 
-        private async Task addSoundFile(string key, StorageFolder audioFolder)
+        private async Task addSoundEffect(string key, StorageFolder audioFolder)
         {
             try
             {
-                StorageFile file = await audioFolder.GetFileAsync(key + ".wav");
-                soundFiles.Add(key, file);
+                var file = await audioFolder.GetFileAsync(key + ".wav");
+                this.soundFiles.Add(key, file);
 
-                List<MediaPlayer> pool = new List<MediaPlayer>();
-                for (int i = 0; i < InitialPoolSize; i++)
+                var pool = new List<MediaPlayer>();
+                for (var i = 0; i < InitialPoolSize; i++)
                 {
-                    MediaPlayer player = new MediaPlayer()
+                    var player = new MediaPlayer
                     {
-                        Source = Windows.Media.Core.MediaSource.CreateFromStorageFile(file),
+                        Source = MediaSource.CreateFromStorageFile(file),
 
                         Volume = Volume
                     };
@@ -86,7 +82,7 @@ namespace Galaga.Model
                     pool.Add(player);
                 }
 
-                soundEffectPools.Add(key, pool);
+                this.soundEffectPools.Add(key, pool);
             }
             catch (Exception exception)
             {
@@ -99,24 +95,24 @@ namespace Galaga.Model
         /// </summary>
         public async Task WaitForPreloadingAsync()
         {
-            await preloadTaskCompletionSource.Task;
+            await this.preloadTaskCompletionSource.Task;
         }
 
         /// <summary>
         ///     Plays a sound effect.
         /// </summary>
         /// <param name="key">Key of the sound effect to play.</param>
+        [Obsolete]
         public void Play(string key)
         {
-
-            if (soundEffectPools.TryGetValue(key, out var pool))
+            if (this.soundEffectPools.TryGetValue(key, out var pool))
             {
-                MediaPlayer availablePlayer = pool.Find(p => p.CurrentState == MediaPlayerState.Closed
-                                                    || p.CurrentState == MediaPlayerState.Paused);
+                var availablePlayer = pool.Find(p => p.CurrentState == MediaPlayerState.Closed
+                                                     || p.CurrentState == MediaPlayerState.Paused);
 
                 if (availablePlayer == null)
                 {
-                    MediaPlayer newPlayer = this.createNewThread(key);
+                    var newPlayer = this.createNewThread(key);
                     pool.Add(newPlayer);
                 }
 
@@ -130,11 +126,11 @@ namespace Galaga.Model
 
         private MediaPlayer createNewThread(string key)
         {
-            if (soundFiles.TryGetValue(key, out var file))
+            if (this.soundFiles.TryGetValue(key, out var file))
             {
-                MediaPlayer player = new MediaPlayer()
+                var player = new MediaPlayer
                 {
-                    Source = Windows.Media.Core.MediaSource.CreateFromStorageFile(file),
+                    Source = MediaSource.CreateFromStorageFile(file),
                     Volume = 0.25
                 };
 
@@ -152,7 +148,7 @@ namespace Galaga.Model
         /// </param>
         public void Stop(string key)
         {
-            if (soundEffectPools.TryGetValue(key, out var pool))
+            if (this.soundEffectPools.TryGetValue(key, out var pool))
             {
                 foreach (var player in pool)
                 {
