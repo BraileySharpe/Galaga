@@ -132,7 +132,6 @@
     <Compile Include="Model\Player.cs" />
     <Compile Include="Model\PlayerManager.cs" />
     <Compile Include="Model\ShootingEnemy.cs" />
-    <Compile Include="Model\TimeManager.cs" />
     <Compile Include="View\GameCanvas.xaml.cs">
       <DependentUpon>GameCanvas.xaml</DependentUpon>
     </Compile>
@@ -168,6 +167,7 @@
     <Compile Include="View\Sprites\PlayerSprite.xaml.cs">
       <DependentUpon>PlayerSprite.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\TimeManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

@@ -10,7 +10,7 @@ namespace Galaga.Model
         #region Data members
 
         private const int SpeedXDirection = 0;
-        private int SpeedYDirection = 15;
+        private readonly int speedYDirection = 15;
 
         #endregion
 
@@ -26,18 +26,22 @@ namespace Galaga.Model
 
             if (type == GlobalEnums.CharacterType.PLAYER)
             {
-                SpeedYDirection = -SpeedYDirection;
+                this.speedYDirection = -this.speedYDirection;
             }
 
-            SetSpeed(SpeedXDirection, this.SpeedYDirection);
+            SetSpeed(SpeedXDirection, this.speedYDirection);
         }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         ///     Move the bullet.
         /// </summary>
         public void Move()
         {
-            this.Y += this.SpeedY;
+            Y += SpeedY;
         }
 
         #endregion

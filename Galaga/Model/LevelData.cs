@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.UI.Xaml.Controls.Maps;
 
 namespace Galaga.Model
 {
@@ -12,29 +8,56 @@ namespace Galaga.Model
     /// </summary>
     public class LevelData
     {
+        #region Data members
+
+        /// <summary>
+        ///     Number of enemies per level.
+        ///     Key: Level of the game.
+        ///     Value: Number of enemies in level. [numLevel1Enemies, numLevel2Enemies, numLevel3Enemies, numLevel4Enemies]
+        /// </summary>
+        private readonly Dictionary<GlobalEnums.GameLevel, int[]> numberOfEnemiesPerLevel;
+
+        private readonly IList<GlobalEnums.GameLevel> levels;
+
+        #endregion
+
+        #region Properties
+
         /// <summary>
         ///     Reference to the current level.
         /// </summary>
         public GlobalEnums.GameLevel CurrentLevel { get; private set; }
 
-        /// <summary>
-        ///    Number of enemies per level.
-        ///    Key: Level of the game.
-        ///    Value: Number of enemies in level. [numLevel1Enemies, numLevel2Enemies, numLevel3Enemies, numLevel4Enemies]
-        /// </summary>
-        public static readonly Dictionary<GlobalEnums.GameLevel, int[]> NumberOfEnemiesPerLevel = new Dictionary<GlobalEnums.GameLevel, int[]>
-        {
-            { GlobalEnums.GameLevel.LEVEL1, new int[] { 3, 4, 4, 5 } },
-            { GlobalEnums.GameLevel.LEVEL2, new int[] { 4, 5, 5, 6 } },
-            { GlobalEnums.GameLevel.LEVEL3, new int[] { 5, 6, 6, 7 } }
-        };
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///     Constructor for the LevelData class.
         /// </summary>
         public LevelData()
         {
+            this.numberOfEnemiesPerLevel = new Dictionary<GlobalEnums.GameLevel, int[]>();
+            this.levels = new List<GlobalEnums.GameLevel>();
             this.CurrentLevel = GlobalEnums.GameLevel.LEVEL1;
+            this.initializeGameData();
+        }
+
+        #endregion
+
+        #region Methods
+
+        private void initializeGameData()
+        {
+            this.initializeLevelData(GlobalEnums.GameLevel.LEVEL1, new[] { 3, 4, 4, 5 });
+            this.initializeLevelData(GlobalEnums.GameLevel.LEVEL2, new[] { 4, 5, 5, 6 });
+            this.initializeLevelData(GlobalEnums.GameLevel.LEVEL3, new[] { 5, 6, 6, 7 });
+        }
+
+        private void initializeLevelData(GlobalEnums.GameLevel gameLevel, int[] numOfEnemiesPerRow)
+        {
+            this.numberOfEnemiesPerLevel.Add(gameLevel, numOfEnemiesPerRow);
+            this.levels.Add(gameLevel);
         }
 
         /// <summary>
@@ -45,7 +68,7 @@ namespace Galaga.Model
         /// </returns>
         public int[] GetNumEnemiesForCurrentLevel()
         {
-            return NumberOfEnemiesPerLevel[this.CurrentLevel];
+            return this.numberOfEnemiesPerLevel[this.CurrentLevel];
         }
 
         /// <summary>
@@ -57,19 +80,19 @@ namespace Galaga.Model
         /// </exception>
         public void MoveToNextLevel()
         {
-            switch (this.CurrentLevel)
+            for (var i = 0; i < this.levels.Count; i++)
             {
-                case GlobalEnums.GameLevel.LEVEL1:
-                    this.CurrentLevel = GlobalEnums.GameLevel.LEVEL2;
-                    break;
-                case GlobalEnums.GameLevel.LEVEL2:
-                    this.CurrentLevel = GlobalEnums.GameLevel.LEVEL3;
-                    break;
-                case GlobalEnums.GameLevel.LEVEL3:
-                    throw new InvalidOperationException("No more levels.");
-                default:
-                    throw new InvalidOperationException("Invalid level.");
+                if (this.CurrentLevel == this.levels[i])
+                {
+                    if (i + 1 < this.levels.Count)
+                    {
+                        this.CurrentLevel = this.levels[i + 1];
+                        return;
+                    }
+                }
             }
         }
+
+        #endregion
     }
 }

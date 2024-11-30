@@ -8,9 +8,32 @@ namespace Galaga.View
     /// </summary>
     public class TimeManager
     {
-        #region Constructors
+        #region Data members
 
-        #region Constructor
+        private const int EnemyMovementInMilliseconds = 350;
+        private const int MinCooldownForEnemyBulletInMilliseconds = 250;
+        private const int MaxCooldownForEnemyBulletInMilliseconds = 2500;
+        private const int PlayerBulletCooldownInMilliseconds = 300;
+        private const int GameLoopInMilliseconds = 16;
+        private const int PlayerBulletMovementInMilliseconds = 10;
+        private const int EnemyBulletMovementInMilliseconds = 100;
+
+        private readonly GameCanvas gameCanvas;
+        private readonly Random random;
+
+        private DispatcherTimer playerBulletTimer;
+        private DispatcherTimer enemyMovementTimer;
+        private DispatcherTimer enemyBulletTimer;
+        private DispatcherTimer enemyBulletMovementTimer;
+        private DispatcherTimer gameLoopTimer;
+        private DispatcherTimer playerBulletCooldownTimer;
+
+        private int enemyTickCounter;
+        private bool enemyMoveRight;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="TimeManager" /> class.
@@ -22,8 +45,6 @@ namespace Galaga.View
             this.gameCanvas = gameCanvas ?? throw new ArgumentNullException(nameof(gameCanvas));
             this.random = new Random();
         }
-
-        #endregion
 
         #endregion
 
@@ -66,7 +87,7 @@ namespace Galaga.View
         {
             this.playerBulletTimer = new DispatcherTimer
             {
-                Interval = TimeSpan.FromMilliseconds(10)
+                Interval = TimeSpan.FromMilliseconds(PlayerBulletMovementInMilliseconds)
             };
             this.playerBulletTimer.Tick += (sender, e) => this.gameCanvas.MovePlayerBullet();
             this.playerBulletTimer.Start();
@@ -76,7 +97,7 @@ namespace Galaga.View
         {
             this.enemyMovementTimer = new DispatcherTimer
             {
-                Interval = TimeSpan.FromMilliseconds(350)
+                Interval = TimeSpan.FromMilliseconds(EnemyMovementInMilliseconds)
             };
             this.enemyMovementTimer.Tick += (sender, e) =>
             {
@@ -118,7 +139,7 @@ namespace Galaga.View
             this.enemyBulletTimer = new DispatcherTimer();
             this.enemyBulletMovementTimer = new DispatcherTimer
             {
-                Interval = TimeSpan.FromMilliseconds(100)
+                Interval = TimeSpan.FromMilliseconds(EnemyBulletMovementInMilliseconds)
             };
 
             this.setRandomEnemyTimeInterval();
@@ -135,14 +156,15 @@ namespace Galaga.View
 
         private void setRandomEnemyTimeInterval()
         {
-            this.enemyBulletTimer.Interval = TimeSpan.FromMilliseconds(this.random.Next(250, 2500));
+            this.enemyBulletTimer.Interval = TimeSpan.FromMilliseconds(
+                this.random.Next(MinCooldownForEnemyBulletInMilliseconds, MaxCooldownForEnemyBulletInMilliseconds));
         }
 
         private void setUpGameLoopTimer()
         {
             this.gameLoopTimer = new DispatcherTimer
             {
-                Interval = TimeSpan.FromMilliseconds(16)
+                Interval = TimeSpan.FromMilliseconds(GameLoopInMilliseconds)
             };
             this.gameLoopTimer.Tick += (sender, e) => this.gameCanvas.GameLoop();
             this.gameLoopTimer.Start();
@@ -152,7 +174,7 @@ namespace Galaga.View
         {
             this.playerBulletCooldownTimer = new DispatcherTimer
             {
-                Interval = TimeSpan.FromMilliseconds(300)
+                Interval = TimeSpan.FromMilliseconds(PlayerBulletCooldownInMilliseconds)
             };
             this.playerBulletCooldownTimer.Tick += (sender, e) =>
             {
@@ -160,23 +182,6 @@ namespace Galaga.View
                 this.playerBulletCooldownTimer.Stop();
             };
         }
-
-        #endregion
-
-        #region Data Members
-
-        private readonly GameCanvas gameCanvas;
-        private readonly Random random;
-
-        private DispatcherTimer playerBulletTimer;
-        private DispatcherTimer enemyMovementTimer;
-        private DispatcherTimer enemyBulletTimer;
-        private DispatcherTimer enemyBulletMovementTimer;
-        private DispatcherTimer gameLoopTimer;
-        private DispatcherTimer playerBulletCooldownTimer;
-
-        private int enemyTickCounter;
-        private bool enemyMoveRight;
 
         #endregion
     }

@@ -15,6 +15,7 @@ namespace Galaga.Model
         private readonly EnemyManager enemyManager;
         private readonly BulletManager bulletManager;
         private readonly PlayerManager playerManager;
+        private readonly LevelData levelData;
         private bool hasWon;
         private bool hasLost;
 
@@ -96,8 +97,8 @@ namespace Galaga.Model
             }
 
             this.canvas = canvas;
-
-            this.enemyManager = new EnemyManager(canvas);
+            this.levelData = new LevelData();
+            this.enemyManager = new EnemyManager(canvas, this.levelData);
             this.playerManager = new PlayerManager(canvas);
             this.bulletManager = new BulletManager(canvas);
 
@@ -237,14 +238,14 @@ namespace Galaga.Model
 
             if (this.enemyManager.RemainingEnemies == 0 && !this.hasWon)
             {
-                switch (this.enemyManager.levelData.CurrentLevel)
+                switch (this.levelData.CurrentLevel)
                 {
                     case GlobalEnums.GameLevel.LEVEL1:
-                        this.enemyManager.levelData.MoveToNextLevel();
+                        this.levelData.MoveToNextLevel();
                         this.enemyManager.CreateAndPlaceEnemies();
                         break;
                     case GlobalEnums.GameLevel.LEVEL2:
-                        this.enemyManager.levelData.MoveToNextLevel();
+                        this.levelData.MoveToNextLevel();
                         this.enemyManager.CreateAndPlaceEnemies();
                         break;
                     case GlobalEnums.GameLevel.LEVEL3:
