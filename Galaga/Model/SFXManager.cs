@@ -17,7 +17,7 @@ namespace Galaga.Model
 
         private const int InitialPoolSize = 10;
 
-        private const double Volume = 0.20;
+        private const double Volume = 0.18;
 
         private readonly Dictionary<string, List<MediaPlayer>> soundEffectPools;
         private readonly Dictionary<string, StorageFile> soundFiles;

@@ -234,6 +234,7 @@ namespace Galaga.Model
                     if (enemy is BonusEnemy)
                     {
                         this.playerManager.GainExtraLife();
+                        this.sfxManager.Stop("bonusenemy_sound");
                     }
                 }
             }
