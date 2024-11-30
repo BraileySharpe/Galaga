@@ -66,7 +66,7 @@ namespace Galaga.Model
 
         private void initializePlayer()
         {
-            this.Player = ShipFactory.CreateShip(GlobalEnums.ShipType.PLAYER) as Player;
+            this.Player = ShipFactory.CreateShip(GlobalEnums.ShipType.Player) as Player;
             if (this.Player != null)
             {
                 this.canvas.Children.Add(this.Player.Sprite);

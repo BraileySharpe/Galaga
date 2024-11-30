@@ -16,16 +16,6 @@ namespace Galaga.View
     /// </summary>
     public sealed partial class GameCanvas
     {
-        #region Data Members
-
-        private readonly GameManager gameManager;
-        private readonly TimeManager timeManager;
-        private readonly HashSet<VirtualKey> activeKeys;
-        private bool spacePressedPreviously;
-        private bool canShoot = true;
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
@@ -135,6 +125,14 @@ namespace Galaga.View
         }
 
         /// <summary>
+        ///     Moves the bonus enemy.
+        /// </summary>
+        public void MoveBonusEnemy()
+        {
+            this.gameManager.MoveBonusEnemy();
+        }
+
+        /// <summary>
         ///     Toggles the sprites for animation.
         /// </summary>
         public void ToggleSpritesForAnimation()
@@ -162,6 +160,11 @@ namespace Galaga.View
 
         private void OnGameManagerPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            if (e.PropertyName == nameof(this.gameManager.EndOfRound) && this.gameManager.EndOfRound)
+            {
+                this.timeManager.ResetBonusEnemyTimers();
+            }
+
             if (e.PropertyName == nameof(this.gameManager.HasLost) && this.gameManager.HasLost)
             {
                 this.endGame(this.gameOverTextBlock);
@@ -191,6 +194,16 @@ namespace Galaga.View
                 }
             }
         }
+
+        #endregion
+
+        #region Data Members
+
+        private readonly GameManager gameManager;
+        private readonly TimeManager timeManager;
+        private readonly HashSet<VirtualKey> activeKeys;
+        private bool spacePressedPreviously;
+        private bool canShoot = true;
 
         #endregion
     }

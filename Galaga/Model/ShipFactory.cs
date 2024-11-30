@@ -27,30 +27,30 @@ namespace Galaga.Model
         {
             switch (shipType)
             {
-                case GlobalEnums.ShipType.PLAYER:
+                case GlobalEnums.ShipType.Player:
                     return new Player();
-                case GlobalEnums.ShipType.LVL1ENEMY:
+                case GlobalEnums.ShipType.Lvl1Enemy:
                     return new Enemy(new Level1EnemySprite())
                     {
                         Score = Level1EnemyScore
                     };
-                case GlobalEnums.ShipType.LVL2ENEMY:
+                case GlobalEnums.ShipType.Lvl2Enemy:
                     return new Enemy(new Level2EnemySprite())
                     {
                         Score = Level2EnemyScore
                     };
-                case GlobalEnums.ShipType.LVL3ENEMY:
+                case GlobalEnums.ShipType.Lvl3Enemy:
                     return new ShootingEnemy(new Level3EnemySprite())
                     {
                         Score = Level3EnemyScore
                     };
-                case GlobalEnums.ShipType.LVL4ENEMY:
+                case GlobalEnums.ShipType.Lvl4Enemy:
                     return new ShootingEnemy(new Level4EnemySprite())
                     {
                         Score = Level4EnemyScore
                     };
-                case GlobalEnums.ShipType.BONUSENEMY:
-                    return new Enemy(new BonusEnemySprite())
+                case GlobalEnums.ShipType.BonusEnemy:
+                    return new BonusEnemy()
                     {
                         Score = BonusEnemyScore
                     };

@@ -102,13 +102,13 @@ namespace Galaga.Model
         ///     Plays a sound effect.
         /// </summary>
         /// <param name="key">Key of the sound effect to play.</param>
-        [Obsolete]
         public void Play(string key)
         {
             if (this.soundEffectPools.TryGetValue(key, out var pool))
             {
-                var availablePlayer = pool.Find(p => p.CurrentState == MediaPlayerState.Closed
-                                                     || p.CurrentState == MediaPlayerState.Paused);
+                var availablePlayer = pool.Find(p =>
+                    p.PlaybackSession.PlaybackState == MediaPlaybackState.None ||
+                    p.PlaybackSession.PlaybackState == MediaPlaybackState.Paused);
 
                 if (availablePlayer == null)
                 {

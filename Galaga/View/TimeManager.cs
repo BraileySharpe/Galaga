@@ -17,6 +17,7 @@ namespace Galaga.View
         private const int GameLoopInMilliseconds = 16;
         private const int PlayerBulletMovementInMilliseconds = 10;
         private const int EnemyBulletMovementInMilliseconds = 100;
+        private const int BonusEnemyMovementInMilliseconds = 200;
 
         private readonly GameCanvas gameCanvas;
         private readonly Random random;
@@ -27,9 +28,12 @@ namespace Galaga.View
         private DispatcherTimer enemyBulletMovementTimer;
         private DispatcherTimer gameLoopTimer;
         private DispatcherTimer playerBulletCooldownTimer;
+        private DispatcherTimer bonusEnemyMovementTimer;
 
         private int enemyTickCounter;
         private bool enemyMoveRight;
+
+        private DispatcherTimer bonusEnemyActivationTimer;
 
         #endregion
 
@@ -60,6 +64,8 @@ namespace Galaga.View
             this.setUpEnemyBulletTimer();
             this.setUpGameLoopTimer();
             this.setUpPlayerBulletCooldownTimer();
+            this.setUpBonusEnemyMovementTimer();
+            this.setUpBonusEnemyActivationTimer();
         }
 
         /// <summary>
@@ -81,6 +87,20 @@ namespace Galaga.View
             this.enemyBulletMovementTimer?.Stop();
             this.gameLoopTimer?.Stop();
             this.playerBulletCooldownTimer?.Stop();
+            this.bonusEnemyMovementTimer?.Stop();
+            this.bonusEnemyActivationTimer?.Stop();
+        }
+
+        /// <summary>
+        ///     Resets the bonus enemy activation and movement timers for a new round.
+        /// </summary>
+        public void ResetBonusEnemyTimers()
+        {
+            this.bonusEnemyActivationTimer?.Stop();
+            this.bonusEnemyMovementTimer?.Stop();
+
+            this.setRandomBonusEnemyActivationTime();
+            this.bonusEnemyActivationTimer?.Start();
         }
 
         private void setUpPlayerBulletTimer()
@@ -132,6 +152,37 @@ namespace Galaga.View
                 this.gameCanvas.ToggleSpritesForAnimation();
             };
             this.enemyMovementTimer.Start();
+        }
+
+        private void setUpBonusEnemyMovementTimer()
+        {
+            this.bonusEnemyMovementTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromMilliseconds(BonusEnemyMovementInMilliseconds)
+            };
+
+            this.bonusEnemyMovementTimer.Tick += (sender, e) => { this.gameCanvas.MoveBonusEnemy(); };
+        }
+
+        private void setUpBonusEnemyActivationTimer()
+        {
+            this.bonusEnemyActivationTimer = new DispatcherTimer();
+            this.setRandomBonusEnemyActivationTime();
+
+            this.bonusEnemyActivationTimer.Tick += (sender, e) =>
+            {
+                this.bonusEnemyMovementTimer.Start();
+
+                this.bonusEnemyActivationTimer.Stop();
+            };
+
+            this.bonusEnemyActivationTimer.Start();
+        }
+
+        private void setRandomBonusEnemyActivationTime()
+        {
+            var randomInterval = this.random.Next(5000, 15000);
+            this.bonusEnemyActivationTimer.Interval = TimeSpan.FromMilliseconds(randomInterval);
         }
 
         private void setUpEnemyBulletTimer()

@@ -120,10 +120,11 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\BonusEnemy.cs" />
     <Compile Include="Model\Bullet.cs" />
     <Compile Include="Model\BulletManager.cs" />
     <Compile Include="Model\SFXManager.cs" />
-    <Compile Include="Model\LevelData.cs" />
+    <Compile Include="Model\RoundData.cs" />
     <Compile Include="Model\GlobalEnums.cs" />
     <Compile Include="Model\CollisionManager.cs" />
     <Compile Include="Model\Enemy.cs" />

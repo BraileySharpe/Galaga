@@ -7,9 +7,9 @@ namespace Galaga.Model
     /// </summary>
     public class ShootingEnemy : Enemy
     {
-        #region Data members
+        #region Properties
 
-        private const int EnemyBulletSpeedY = 15;
+        public int EnemyBulletSpeedY { get; protected set; } = 15;
 
         #endregion
 
@@ -33,11 +33,11 @@ namespace Galaga.Model
         /// <returns>The enemy bullet</returns>
         public Bullet Shoot()
         {
-            var bullet = new Bullet(new EnemyBulletSprite(), GlobalEnums.CharacterType.ENEMY);
+            var bullet = new Bullet(new EnemyBulletSprite(), GlobalEnums.CharacterType.Enemy);
 
             bullet.X = X + Width / 2.0 - bullet.Width / 2.0;
             bullet.Y = Y + Height;
-            bullet.SetSpeed(0, EnemyBulletSpeedY);
+            bullet.SetSpeed(0, this.EnemyBulletSpeedY);
 
             return bullet;
         }

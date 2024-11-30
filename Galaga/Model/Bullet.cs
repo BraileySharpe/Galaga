@@ -24,7 +24,7 @@ namespace Galaga.Model
         {
             Sprite = sprite;
 
-            if (type == GlobalEnums.CharacterType.PLAYER)
+            if (type == GlobalEnums.CharacterType.Player)
             {
                 this.speedYDirection = -this.speedYDirection;
             }

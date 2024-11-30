@@ -15,33 +15,33 @@
             /// <summary>
             ///     Represents the player.
             /// </summary>
-            PLAYER,
+            Player,
 
             /// <summary>
             ///     Represents the enemy.
             /// </summary>
-            ENEMY
+            Enemy
         }
 
         /// <summary>
-        ///     Represents the game level.
+        ///     Represents the game round.
         /// </summary>
-        public enum GameLevel
+        public enum GameRound
         {
             /// <summary>
-            ///     Level 1.
+            ///     Round 1.
             /// </summary>
-            LEVEL1,
+            Round1,
 
             /// <summary>
-            ///     Level 2.
+            ///     Round 2.
             /// </summary>
-            LEVEL2,
+            Round2,
 
             /// <summary>
-            ///     Level 3.
+            ///     Round 3.
             /// </summary>
-            LEVEL3
+            Round3
         }
 
         public enum ShipType
@@ -49,32 +49,32 @@
             /// <summary>
             ///     Represents the player ship.
             /// </summary>
-            PLAYER,
+            Player,
 
             /// <summary>
             ///     Represents the level 1 enemy ship.
             /// </summary>
-            LVL1ENEMY,
+            Lvl1Enemy,
 
             /// <summary>
             ///     Represents the level 2 enemy ship.
             /// </summary>
-            LVL2ENEMY,
+            Lvl2Enemy,
 
             /// <summary>
             ///     Represents the level 3 enemy ship.
             /// </summary>
-            LVL3ENEMY,
+            Lvl3Enemy,
 
             /// <summary>
             ///     Represents the level 4 enemy ship.
             /// </summary>
-            LVL4ENEMY,
+            Lvl4Enemy,
 
             /// <summary>
             ///     Represent the bonus enemy ship.
             /// </summary>
-            BONUSENEMY
+            BonusEnemy
         }
 
         #endregion

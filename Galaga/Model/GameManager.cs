@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 
 namespace Galaga.Model
@@ -17,13 +16,33 @@ namespace Galaga.Model
         private readonly BulletManager bulletManager;
         private readonly PlayerManager playerManager;
         private readonly SFXManager sfxManager;
-        private readonly LevelData levelData;
+        private readonly RoundData roundData;
         private bool hasWon;
         private bool hasLost;
+        private bool endOfRound;
 
         #endregion
 
         #region Properties
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether it is the end of a round.
+        /// </summary>
+        /// <value>
+        ///     true if it's the end of a round, false otherwise.
+        /// </value>
+        public bool EndOfRound
+        {
+            get => this.endOfRound;
+            set
+            {
+                if (this.endOfRound != value)
+                {
+                    this.endOfRound = value;
+                    this.OnPropertyChanged(nameof(this.EndOfRound));
+                }
+            }
+        }
 
         /// <summary>
         ///     Gets or sets the score.
@@ -94,13 +113,13 @@ namespace Galaga.Model
         public GameManager(Canvas canvas)
         {
             this.canvas = canvas ?? throw new ArgumentNullException(nameof(canvas));
-            this.levelData = new LevelData();
-            this.enemyManager = new EnemyManager(canvas, this.levelData);
+            this.roundData = new RoundData();
+            this.enemyManager = new EnemyManager(canvas, this.roundData);
             this.playerManager = new PlayerManager(canvas);
             this.bulletManager = new BulletManager(canvas);
             this.sfxManager = new SFXManager();
 
-            InitializeGame();
+            this.initializeGame();
         }
 
         #endregion
@@ -122,16 +141,18 @@ namespace Galaga.Model
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private async void InitializeGame()
+        private async void initializeGame()
         {
             try
             {
-                await sfxManager.WaitForPreloadingAsync();
+                await this.sfxManager.WaitForPreloadingAsync();
             }
             catch (Exception exception)
             {
                 throw new TimeoutException("Error preloading sfx", exception);
             }
+
+            this.enemyManager.CreateAndPlaceEnemies();
         }
 
         /// <summary>
@@ -164,6 +185,14 @@ namespace Galaga.Model
         public void MoveEnemiesRight()
         {
             this.enemyManager.MoveEnemiesRight();
+        }
+
+        /// <summary>
+        ///     Moves the bonus enemy.
+        /// </summary>
+        public void MoveBonusEnemy()
+        {
+            this.enemyManager.MoveBonusEnemy();
         }
 
         /// <summary>
@@ -249,17 +278,21 @@ namespace Galaga.Model
 
             if (this.enemyManager.RemainingEnemies == 0 && !this.hasWon)
             {
-                switch (this.levelData.CurrentLevel)
+                switch (this.roundData.CurrentRound)
                 {
-                    case GlobalEnums.GameLevel.LEVEL1:
-                        this.levelData.MoveToNextLevel();
+                    case GlobalEnums.GameRound.Round1:
+                        this.roundData.MoveToNextRound();
+                        this.EndOfRound = true;
                         this.enemyManager.CreateAndPlaceEnemies();
+                        this.EndOfRound = false;
                         break;
-                    case GlobalEnums.GameLevel.LEVEL2:
-                        this.levelData.MoveToNextLevel();
+                    case GlobalEnums.GameRound.Round2:
+                        this.roundData.MoveToNextRound();
+                        this.EndOfRound = true;
                         this.enemyManager.CreateAndPlaceEnemies();
+                        this.EndOfRound = false;
                         break;
-                    case GlobalEnums.GameLevel.LEVEL3:
+                    case GlobalEnums.GameRound.Round3:
                         this.HasWon = true;
                         break;
                 }

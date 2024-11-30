@@ -19,9 +19,9 @@ namespace Galaga.Model
         private const int Level2EnemyIndex = 1;
         private const int Level3EnemyIndex = 2;
         private const int Level4EnemyIndex = 3;
-        private const int BonusEnemyIndex = 4;
 
-        private readonly LevelData levelData;
+        private readonly RoundData roundData;
+        private ShootingEnemy bonusEnemy;
 
         private readonly Canvas canvas;
 
@@ -57,13 +57,13 @@ namespace Galaga.Model
         ///     Initializes a new instance of the <see cref="EnemyManager" /> class.
         /// </summary>
         /// <param name="canvas">The canvas.</param>
-        /// <param name="levelData">The level data.</param>
+        /// <param name="roundData">The round data.</param>
         /// <exception cref="System.ArgumentNullException">canvas</exception>
-        public EnemyManager(Canvas canvas, LevelData levelData)
+        public EnemyManager(Canvas canvas, RoundData roundData)
         {
             this.Enemies = new List<Enemy>();
             this.canvas = canvas ?? throw new ArgumentNullException(nameof(canvas));
-            this.levelData = levelData ?? throw new ArgumentNullException(nameof(levelData));
+            this.roundData = roundData ?? throw new ArgumentNullException(nameof(roundData));
         }
 
         #endregion
@@ -75,24 +75,19 @@ namespace Galaga.Model
         /// </summary>
         public void CreateAndPlaceEnemies()
         {
-            var numEnemiesInLevel = this.levelData.GetNumEnemiesForCurrentLevel();
-            this.createEnemiesForLevel(GlobalEnums.ShipType.LVL1ENEMY, numEnemiesInLevel[Level1EnemyIndex],
+            var numEnemiesForCurrentRound = this.roundData.GetNumEnemiesForCurrentRound();
+            this.createEnemiesForRound(GlobalEnums.ShipType.Lvl1Enemy, numEnemiesForCurrentRound[Level1EnemyIndex],
                 new Level1EnemySprite().Width);
-            this.createEnemiesForLevel(GlobalEnums.ShipType.LVL2ENEMY, numEnemiesInLevel[Level2EnemyIndex],
+            this.createEnemiesForRound(GlobalEnums.ShipType.Lvl2Enemy, numEnemiesForCurrentRound[Level2EnemyIndex],
                 new Level2EnemySprite().Width);
-            this.createEnemiesForLevel(GlobalEnums.ShipType.LVL3ENEMY, numEnemiesInLevel[Level3EnemyIndex],
+            this.createEnemiesForRound(GlobalEnums.ShipType.Lvl3Enemy, numEnemiesForCurrentRound[Level3EnemyIndex],
                 new Level3EnemySprite().Width);
-            this.createEnemiesForLevel(GlobalEnums.ShipType.LVL4ENEMY, numEnemiesInLevel[Level4EnemyIndex],
+            this.createEnemiesForRound(GlobalEnums.ShipType.Lvl4Enemy, numEnemiesForCurrentRound[Level4EnemyIndex],
                 new Level4EnemySprite().Width);
-            this.createBonusEnemyForLevel(GlobalEnums.ShipType.BONUSENEMY, numEnemiesInLevel[BonusEnemyIndex]);
+            this.createBonusEnemyForRound(GlobalEnums.ShipType.BonusEnemy);
         }
 
-        private void createBonusEnemyForLevel(GlobalEnums.ShipType shipType, int numOfEnemies)
-        {
-
-        }
-
-        private void createEnemiesForLevel(GlobalEnums.ShipType shipType, int numOfEnemies, double spriteWidth)
+        private void createEnemiesForRound(GlobalEnums.ShipType shipType, int numOfEnemies, double spriteWidth)
         {
             if (numOfEnemies < 1)
             {
@@ -118,6 +113,38 @@ namespace Galaga.Model
             }
         }
 
+        private void createBonusEnemyForRound(GlobalEnums.ShipType shipType)
+        {
+            if (this.bonusEnemy != null)
+            {
+                this.canvas.Children.Remove(this.bonusEnemy.Sprite);
+            }
+
+            this.bonusEnemy = ShipFactory.CreateShip(shipType) as BonusEnemy;
+
+            if (this.bonusEnemy != null)
+            {
+                this.canvas.Children.Add(this.bonusEnemy.Sprite);
+                this.Enemies.Add(this.bonusEnemy);
+                this.bonusEnemy.X = 0 - this.bonusEnemy.Width;
+                this.bonusEnemy.Y = this.canvas.Height - this.bonusEnemy.Height - this.bonusEnemy.Sprite.Y;
+            }
+        }
+
+        /// <summary>
+        ///     Moves the bonus enemy.
+        /// </summary>
+        public void MoveBonusEnemy()
+        {
+            this.bonusEnemy.MoveRight();
+
+            if (this.bonusEnemy.X > this.canvas.Width)
+            {
+                this.canvas.Children.Remove(this.bonusEnemy.Sprite);
+                this.Enemies.Remove(this.bonusEnemy);
+            }
+        }
+
         /// <summary>
         ///     Moves all enemies left on the canvas.
         /// </summary>
@@ -125,7 +152,10 @@ namespace Galaga.Model
         {
             foreach (var enemy in this.Enemies)
             {
-                enemy.MoveLeft();
+                if (!(enemy is BonusEnemy))
+                {
+                    enemy.MoveLeft();
+                }
             }
         }
 
@@ -136,7 +166,10 @@ namespace Galaga.Model
         {
             foreach (var enemy in this.Enemies)
             {
-                enemy.MoveRight();
+                if (!(enemy is BonusEnemy))
+                {
+                    enemy.MoveRight();
+                }
             }
         }
 
@@ -157,12 +190,16 @@ namespace Galaga.Model
         /// <returns>The score of the hit enemy, else 0 if there is nothing to be returned</returns>
         public int CheckWhichEnemyIsShot(Bullet bullet)
         {
+            if (bullet == null)
+            {
+                throw new ArgumentNullException(nameof(bullet));
+            }
+
             foreach (var enemy in this.Enemies)
             {
                 if (bullet.CollidesWith(enemy))
                 {
                     this.RemoveEnemy(enemy);
-                    this.canvas.Children.Remove(enemy.Sprite);
                     return enemy.Score;
                 }
             }
