@@ -21,7 +21,7 @@ namespace Galaga.Model
         private const int Level4EnemyIndex = 3;
 
         private readonly RoundData roundData;
-        private ShootingEnemy bonusEnemy;
+        private BonusEnemy bonusEnemy;
 
         private readonly Canvas canvas;
 
@@ -42,7 +42,7 @@ namespace Galaga.Model
         /// <summary>
         ///     Gets the number of enemies left in the game.
         /// </summary>
-        public int RemainingEnemies => this.Enemies.Count;
+        public int RemainingEnemies => this.Enemies.Count(enemy => !(enemy is BonusEnemy));
 
         /// <summary>
         ///     Gets the remaining shooting enemies.
@@ -184,11 +184,11 @@ namespace Galaga.Model
         }
 
         /// <summary>
-        ///     Checks the which enemy is shot, removes it, and returns its score.
+        ///     Checks the which enemy is shot, removes it, and returns it.
         /// </summary>
         /// <param name="bullet">The bullet to compare collision.</param>
-        /// <returns>The score of the hit enemy, else 0 if there is nothing to be returned</returns>
-        public int CheckWhichEnemyIsShot(Bullet bullet)
+        /// <returns>The enemy that was hit, and null if no enemies were hit</returns>
+        public Enemy CheckWhichEnemyIsShot(Bullet bullet)
         {
             if (bullet == null)
             {
@@ -200,11 +200,11 @@ namespace Galaga.Model
                 if (bullet.CollidesWith(enemy))
                 {
                     this.RemoveEnemy(enemy);
-                    return enemy.Score;
+                    return enemy;
                 }
             }
 
-            return 0;
+            return null;
         }
 
         /// <summary>

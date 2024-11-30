@@ -24,8 +24,6 @@
         <TextBlock x:Name="youWinTextBlock" Text="YOU WIN!" Visibility="Collapsed" FontFamily="ModeNine"
                    FontWeight="Bold" FontSize="50" Canvas.Left="327" Canvas.Top="275" Foreground="White"
                    TextAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Center" />
-        <custom:PlayerLifeIcon Canvas.Left="859" Canvas.Top="170" />
-        <custom:PlayerLifeIcon Canvas.Left="825" Canvas.Top="170" />
-        <custom:PlayerLifeIcon Canvas.Left="791" Canvas.Top="170" />
+        <Grid x:Name="lifeGrid" Canvas.Left="780" Canvas.Top="200" Margin="10" Background="Transparent"/>
     </Canvas>
 </Page>

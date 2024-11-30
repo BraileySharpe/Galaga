@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Galaga.View.Sprites;
 
 namespace Galaga.Model
 {
@@ -12,7 +14,13 @@ namespace Galaga.Model
         #region Data members
 
         private const double PlayerOffsetFromBottom = 30;
+        private const int StartingLives = 3;
+        private const int IconsPerRow = 3;
+
         private readonly Canvas canvas;
+        private readonly Grid lifeGrid;
+
+        private readonly IList<PlayerLife> lives;
         private readonly double canvasHeight;
         private readonly double canvasWidth;
 
@@ -42,7 +50,7 @@ namespace Galaga.Model
         /// <value>
         ///     The lives.
         /// </value>
-        public int Lives { get; private set; } = 3;
+        public int RemainingLives => this.lives.Count;
 
         #endregion
 
@@ -55,14 +63,25 @@ namespace Galaga.Model
         public PlayerManager(Canvas canvas)
         {
             this.canvas = canvas ?? throw new ArgumentNullException(nameof(canvas));
+            this.lives = new List<PlayerLife>();
             this.canvasHeight = canvas.Height;
             this.canvasWidth = canvas.Width;
-            this.initializePlayer();
+
+            this.lifeGrid = this.canvas.Children.OfType<Grid>().FirstOrDefault(g => g.Name == "lifeGrid")
+                            ?? throw new InvalidOperationException("No Grid named 'lifeGrid' found in Canvas.");
+
+            this.initializePlayerInformation();
         }
 
         #endregion
 
         #region Methods
+
+        private void initializePlayerInformation()
+        {
+            this.initializePlayer();
+            this.initializePlayerLives();
+        }
 
         private void initializePlayer()
         {
@@ -80,26 +99,53 @@ namespace Galaga.Model
             this.Player.Y = this.canvasHeight - this.Player.Height - PlayerOffsetFromBottom;
         }
 
+        private void initializePlayerLives()
+        {
+            this.lifeGrid.Children.Clear();
+            this.lifeGrid.RowDefinitions.Clear();
+            this.lifeGrid.ColumnDefinitions.Clear();
+
+            for (var i = 0; i < StartingLives; i++)
+            {
+                var row = i / IconsPerRow;
+                var column = i % IconsPerRow;
+
+                if (this.lifeGrid.RowDefinitions.Count <= row)
+                {
+                    this.lifeGrid.RowDefinitions.Add(new RowDefinition());
+                }
+
+                if (this.lifeGrid.ColumnDefinitions.Count < IconsPerRow)
+                {
+                    this.lifeGrid.ColumnDefinitions.Add(new ColumnDefinition());
+                }
+
+                var life = new PlayerLife();
+                this.lives.Add(life);
+
+                life.Sprite.Margin = new Thickness(3);
+
+                Grid.SetRow(life.Sprite, row);
+                Grid.SetColumn(life.Sprite, column);
+
+                this.lifeGrid.Children.Add(life.Sprite);
+            }
+        }
+
         /// <summary>
         ///     Respawns the player if lives remain.
         /// </summary>
         public void RespawnPlayer()
         {
-            if (this.Lives > 0)
+            if (this.RemainingLives > 0)
             {
-                this.Lives--;
-                this.canvas.Children.Add(this.Player.Sprite);
-                foreach (var sprite in this.canvas.Children)
-                {
-                    if (sprite is PlayerLifeIcon playerLifeIcon)
-                    {
-                        this.canvas.Children.Remove(playerLifeIcon);
-                        break;
-                    }
-                }
-
-                this.placePlayerNearBottomOfBackgroundCentered();
+                var lastLife = this.lives[this.RemainingLives - 1];
+                this.lifeGrid.Children.Remove(lastLife.Sprite);
+                this.lives.RemoveAt(this.RemainingLives - 1);
             }
+
+            this.canvas.Children.Add(this.Player.Sprite);
+            this.placePlayerNearBottomOfBackgroundCentered();
         }
 
         /// <summary>
@@ -137,7 +183,28 @@ namespace Galaga.Model
         /// </summary>
         public void GainExtraLife()
         {
-            this.Lives++;
+            var newLife = new PlayerLife();
+
+            this.lives.Add(newLife);
+
+            var index = this.RemainingLives - 1;
+
+            var row = index / IconsPerRow;
+            var column = index % IconsPerRow;
+
+            if (this.lifeGrid.RowDefinitions.Count <= row)
+            {
+                this.lifeGrid.RowDefinitions.Add(new RowDefinition());
+            }
+
+            if (this.lifeGrid.ColumnDefinitions.Count < IconsPerRow)
+            {
+                this.lifeGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            }
+
+            Grid.SetRow(newLife.Sprite, row);
+            Grid.SetColumn(newLife.Sprite, column);
+            this.lifeGrid.Children.Add(newLife.Sprite);
         }
 
         #endregion

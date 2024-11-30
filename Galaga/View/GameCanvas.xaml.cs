@@ -186,11 +186,11 @@ namespace Galaga.View
 
         private void disableAllSprites()
         {
-            foreach (var sprite in this.canvas.Children)
+            foreach (var uiElement in this.canvas.Children)
             {
-                if (sprite is BaseSprite baseSprite)
+                if (!(uiElement is TextBlock))
                 {
-                    baseSprite.Visibility = Visibility.Collapsed;
+                    uiElement.Visibility = Visibility.Collapsed;
                 }
             }
         }
