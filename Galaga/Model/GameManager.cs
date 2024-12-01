@@ -227,6 +227,7 @@ namespace Galaga.Model
                     {
                         this.playerManager.GainExtraLife();
                         this.sfxManager.Stop("bonusenemy_sound");
+                        this.activatePowerup();
                     }
                 }
             }
@@ -256,6 +257,20 @@ namespace Galaga.Model
         {
             if (this.bulletManager.MoveEnemyBullet(this.playerManager.Player))
             {
+                if (this.playerManager.hasPowerUp)
+                {
+                    this.playerManager.HandleHitToShield();
+                    if (this.playerManager.hasPowerUp)
+                    {
+                        this.sfxManager.Play("shieldhit");
+                    }
+                    else
+                    {
+                        this.sfxManager.Play("powerup_deactivate");
+                    }
+                    return;
+                }
+
                 this.sfxManager.Play("player_death");
                 if (this.playerManager.RemainingLives > 0)
                 {
@@ -312,6 +327,12 @@ namespace Galaga.Model
                         break;
                 }
             }
+        }
+
+        private void activatePowerup()
+        {
+            this.playerManager.ActivateShield();
+            this.sfxManager.Play("powerup_activate");
         }
 
         #endregion
