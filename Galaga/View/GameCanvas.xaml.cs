@@ -108,19 +108,11 @@ namespace Galaga.View
         }
 
         /// <summary>
-        ///     Moves the enemies left.
+        ///     Moves the enemies.
         /// </summary>
-        public void MoveEnemiesLeft()
+        public void MoveEnemies()
         {
-            this.gameManager.MoveEnemiesLeft();
-        }
-
-        /// <summary>
-        ///     Moves the enemies right.
-        /// </summary>
-        public void MoveEnemiesRight()
-        {
-            this.gameManager.MoveEnemiesRight();
+            this.gameManager.MoveEnemies();
         }
 
         /// <summary>
