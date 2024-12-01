@@ -17,6 +17,11 @@ namespace Galaga.Model
         #region Properties
 
         /// <summary>
+        ///     Movement pattern of the enemy.
+        /// </summary>
+        public int MovementPattern { get; set; }
+
+        /// <summary>
         ///     Gets or sets the score.
         /// </summary>
         /// <value>

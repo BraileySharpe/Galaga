@@ -123,32 +123,7 @@ namespace Galaga.View
             {
                 this.enemyTickCounter++;
 
-                if (this.enemyTickCounter <= 5)
-                {
-                    this.gameCanvas.MoveEnemiesLeft();
-                }
-                else if (this.enemyTickCounter < 10)
-                {
-                    this.enemyTickCounter = 10;
-                }
-
-                if (this.enemyTickCounter >= 10)
-                {
-                    if (this.enemyTickCounter % 10 == 0)
-                    {
-                        this.enemyMoveRight = !this.enemyMoveRight;
-                    }
-
-                    if (this.enemyMoveRight)
-                    {
-                        this.gameCanvas.MoveEnemiesRight();
-                    }
-                    else
-                    {
-                        this.gameCanvas.MoveEnemiesLeft();
-                    }
-                }
-
+                this.gameCanvas.MoveEnemies();
                 this.gameCanvas.ToggleSpritesForAnimation();
             };
             this.enemyMovementTimer.Start();
