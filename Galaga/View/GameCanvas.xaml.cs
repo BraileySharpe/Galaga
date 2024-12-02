@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using Windows.Foundation;
 using Windows.System;
@@ -23,16 +24,15 @@ namespace Galaga.View
         public GameCanvas()
         {
             this.InitializeComponent();
-            this.activeKeys = new HashSet<VirtualKey>();
-
             this.setupWindowPreferences();
 
+            this.activeKeys = new HashSet<VirtualKey>();
             this.gameManager = new GameManager(this.canvas);
-            this.timeManager = new TimeManager(this);
-            this.timeManager.InitializeTimers();
+            this.setUpGameLoopTimer();
 
             Window.Current.CoreWindow.KeyDown += this.coreWindowOnKeyDown;
             Window.Current.CoreWindow.KeyUp += this.coreWindowOnKeyUp;
+
             DataContext = this.gameManager;
             this.gameManager.PropertyChanged += this.OnGameManagerPropertyChanged;
         }
@@ -48,39 +48,6 @@ namespace Galaga.View
             ApplicationView.PreferredLaunchViewSize = new Size { Width = Width, Height = Height };
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
             ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(Width, Height));
-        }
-
-        /// <summary>
-        ///     Loops the game at a set interval to track player input and game state.
-        /// </summary>
-        public void GameLoop()
-        {
-            if (this.activeKeys.Contains(VirtualKey.Left))
-            {
-                this.gameManager.MovePlayerLeft();
-            }
-
-            if (this.activeKeys.Contains(VirtualKey.Right))
-            {
-                this.gameManager.MovePlayerRight();
-            }
-
-            if (this.activeKeys.Contains(VirtualKey.Space))
-            {
-                if (!this.spacePressedPreviously && this.canShoot)
-                {
-                    this.gameManager.PlacePlayerBullet();
-                    this.canShoot = false;
-                    this.spacePressedPreviously = true;
-                    this.timeManager.StartPlayerBulletCooldown();
-                }
-            }
-            else
-            {
-                this.spacePressedPreviously = false;
-            }
-
-            this.gameManager.CheckGameStatus();
         }
 
         /// <summary>
@@ -131,14 +98,6 @@ namespace Galaga.View
             this.gameManager.ToggleSpritesForAnimation();
         }
 
-        /// <summary>
-        ///     Enables the player shooting.
-        /// </summary>
-        public void EnablePlayerShooting()
-        {
-            this.canShoot = true;
-        }
-
         private void coreWindowOnKeyDown(CoreWindow sender, KeyEventArgs args)
         {
             this.activeKeys.Add(args.VirtualKey);
@@ -149,13 +108,38 @@ namespace Galaga.View
             this.activeKeys.Remove(args.VirtualKey);
         }
 
-        private void OnGameManagerPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void setUpGameLoopTimer()
         {
-            if (e.PropertyName == nameof(this.gameManager.EndOfRound) && this.gameManager.EndOfRound)
+            this.gameLoopTimer = new DispatcherTimer
             {
-                this.timeManager.ResetBonusEnemyTimers();
+                Interval = TimeSpan.FromMilliseconds(GameLoopIntervalMilliseconds)
+            };
+            this.gameLoopTimer.Tick += this.gameLoopTimer_Tick;
+            this.gameLoopTimer.Start();
+        }
+
+        private void gameLoopTimer_Tick(object sender, object e)
+        {
+            if (this.activeKeys.Contains(VirtualKey.Left))
+            {
+                this.gameManager.MovePlayerLeft();
             }
 
+            if (this.activeKeys.Contains(VirtualKey.Right))
+            {
+                this.gameManager.MovePlayerRight();
+            }
+
+            if (this.activeKeys.Contains(VirtualKey.Space))
+            {
+                this.gameManager.PlacePlayerBullet();
+            }
+
+            this.gameManager.CheckGameStatus();
+        }
+
+        private void OnGameManagerPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
             if (e.PropertyName == nameof(this.gameManager.HasLost) && this.gameManager.HasLost)
             {
                 this.endGame(this.gameOverTextBlock);
@@ -170,7 +154,8 @@ namespace Galaga.View
         private void endGame(TextBlock endgameTextBlock)
         {
             this.disableAllSprites();
-            this.timeManager.StopAllTimers();
+            this.gameManager.StopAllTimers();
+            this.gameLoopTimer?.Stop();
 
             endgameTextBlock.Visibility = Visibility.Visible;
         }
@@ -191,10 +176,9 @@ namespace Galaga.View
         #region Data Members
 
         private readonly GameManager gameManager;
-        private readonly TimeManager timeManager;
         private readonly HashSet<VirtualKey> activeKeys;
-        private bool spacePressedPreviously;
-        private bool canShoot = true;
+        private const int GameLoopIntervalMilliseconds = 16;
+        private DispatcherTimer gameLoopTimer;
 
         #endregion
     }

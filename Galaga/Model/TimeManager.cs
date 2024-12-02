@@ -1,7 +1,7 @@
 ﻿using System;
 using Windows.UI.Xaml;
 
-namespace Galaga.View
+namespace Galaga.Model
 {
     /// <summary>
     ///     Manages all timers for the game.
@@ -13,26 +13,20 @@ namespace Galaga.View
         private const int EnemyMovementInMilliseconds = 350;
         private const int MinCooldownForEnemyBulletInMilliseconds = 250;
         private const int MaxCooldownForEnemyBulletInMilliseconds = 2500;
-        private const int PlayerBulletCooldownInMilliseconds = 300;
-        private const int GameLoopInMilliseconds = 16;
+        private const int PlayerBulletCooldownInMilliseconds = 200;
         private const int PlayerBulletMovementInMilliseconds = 10;
         private const int EnemyBulletMovementInMilliseconds = 100;
         private const int BonusEnemyMovementInMilliseconds = 200;
 
-        private readonly GameCanvas gameCanvas;
+        private readonly GameManager gameManager;
         private readonly Random random;
 
         private DispatcherTimer playerBulletTimer;
         private DispatcherTimer enemyMovementTimer;
         private DispatcherTimer enemyBulletTimer;
         private DispatcherTimer enemyBulletMovementTimer;
-        private DispatcherTimer gameLoopTimer;
         private DispatcherTimer playerBulletCooldownTimer;
         private DispatcherTimer bonusEnemyMovementTimer;
-
-        private int enemyTickCounter;
-        private bool enemyMoveRight;
-
         private DispatcherTimer bonusEnemyActivationTimer;
 
         #endregion
@@ -42,11 +36,10 @@ namespace Galaga.View
         /// <summary>
         ///     Initializes a new instance of the <see cref="TimeManager" /> class.
         /// </summary>
-        /// <param name="gameCanvas">The game canvas.</param>
-        /// <exception cref="System.ArgumentNullException">gameCanvas</exception>
-        public TimeManager(GameCanvas gameCanvas)
+        /// <param name="gameManager">The game manager.</param>
+        public TimeManager(GameManager gameManager)
         {
-            this.gameCanvas = gameCanvas ?? throw new ArgumentNullException(nameof(gameCanvas));
+            this.gameManager = gameManager ?? throw new ArgumentNullException(nameof(gameManager));
             this.random = new Random();
         }
 
@@ -62,9 +55,9 @@ namespace Galaga.View
             this.setUpPlayerBulletTimer();
             this.setUpEnemyMovementTimer();
             this.setUpEnemyBulletTimer();
-            this.setUpGameLoopTimer();
             this.setUpPlayerBulletCooldownTimer();
             this.setUpBonusEnemyMovementTimer();
+            this.setUpPlayerBulletCooldownTimer();
             this.setUpBonusEnemyActivationTimer();
         }
 
@@ -73,7 +66,10 @@ namespace Galaga.View
         /// </summary>
         public void StartPlayerBulletCooldown()
         {
-            this.playerBulletCooldownTimer.Start();
+            if (!this.playerBulletCooldownTimer.IsEnabled)
+            {
+                this.playerBulletCooldownTimer.Start();
+            }
         }
 
         /// <summary>
@@ -85,7 +81,6 @@ namespace Galaga.View
             this.enemyMovementTimer?.Stop();
             this.enemyBulletTimer?.Stop();
             this.enemyBulletMovementTimer?.Stop();
-            this.gameLoopTimer?.Stop();
             this.playerBulletCooldownTimer?.Stop();
             this.bonusEnemyMovementTimer?.Stop();
             this.bonusEnemyActivationTimer?.Stop();
@@ -109,7 +104,7 @@ namespace Galaga.View
             {
                 Interval = TimeSpan.FromMilliseconds(PlayerBulletMovementInMilliseconds)
             };
-            this.playerBulletTimer.Tick += (sender, e) => this.gameCanvas.MovePlayerBullet();
+            this.playerBulletTimer.Tick += (sender, e) => this.gameManager.MovePlayerBullet();
             this.playerBulletTimer.Start();
         }
 
@@ -121,10 +116,8 @@ namespace Galaga.View
             };
             this.enemyMovementTimer.Tick += (sender, e) =>
             {
-                this.enemyTickCounter++;
-
-                this.gameCanvas.MoveEnemies();
-                this.gameCanvas.ToggleSpritesForAnimation();
+                this.gameManager.MoveEnemies();
+                this.gameManager.ToggleSpritesForAnimation();
             };
             this.enemyMovementTimer.Start();
         }
@@ -135,8 +128,7 @@ namespace Galaga.View
             {
                 Interval = TimeSpan.FromMilliseconds(BonusEnemyMovementInMilliseconds)
             };
-
-            this.bonusEnemyMovementTimer.Tick += (sender, e) => { this.gameCanvas.MoveBonusEnemy(); };
+            this.bonusEnemyMovementTimer.Tick += (sender, e) => this.gameManager.MoveBonusEnemy();
         }
 
         private void setUpBonusEnemyActivationTimer()
@@ -147,7 +139,6 @@ namespace Galaga.View
             this.bonusEnemyActivationTimer.Tick += (sender, e) =>
             {
                 this.bonusEnemyMovementTimer.Start();
-
                 this.bonusEnemyActivationTimer.Stop();
             };
 
@@ -171,10 +162,10 @@ namespace Galaga.View
             this.setRandomEnemyTimeInterval();
             this.enemyBulletTimer.Tick += (sender, e) =>
             {
-                this.gameCanvas.PlaceEnemyBullet();
+                this.gameManager.PlaceEnemyBullet();
                 this.setRandomEnemyTimeInterval();
             };
-            this.enemyBulletMovementTimer.Tick += (sender, e) => this.gameCanvas.MoveEnemyBullet();
+            this.enemyBulletMovementTimer.Tick += (sender, e) => this.gameManager.MoveEnemyBullet();
 
             this.enemyBulletTimer.Start();
             this.enemyBulletMovementTimer.Start();
@@ -186,16 +177,6 @@ namespace Galaga.View
                 this.random.Next(MinCooldownForEnemyBulletInMilliseconds, MaxCooldownForEnemyBulletInMilliseconds));
         }
 
-        private void setUpGameLoopTimer()
-        {
-            this.gameLoopTimer = new DispatcherTimer
-            {
-                Interval = TimeSpan.FromMilliseconds(GameLoopInMilliseconds)
-            };
-            this.gameLoopTimer.Tick += (sender, e) => this.gameCanvas.GameLoop();
-            this.gameLoopTimer.Start();
-        }
-
         private void setUpPlayerBulletCooldownTimer()
         {
             this.playerBulletCooldownTimer = new DispatcherTimer
@@ -204,7 +185,7 @@ namespace Galaga.View
             };
             this.playerBulletCooldownTimer.Tick += (sender, e) =>
             {
-                this.gameCanvas.EnablePlayerShooting();
+                this.gameManager.PlayerBulletCooldownComplete();
                 this.playerBulletCooldownTimer.Stop();
             };
         }
