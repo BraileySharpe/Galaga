@@ -56,6 +56,9 @@ namespace Galaga.Model
                 await this.addSoundEffect("gameover_lose", audioFolder);
                 await this.addSoundEffect("gameover_win", audioFolder);
                 await this.addSoundEffect("bonusenemy_sound", audioFolder);
+                await this.addSoundEffect("powerup_activate", audioFolder);
+                await this.addSoundEffect("powerup_deactivate", audioFolder);
+                await this.addSoundEffect("shieldhit", audioFolder);
 
                 this.preloadTaskCompletionSource.SetResult(true);
             }

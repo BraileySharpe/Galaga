@@ -1,8 +1,13 @@
-﻿using System;
+﻿using Galaga.View.Sprites;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
+using Windows.UI.Xaml.Shapes;
 
 namespace Galaga.Model
 {
@@ -14,8 +19,11 @@ namespace Galaga.Model
         #region Data members
 
         private const double PlayerOffsetFromBottom = 30;
+        private const double ShieldOffsetLeft = 23;
+        private const double ShieldOffsetTop = 23;
         private const int StartingLives = 3;
         private const int IconsPerRow = 3;
+        private const int MaxShieldHits = 2;
 
         private readonly Canvas canvas;
         private readonly Grid lifeGrid;
@@ -23,6 +31,9 @@ namespace Galaga.Model
         private readonly IList<PlayerLife> lives;
         private readonly double canvasHeight;
         private readonly double canvasWidth;
+
+        private ShieldSprite shield;
+        private int shieldHitsRemaining;
 
         #endregion
 
@@ -51,6 +62,14 @@ namespace Galaga.Model
         ///     The lives.
         /// </value>
         public int RemainingLives => this.lives.Count;
+
+        /// <summary>
+        ///     Holds the power up status of the player.
+        /// </summary>
+        /// <value>
+        ///     True if the player has a power up; otherwise, false.
+        /// </value>
+        public bool hasPowerUp { get; set; } = false;
 
         #endregion
 
@@ -156,6 +175,7 @@ namespace Galaga.Model
             if (this.Player.X - this.Player.SpeedX > 0)
             {
                 this.Player.MoveLeft();
+                this.updateShieldPosition();
             }
         }
 
@@ -167,6 +187,7 @@ namespace Galaga.Model
             if (this.Player.X + this.Player.Width + this.Player.SpeedX < this.canvasWidth)
             {
                 this.Player.MoveRight();
+                this.updateShieldPosition();
             }
         }
 
@@ -205,6 +226,70 @@ namespace Galaga.Model
             Grid.SetRow(newLife.Sprite, row);
             Grid.SetColumn(newLife.Sprite, column);
             this.lifeGrid.Children.Add(newLife.Sprite);
+        }
+
+        /// <summary>
+        ///     Activates the player's shield.
+        /// </summary>
+        public void ActivateShield()
+        {
+            if (this.shield == null)
+            {
+                this.shield = new ShieldSprite();
+            }
+            
+            Canvas.SetLeft(this.shield, this.Player.X - ShieldOffsetLeft);
+            Canvas.SetTop(this.shield, this.Player.Y - ShieldOffsetTop);
+            Canvas.SetZIndex(this.shield, Canvas.GetZIndex(this.Player.Sprite) + 1);
+
+            if (!this.canvas.Children.Contains(this.shield))
+            {
+                this.canvas.Children.Add(this.shield);
+            }
+
+            this.shield.StartAnimation();
+
+            this.hasPowerUp = true;
+            this.shieldHitsRemaining = MaxShieldHits;
+        }
+
+        private void updateShieldPosition()
+        {
+            if (this.hasPowerUp && this.shield != null)
+            {
+                Canvas.SetLeft(this.shield, this.Player.X - ShieldOffsetLeft);
+                Canvas.SetTop(this.shield, this.Player.Y - ShieldOffsetTop);
+            }
+        }
+
+        /// <summary>
+        ///     Deactivates the player's shield.
+        /// </summary>
+        public void DeactivateShield()
+        {
+            if (this.shield != null && this.canvas.Children.Contains(this.shield))
+            {
+                this.canvas.Children.Remove(this.shield);
+                this.shield = null;
+            }
+
+            this.shieldHitsRemaining = 0;
+            this.hasPowerUp = false;
+        }
+
+        /// <summary>
+        ///     Handles a hit to the player when shield is active.
+        /// </summary>
+        public void HandleHitToShield()
+        {
+            if (this.shieldHitsRemaining == 1)
+            {
+                this.DeactivateShield();
+            }
+            else
+            {
+                this.shieldHitsRemaining--;
+            }
         }
 
         #endregion
