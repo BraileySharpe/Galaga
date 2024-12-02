@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using Windows.Foundation;
 using Windows.System;
@@ -7,6 +6,7 @@ using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 using Galaga.Model;
 
 namespace Galaga.View
@@ -28,7 +28,8 @@ namespace Galaga.View
 
             this.activeKeys = new HashSet<VirtualKey>();
             this.gameManager = new GameManager(this.canvas);
-            this.setUpGameLoopTimer();
+
+            CompositionTarget.Rendering += this.gameLoop;
 
             Window.Current.CoreWindow.KeyDown += this.coreWindowOnKeyDown;
             Window.Current.CoreWindow.KeyUp += this.coreWindowOnKeyUp;
@@ -50,54 +51,6 @@ namespace Galaga.View
             ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(Width, Height));
         }
 
-        /// <summary>
-        ///     Moves the player bullet.
-        /// </summary>
-        public void MovePlayerBullet()
-        {
-            this.gameManager.MovePlayerBullet();
-        }
-
-        /// <summary>
-        ///     Places the enemy bullet.
-        /// </summary>
-        public void PlaceEnemyBullet()
-        {
-            this.gameManager.PlaceEnemyBullet();
-        }
-
-        /// <summary>
-        ///     Moves the enemy bullet.
-        /// </summary>
-        public void MoveEnemyBullet()
-        {
-            this.gameManager.MoveEnemyBullet();
-        }
-
-        /// <summary>
-        ///     Moves the enemies.
-        /// </summary>
-        public void MoveEnemies()
-        {
-            this.gameManager.MoveEnemies();
-        }
-
-        /// <summary>
-        ///     Moves the bonus enemy.
-        /// </summary>
-        public void MoveBonusEnemy()
-        {
-            this.gameManager.MoveBonusEnemy();
-        }
-
-        /// <summary>
-        ///     Toggles the sprites for animation.
-        /// </summary>
-        public void ToggleSpritesForAnimation()
-        {
-            this.gameManager.ToggleSpritesForAnimation();
-        }
-
         private void coreWindowOnKeyDown(CoreWindow sender, KeyEventArgs args)
         {
             this.activeKeys.Add(args.VirtualKey);
@@ -108,17 +61,7 @@ namespace Galaga.View
             this.activeKeys.Remove(args.VirtualKey);
         }
 
-        private void setUpGameLoopTimer()
-        {
-            this.gameLoopTimer = new DispatcherTimer
-            {
-                Interval = TimeSpan.FromMilliseconds(GameLoopIntervalMilliseconds)
-            };
-            this.gameLoopTimer.Tick += this.gameLoopTimer_Tick;
-            this.gameLoopTimer.Start();
-        }
-
-        private void gameLoopTimer_Tick(object sender, object e)
+        private void gameLoop(object sender, object e)
         {
             if (this.activeKeys.Contains(VirtualKey.Left))
             {
@@ -154,8 +97,8 @@ namespace Galaga.View
         private void endGame(TextBlock endgameTextBlock)
         {
             this.disableAllSprites();
+            CompositionTarget.Rendering -= this.gameLoop;
             this.gameManager.StopAllTimers();
-            this.gameLoopTimer?.Stop();
 
             endgameTextBlock.Visibility = Visibility.Visible;
         }
@@ -177,8 +120,6 @@ namespace Galaga.View
 
         private readonly GameManager gameManager;
         private readonly HashSet<VirtualKey> activeKeys;
-        private const int GameLoopIntervalMilliseconds = 16;
-        private DispatcherTimer gameLoopTimer;
 
         #endregion
     }
