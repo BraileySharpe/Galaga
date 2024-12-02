@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using Windows.UI.Xaml.Controls;
 
 namespace Galaga.Model
@@ -18,8 +19,6 @@ namespace Galaga.Model
         private readonly TimeManager timeManager;
         private readonly SfxManager sfxManager;
         private readonly RoundData roundData;
-        private bool hasWon;
-        private bool hasLost;
         private bool endOfRound;
         private bool canShoot;
 
@@ -52,18 +51,7 @@ namespace Galaga.Model
         /// <value>
         ///     The score.
         /// </value>
-        public int Score
-        {
-            get => this.playerManager.Score;
-            set
-            {
-                if (this.playerManager.Score != value)
-                {
-                    this.playerManager.Score = value;
-                    this.OnPropertyChanged(nameof(this.Score));
-                }
-            }
-        }
+        public int Score { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether this instance has won.
@@ -71,18 +59,7 @@ namespace Galaga.Model
         /// <value>
         ///     <c>true</c> if this instance has won; otherwise, <c>false</c>.
         /// </value>
-        public bool HasWon
-        {
-            get => this.hasWon;
-            set
-            {
-                if (this.hasWon != value)
-                {
-                    this.hasWon = value;
-                    this.OnPropertyChanged(nameof(this.HasWon));
-                }
-            }
-        }
+        public bool HasWon { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether this instance has lost.
@@ -90,18 +67,7 @@ namespace Galaga.Model
         /// <value>
         ///     <c>true</c> if this instance has lost; otherwise, <c>false</c>.
         /// </value>
-        public bool HasLost
-        {
-            get => this.hasLost;
-            set
-            {
-                if (this.hasLost != value)
-                {
-                    this.hasLost = value;
-                    this.OnPropertyChanged(nameof(this.HasLost));
-                }
-            }
-        }
+        public bool HasLost { get; set; }
 
         #endregion
 
@@ -242,6 +208,7 @@ namespace Galaga.Model
                 {
                     this.sfxManager.Play("enemy_death");
                     this.Score += enemy.Score;
+                    Debug.WriteLine(this.Score);
 
                     if (enemy is BonusEnemy)
                     {
@@ -320,13 +287,13 @@ namespace Galaga.Model
         /// </summary>
         public void CheckGameStatus()
         {
-            if (this.playerManager.RemainingLives <= 0 && !this.hasLost)
+            if (this.playerManager.RemainingLives <= 0 && !this.HasLost)
             {
                 this.sfxManager.Play("gameover_lose");
                 this.HasLost = true;
             }
 
-            if (this.enemyManager.RemainingEnemies == 0 && !this.hasWon)
+            if (this.enemyManager.RemainingEnemies == 0 && !this.HasWon)
             {
                 switch (this.roundData.CurrentRound)
                 {
