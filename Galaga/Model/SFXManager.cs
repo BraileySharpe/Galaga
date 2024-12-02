@@ -97,7 +97,7 @@ namespace Galaga.Model
         }
 
         /// <summary>
-        ///     Wait untill all sounds are preloaded
+        ///     Wait until all sounds are preloaded
         /// </summary>
         public async Task WaitForPreloadingAsync()
         {

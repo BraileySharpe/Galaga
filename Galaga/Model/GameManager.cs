@@ -15,11 +15,13 @@ namespace Galaga.Model
         private readonly EnemyManager enemyManager;
         private readonly BulletManager bulletManager;
         private readonly PlayerManager playerManager;
+        private readonly TimeManager timeManager;
         private readonly SfxManager sfxManager;
         private readonly RoundData roundData;
         private bool hasWon;
         private bool hasLost;
         private bool endOfRound;
+        private bool canShoot;
 
         #endregion
 
@@ -118,18 +120,12 @@ namespace Galaga.Model
             this.playerManager = new PlayerManager(canvas);
             this.bulletManager = new BulletManager(canvas);
             this.sfxManager = new SfxManager();
-
+            this.timeManager = new TimeManager(this);
+            this.canShoot = true;
             this.enemyManager.PropertyChanged += this.EnemyManagerOnPropertyChanged;
+            this.PropertyChanged += this.GameManagerOnPropertyChanged;
 
             this.initializeGame();
-        }
-
-        private void EnemyManagerOnPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(this.enemyManager.HasBonusEnemyStartedMoving) && this.enemyManager.HasBonusEnemyStartedMoving)
-            {
-                this.sfxManager.Play("bonusenemy_sound");
-            }
         }
 
         #endregion
@@ -141,6 +137,23 @@ namespace Galaga.Model
         /// </summary>
         /// <returns></returns>
         public event PropertyChangedEventHandler PropertyChanged;
+
+        private void GameManagerOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(this.EndOfRound) && this.EndOfRound)
+            {
+                this.ResetBonusEnemyTimers();
+            }
+        }
+
+        private void EnemyManagerOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(this.enemyManager.HasBonusEnemyStartedMoving) &&
+                this.enemyManager.HasBonusEnemyStartedMoving)
+            {
+                this.sfxManager.Play("bonusenemy_sound");
+            }
+        }
 
         /// <summary>
         ///     Called when [property changed].
@@ -163,6 +176,7 @@ namespace Galaga.Model
             }
 
             this.enemyManager.CreateAndPlaceEnemies();
+            this.timeManager.InitializeTimers();
         }
 
         /// <summary>
@@ -202,10 +216,16 @@ namespace Galaga.Model
         /// </summary>
         public void PlacePlayerBullet()
         {
-            var bullet = this.playerManager.Shoot();
-            if (this.bulletManager.PlacePlayerBullet(bullet))
+            if (this.canShoot)
             {
-                this.sfxManager.Play("player_shoot");
+                var bullet = this.playerManager.Shoot();
+                if (this.bulletManager.PlacePlayerBullet(bullet))
+                {
+                    this.sfxManager.Play("player_shoot");
+                }
+
+                this.canShoot = false;
+                this.timeManager.StartPlayerBulletCooldown();
             }
         }
 
@@ -227,7 +247,8 @@ namespace Galaga.Model
                     {
                         this.playerManager.GainExtraLife();
                         this.sfxManager.Stop("bonusenemy_sound");
-                        this.activatePowerup();
+                        this.playerManager.ActivateShield();
+                        this.sfxManager.Play("powerup_activate");
                     }
                 }
             }
@@ -257,10 +278,10 @@ namespace Galaga.Model
         {
             if (this.bulletManager.MoveEnemyBullet(this.playerManager.Player))
             {
-                if (this.playerManager.hasPowerUp)
+                if (this.playerManager.HasPowerUp)
                 {
                     this.playerManager.HandleHitToShield();
-                    if (this.playerManager.hasPowerUp)
+                    if (this.playerManager.HasPowerUp)
                     {
                         this.sfxManager.Play("shieldhit");
                     }
@@ -268,6 +289,7 @@ namespace Galaga.Model
                     {
                         this.sfxManager.Play("powerup_deactivate");
                     }
+
                     return;
                 }
 
@@ -308,31 +330,48 @@ namespace Galaga.Model
             {
                 switch (this.roundData.CurrentRound)
                 {
-                    case GlobalEnums.GameRound.Round1:
-                        this.roundData.MoveToNextRound();
-                        this.EndOfRound = true;
-                        this.enemyManager.CreateAndPlaceEnemies();
-                        this.EndOfRound = false;
-                        break;
-                    case GlobalEnums.GameRound.Round2:
-                        this.roundData.MoveToNextRound();
-                        this.EndOfRound = true;
-                        this.enemyManager.CreateAndPlaceEnemies();
-                        this.EndOfRound = false;
-                        break;
                     case GlobalEnums.GameRound.Round3:
                         this.sfxManager.Play("gameover_win");
                         this.HasWon = true;
 
                         break;
+                    default:
+                        this.roundData.MoveToNextRound();
+                        this.EndOfRound = true;
+                        this.enemyManager.CreateAndPlaceEnemies();
+                        this.EndOfRound = false;
+                        break;
                 }
             }
         }
 
-        private void activatePowerup()
+        /// <summary>
+        ///     Stops all timers.
+        /// </summary>
+        public void StopAllTimers()
         {
-            this.playerManager.ActivateShield();
-            this.sfxManager.Play("powerup_activate");
+            this.timeManager.StopAllTimers();
+        }
+
+        /// <summary>
+        ///     Resets the bonus enemy timers.
+        /// </summary>
+        public void ResetBonusEnemyTimers()
+        {
+            this.timeManager.ResetBonusEnemyTimers();
+        }
+
+        /// <summary>
+        ///     Called when the player bullet cooldown is complete.
+        /// </summary>
+        public void PlayerBulletCooldownComplete()
+        {
+            this.EnableShooting();
+        }
+
+        public void EnableShooting()
+        {
+            this.canShoot = true;
         }
 
         #endregion
