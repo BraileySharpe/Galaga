@@ -247,7 +247,8 @@ namespace Galaga.Model
                     {
                         this.playerManager.GainExtraLife();
                         this.sfxManager.Stop("bonusenemy_sound");
-                        this.activatePowerup();
+                        this.playerManager.ActivateShield();
+                        this.sfxManager.Play("powerup_activate");
                     }
                 }
             }
@@ -277,10 +278,10 @@ namespace Galaga.Model
         {
             if (this.bulletManager.MoveEnemyBullet(this.playerManager.Player))
             {
-                if (this.playerManager.hasPowerUp)
+                if (this.playerManager.HasPowerUp)
                 {
                     this.playerManager.HandleHitToShield();
-                    if (this.playerManager.hasPowerUp)
+                    if (this.playerManager.HasPowerUp)
                     {
                         this.sfxManager.Play("shieldhit");
                     }
@@ -329,22 +330,16 @@ namespace Galaga.Model
             {
                 switch (this.roundData.CurrentRound)
                 {
-                    case GlobalEnums.GameRound.Round1:
-                        this.roundData.MoveToNextRound();
-                        this.EndOfRound = true;
-                        this.enemyManager.CreateAndPlaceEnemies();
-                        this.EndOfRound = false;
-                        break;
-                    case GlobalEnums.GameRound.Round2:
-                        this.roundData.MoveToNextRound();
-                        this.EndOfRound = true;
-                        this.enemyManager.CreateAndPlaceEnemies();
-                        this.EndOfRound = false;
-                        break;
                     case GlobalEnums.GameRound.Round3:
                         this.sfxManager.Play("gameover_win");
                         this.HasWon = true;
 
+                        break;
+                    default:
+                        this.roundData.MoveToNextRound();
+                        this.EndOfRound = true;
+                        this.enemyManager.CreateAndPlaceEnemies();
+                        this.EndOfRound = false;
                         break;
                 }
             }
@@ -356,12 +351,6 @@ namespace Galaga.Model
         public void StopAllTimers()
         {
             this.timeManager.StopAllTimers();
-        }
-
-        private void activatePowerup()
-        {
-            this.playerManager.ActivateShield();
-            this.sfxManager.Play("powerup_activate");
         }
 
         /// <summary>

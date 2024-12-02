@@ -9,15 +9,15 @@
             <VisualStateGroup x:Name="ShieldStates">
                 <VisualState x:Name="Frame1">
                     <Storyboard>
-                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Frame1Image"
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="frame1Image"
                                                        Storyboard.TargetProperty="Visibility">
                             <DiscreteObjectKeyFrame KeyTime="0" Value="Visible" />
                         </ObjectAnimationUsingKeyFrames>
-                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Frame2Image"
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="frame2Image"
                                                        Storyboard.TargetProperty="Visibility">
                             <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed" />
                         </ObjectAnimationUsingKeyFrames>
-                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Frame3Image"
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="frame3Image"
                                                        Storyboard.TargetProperty="Visibility">
                             <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed" />
                         </ObjectAnimationUsingKeyFrames>
@@ -25,15 +25,15 @@
                 </VisualState>
                 <VisualState x:Name="Frame2">
                     <Storyboard>
-                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Frame1Image"
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="frame1Image"
                                                        Storyboard.TargetProperty="Visibility">
                             <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed" />
                         </ObjectAnimationUsingKeyFrames>
-                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Frame2Image"
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="frame2Image"
                                                        Storyboard.TargetProperty="Visibility">
                             <DiscreteObjectKeyFrame KeyTime="0" Value="Visible" />
                         </ObjectAnimationUsingKeyFrames>
-                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Frame3Image"
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="frame3Image"
                                                        Storyboard.TargetProperty="Visibility">
                             <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed" />
                         </ObjectAnimationUsingKeyFrames>
@@ -41,15 +41,15 @@
                 </VisualState>
                 <VisualState x:Name="Frame3">
                     <Storyboard>
-                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Frame1Image"
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="frame1Image"
                                                        Storyboard.TargetProperty="Visibility">
                             <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed" />
                         </ObjectAnimationUsingKeyFrames>
-                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Frame2Image"
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="frame2Image"
                                                        Storyboard.TargetProperty="Visibility">
                             <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed" />
                         </ObjectAnimationUsingKeyFrames>
-                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Frame3Image"
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="frame3Image"
                                                        Storyboard.TargetProperty="Visibility">
                             <DiscreteObjectKeyFrame KeyTime="0" Value="Visible" />
                         </ObjectAnimationUsingKeyFrames>
@@ -58,14 +58,14 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
-        <Image x:Name="Frame1Image"
+        <Image x:Name="frame1Image"
                Source="ms-appx:///View/Sprites/Shield_frame1.png"
                Width="100" Height="100" Visibility="Visible" />
-        <Image x:Name="Frame2Image"
-                Source="ms-appx:///View/Sprites/Shield_frame2.png"
-                Width="100" Height="100" Visibility="Collapsed" />
-        <Image x:Name="Frame3Image"
-                Source="ms-appx:///View/Sprites/Shield_frame3.png"
-                Width="100" Height="100" Visibility="Collapsed" />
+        <Image x:Name="frame2Image"
+               Source="ms-appx:///View/Sprites/Shield_frame2.png"
+               Width="100" Height="100" Visibility="Collapsed" />
+        <Image x:Name="frame3Image"
+               Source="ms-appx:///View/Sprites/Shield_frame3.png"
+               Width="100" Height="100" Visibility="Collapsed" />
     </Canvas>
 </local:BaseSprite>

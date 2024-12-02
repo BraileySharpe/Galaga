@@ -1,13 +1,9 @@
-﻿using Galaga.View.Sprites;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Imaging;
-using Windows.UI.Xaml.Shapes;
+using Galaga.View.Sprites;
 
 namespace Galaga.Model
 {
@@ -69,7 +65,7 @@ namespace Galaga.Model
         /// <value>
         ///     True if the player has a power up; otherwise, false.
         /// </value>
-        public bool hasPowerUp { get; set; } = false;
+        public bool HasPowerUp { get; set; }
 
         #endregion
 
@@ -237,7 +233,7 @@ namespace Galaga.Model
             {
                 this.shield = new ShieldSprite();
             }
-            
+
             Canvas.SetLeft(this.shield, this.Player.X - ShieldOffsetLeft);
             Canvas.SetTop(this.shield, this.Player.Y - ShieldOffsetTop);
             Canvas.SetZIndex(this.shield, Canvas.GetZIndex(this.Player.Sprite) + 1);
@@ -249,13 +245,13 @@ namespace Galaga.Model
 
             this.shield.StartAnimation();
 
-            this.hasPowerUp = true;
+            this.HasPowerUp = true;
             this.shieldHitsRemaining = MaxShieldHits;
         }
 
         private void updateShieldPosition()
         {
-            if (this.hasPowerUp && this.shield != null)
+            if (this.HasPowerUp && this.shield != null)
             {
                 Canvas.SetLeft(this.shield, this.Player.X - ShieldOffsetLeft);
                 Canvas.SetTop(this.shield, this.Player.Y - ShieldOffsetTop);
@@ -274,7 +270,7 @@ namespace Galaga.Model
             }
 
             this.shieldHitsRemaining = 0;
-            this.hasPowerUp = false;
+            this.HasPowerUp = false;
         }
 
         /// <summary>

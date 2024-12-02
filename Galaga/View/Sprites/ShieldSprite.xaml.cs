@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using Windows.UI.Xaml;
 
 namespace Galaga.View.Sprites
@@ -8,14 +7,22 @@ namespace Galaga.View.Sprites
     ///     Represents the player's shield sprite.
     /// </summary>
     /// <seealso cref="Galaga.View.Sprites.BaseSprite" />
-    public sealed partial class ShieldSprite : BaseSprite
+    /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector" />
+    /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector2" />
+    public sealed partial class ShieldSprite
     {
+        #region Data members
+
         private const int TotalFramesInAnimation = 3;
         private int currentFrame;
-        private DispatcherTimer animationTimer;
+        private readonly DispatcherTimer animationTimer;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
-        ///    Initializes a new instance of the <see cref="Shield"/> class.
+        ///     Initializes a new instance of the <see cref="ShieldSprite" /> class.
         /// </summary>
         public ShieldSprite()
         {
@@ -29,23 +36,26 @@ namespace Galaga.View.Sprites
             this.animationTimer.Tick += this.AnimationTimerOnTick;
         }
 
+        #endregion
+
+        #region Methods
+
         private void AnimationTimerOnTick(object sender, object e)
         {
-            this.currentFrame = (this.currentFrame % TotalFramesInAnimation) + 1;
+            this.currentFrame = this.currentFrame % TotalFramesInAnimation + 1;
 
             switch (this.currentFrame)
             {
                 case 1:
-                    VisualStateManager.GoToState(this, "Frame1", false);
+                    VisualStateManager.GoToState(this, "frame1", false);
                     break;
                 case 2:
-                    VisualStateManager.GoToState(this, "Frame2", false);
+                    VisualStateManager.GoToState(this, "frame2", false);
                     break;
                 case 3:
-                    VisualStateManager.GoToState(this, "Frame3", false);
+                    VisualStateManager.GoToState(this, "frame3", false);
                     break;
             }
-
         }
 
         /// <summary>
@@ -56,14 +66,6 @@ namespace Galaga.View.Sprites
             this.animationTimer.Start();
         }
 
-        /// <summary>
-        ///     Stops the shield animation.
-        /// </summary> 
-        public void StopAnimation()
-        {
-            this.animationTimer.Stop();
-        }
+        #endregion
     }
 }
-
-

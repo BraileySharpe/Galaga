@@ -123,7 +123,6 @@
     <Compile Include="Model\BonusEnemy.cs" />
     <Compile Include="Model\Bullet.cs" />
     <Compile Include="Model\BulletManager.cs" />
-    <Compile Include="Model\Shield.cs" />
     <Compile Include="Model\PlayerLife.cs" />
     <Compile Include="Model\SfxManager.cs" />
     <Compile Include="Model\RoundData.cs" />
@@ -138,6 +137,7 @@
     <Compile Include="Model\ShipFactory.cs" />
     <Compile Include="Model\ShootingEnemy.cs" />
     <Compile Include="Model\TimeManager.cs" />
+    <Compile Include="ViewModel\GameViewModel.cs" />
     <Compile Include="View\GameCanvas.xaml.cs">
       <DependentUpon>GameCanvas.xaml</DependentUpon>
     </Compile>
