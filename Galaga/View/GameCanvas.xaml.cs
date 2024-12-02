@@ -16,6 +16,13 @@ namespace Galaga.View
     /// </summary>
     public sealed partial class GameCanvas
     {
+        #region Data members
+
+        private readonly GameManager gameManager;
+        private readonly HashSet<VirtualKey> activeKeys;
+
+        #endregion
+
         #region Constructors
 
         /// <summary>
@@ -85,22 +92,23 @@ namespace Galaga.View
         {
             if (e.PropertyName == nameof(this.gameManager.HasLost) && this.gameManager.HasLost)
             {
-                this.endGame(this.gameOverTextBlock);
+                this.endGame("GAME OVER");
             }
 
             if (e.PropertyName == nameof(this.gameManager.HasWon) && this.gameManager.HasWon)
             {
-                this.endGame(this.youWinTextBlock);
+                this.endGame("YOU WIN!");
             }
         }
 
-        private void endGame(TextBlock endgameTextBlock)
+        private void endGame(string endgameText)
         {
             this.disableAllSprites();
             CompositionTarget.Rendering -= this.gameLoop;
             this.gameManager.StopAllTimers();
 
-            endgameTextBlock.Visibility = Visibility.Visible;
+            this.endGameTextBlock.Text = endgameText;
+            this.endGameTextBlock.Visibility = Visibility.Visible;
         }
 
         private void disableAllSprites()
@@ -113,13 +121,6 @@ namespace Galaga.View
                 }
             }
         }
-
-        #endregion
-
-        #region Data Members
-
-        private readonly GameManager gameManager;
-        private readonly HashSet<VirtualKey> activeKeys;
 
         #endregion
     }
