@@ -22,12 +22,13 @@ namespace Galaga.Model
         private const int Level4EnemyIndex = 3;
         private const int StepCountMaxValue = 30;
         private const int StepCountReverseDirectionValue = 15;
-        private readonly RoundData roundData;
+
         private BonusEnemy bonusEnemy;
         private bool hasBonusEnemyStartedMoving;
         private int stepCounter = 4;
 
         private readonly Canvas canvas;
+        private readonly RoundData roundData;
 
         #endregion
 
@@ -144,6 +145,9 @@ namespace Galaga.Model
             }
         }
 
+        /// <summary>
+        ///     Movement pattern group number for the enemy type.
+        /// </summary>
         private int getEnemyMovementPatternGroupNumber(GlobalEnums.ShipType shipType)
         {
             switch (shipType)

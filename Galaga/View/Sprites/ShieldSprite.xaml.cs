@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Windows.UI.Xaml;
 
 namespace Galaga.View.Sprites
@@ -9,6 +10,7 @@ namespace Galaga.View.Sprites
     /// <seealso cref="Galaga.View.Sprites.BaseSprite" />
     public sealed partial class ShieldSprite : BaseSprite
     {
+        private const int TotalFramesInAnimation = 3;
         private int currentFrame;
         private DispatcherTimer animationTimer;
 
@@ -20,27 +22,27 @@ namespace Galaga.View.Sprites
             this.InitializeComponent();
             this.currentFrame = 1;
 
-            animationTimer = new DispatcherTimer
+            this.animationTimer = new DispatcherTimer
             {
                 Interval = TimeSpan.FromMilliseconds(100)
             };
-            animationTimer.Tick += this.AnimationTimerOnTick;
+            this.animationTimer.Tick += this.AnimationTimerOnTick;
         }
 
         private void AnimationTimerOnTick(object sender, object e)
         {
-            currentFrame = (currentFrame % 3) + 1;
+            this.currentFrame = (this.currentFrame % TotalFramesInAnimation) + 1;
 
-            switch (currentFrame)
+            switch (this.currentFrame)
             {
                 case 1:
-                    VisualStateManager.GoToState(this, "Frame1Image", true);
+                    VisualStateManager.GoToState(this, "Frame1", false);
                     break;
                 case 2:
-                    VisualStateManager.GoToState(this, "Frame2Image", true);
+                    VisualStateManager.GoToState(this, "Frame2", false);
                     break;
                 case 3:
-                    VisualStateManager.GoToState(this, "Frame3Image", true);
+                    VisualStateManager.GoToState(this, "Frame3", false);
                     break;
             }
 
@@ -51,7 +53,7 @@ namespace Galaga.View.Sprites
         /// </summary>
         public void StartAnimation()
         {
-            animationTimer.Start();
+            this.animationTimer.Start();
         }
 
         /// <summary>
@@ -59,7 +61,7 @@ namespace Galaga.View.Sprites
         /// </summary> 
         public void StopAnimation()
         {
-            animationTimer.Stop();
+            this.animationTimer.Stop();
         }
     }
 }

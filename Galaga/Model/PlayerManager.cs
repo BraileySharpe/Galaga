@@ -19,6 +19,8 @@ namespace Galaga.Model
         #region Data members
 
         private const double PlayerOffsetFromBottom = 30;
+        private const double ShieldOffsetLeft = 23;
+        private const double ShieldOffsetTop = 23;
         private const int StartingLives = 3;
         private const int IconsPerRow = 3;
         private const int MaxShieldHits = 2;
@@ -236,14 +238,16 @@ namespace Galaga.Model
                 this.shield = new ShieldSprite();
             }
             
-            Canvas.SetLeft(this.shield, Canvas.GetLeft(this.Player.Sprite));
-            Canvas.SetTop(this.shield, Canvas.GetTop(this.Player.Sprite));
+            Canvas.SetLeft(this.shield, this.Player.X - ShieldOffsetLeft);
+            Canvas.SetTop(this.shield, this.Player.Y - ShieldOffsetTop);
             Canvas.SetZIndex(this.shield, Canvas.GetZIndex(this.Player.Sprite) + 1);
 
             if (!this.canvas.Children.Contains(this.shield))
             {
                 this.canvas.Children.Add(this.shield);
             }
+
+            this.shield.StartAnimation();
 
             this.hasPowerUp = true;
             this.shieldHitsRemaining = MaxShieldHits;
@@ -253,8 +257,8 @@ namespace Galaga.Model
         {
             if (this.hasPowerUp && this.shield != null)
             {
-                Canvas.SetLeft(this.shield, Canvas.GetLeft(this.Player.Sprite));
-                Canvas.SetTop(this.shield, Canvas.GetTop(this.Player.Sprite));
+                Canvas.SetLeft(this.shield, this.Player.X - ShieldOffsetLeft);
+                Canvas.SetTop(this.shield, this.Player.Y - ShieldOffsetTop);
             }
         }
 
