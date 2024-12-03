@@ -4,6 +4,7 @@ using Windows.System;
 using Windows.UI.Xaml.Controls;
 using Galaga.Model;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 namespace Galaga.ViewModel
 {
@@ -14,6 +15,7 @@ namespace Galaga.ViewModel
         private readonly Canvas canvas;
         private readonly GameManager gameManager;
         private readonly HashSet<VirtualKey> activeKeys;
+        private bool isExecutingActions;
 
         private int score;
         private bool hasWon;
@@ -86,12 +88,49 @@ namespace Galaga.ViewModel
 
         public void KeyDown(VirtualKey key)
         {
-            this.activeKeys.Add(key);
+            if (this.activeKeys.Add(key))
+            {
+                _ = ExecuteActionsAsync();
+            }
+
+            if (key == VirtualKey.Space)
+            {
+                this.gameManager.PlacePlayerBullet();
+            }
         }
 
         public void KeyUp(VirtualKey key)
         {
             this.activeKeys.Remove(key);
+        }
+
+        private async Task ExecuteActionsAsync()
+        {
+            if (isExecutingActions) return;
+
+            isExecutingActions = true;
+
+            try
+            {
+                while (activeKeys.Count > 0)
+                {
+                    if (activeKeys.Contains(VirtualKey.Left))
+                    {
+                        this.gameManager.MovePlayerLeft();
+                    }
+
+                    if (activeKeys.Contains(VirtualKey.Right))
+                    {
+                        this.gameManager.MovePlayerRight();
+                    }
+
+                    await Task.Delay(16);
+                }
+            }
+            finally
+            {
+                isExecutingActions = false;
+            }
         }
 
         public void UpdateGameState()

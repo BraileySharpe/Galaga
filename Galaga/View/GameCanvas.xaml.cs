@@ -27,8 +27,6 @@ namespace Galaga.View
 
             this.setupWindowPreferences();
 
-            CompositionTarget.Rendering += (sender, args) => this.gameViewModel.UpdateGameState();
-
             Window.Current.CoreWindow.KeyDown += this.coreWindowOnKeyDown;
             Window.Current.CoreWindow.KeyUp += this.coreWindowOnKeyUp;
         }
