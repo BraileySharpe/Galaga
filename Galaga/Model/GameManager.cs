@@ -128,7 +128,7 @@ namespace Galaga.Model
         {
             if (e.PropertyName == nameof(this.enemyManager.HasBonusEnemyStartedMoving) && this.enemyManager.HasBonusEnemyStartedMoving)
             {
-                this.sfxManager.Play("bonusenemy_sound");
+                this.sfxManager.Play(GlobalEnums.AudioFiles.BONUSENEMY_SOUND);
             }
         }
 
@@ -205,7 +205,7 @@ namespace Galaga.Model
             var bullet = this.playerManager.Shoot();
             if (this.bulletManager.PlacePlayerBullet(bullet))
             {
-                this.sfxManager.Play("player_shoot");
+                this.sfxManager.Play(GlobalEnums.AudioFiles.PLAYER_SHOOT);
             }
         }
 
@@ -220,13 +220,13 @@ namespace Galaga.Model
                 var enemy = this.enemyManager.CheckWhichEnemyIsShot(collidingBullet);
                 if (enemy != null)
                 {
-                    this.sfxManager.Play("enemy_death");
+                    this.sfxManager.Play(GlobalEnums.AudioFiles.ENEMY_DEATH);
                     this.Score += enemy.Score;
 
                     if (enemy is BonusEnemy)
                     {
                         this.playerManager.GainExtraLife();
-                        this.sfxManager.Stop("bonusenemy_sound");
+                        this.sfxManager.Stop(GlobalEnums.AudioFiles.BONUSENEMY_SOUND);
                         this.activatePowerup();
                     }
                 }
@@ -245,7 +245,7 @@ namespace Galaga.Model
                 var enemy = this.enemyManager.ShootingEnemies[randomIndex];
 
                 var bullet = enemy.Shoot();
-                this.sfxManager.Play("enemy_shoot");
+                this.sfxManager.Play(GlobalEnums.AudioFiles.ENEMY_SHOOT);
                 this.bulletManager.PlaceEnemyBullet(bullet);
             }
         }
@@ -262,16 +262,16 @@ namespace Galaga.Model
                     this.playerManager.HandleHitToShield();
                     if (this.playerManager.hasPowerUp)
                     {
-                        this.sfxManager.Play("shieldhit");
+                        this.sfxManager.Play(GlobalEnums.AudioFiles.SHIELDHIT);
                     }
                     else
                     {
-                        this.sfxManager.Play("powerup_deactivate");
+                        this.sfxManager.Play(GlobalEnums.AudioFiles.POWERUP_DEACTIVATE);
                     }
                     return;
                 }
 
-                this.sfxManager.Play("player_death");
+                this.sfxManager.Play(GlobalEnums.AudioFiles.PLAYER_DEATH);
                 if (this.playerManager.RemainingLives > 0)
                 {
                     this.canvas.Children.Remove(this.playerManager.Player.Sprite);
@@ -300,7 +300,7 @@ namespace Galaga.Model
         {
             if (this.playerManager.RemainingLives <= 0 && !this.hasLost)
             {
-                this.sfxManager.Play("gameover_lose");
+                this.sfxManager.Play(GlobalEnums.AudioFiles.GAMEOVER_LOSE);
                 this.HasLost = true;
             }
 
@@ -321,7 +321,7 @@ namespace Galaga.Model
                         this.EndOfRound = false;
                         break;
                     case GlobalEnums.GameRound.Round3:
-                        this.sfxManager.Play("gameover_win");
+                        this.sfxManager.Play(GlobalEnums.AudioFiles.GAMEOVER_WIN);
                         this.HasWon = true;
 
                         break;
@@ -332,7 +332,7 @@ namespace Galaga.Model
         private void activatePowerup()
         {
             this.playerManager.ActivateShield();
-            this.sfxManager.Play("powerup_activate");
+            this.sfxManager.Play(GlobalEnums.AudioFiles.POWERUP_ACTIVATE);
         }
 
         #endregion
