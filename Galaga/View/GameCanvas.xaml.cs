@@ -22,17 +22,15 @@ namespace Galaga.View
         public GameCanvas()
         {
             this.InitializeComponent();
-            this.setupWindowPreferences();
+            DataContext = this.gameViewModel = new GameViewModel(this.canvas);
+            this.gameViewModel.PropertyChanged += this.OnViewModelPropertyChanged;
 
-            this.gameViewModel = new GameViewModel(this.canvas);
+            this.setupWindowPreferences();
 
             CompositionTarget.Rendering += (sender, args) => this.gameViewModel.UpdateGameState();
 
             Window.Current.CoreWindow.KeyDown += this.coreWindowOnKeyDown;
             Window.Current.CoreWindow.KeyUp += this.coreWindowOnKeyUp;
-
-            DataContext = this.gameViewModel;
-            this.gameViewModel.PropertyChanged += this.OnViewModelPropertyChanged;
         }
 
         #endregion

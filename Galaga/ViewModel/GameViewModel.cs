@@ -3,6 +3,7 @@ using System.ComponentModel;
 using Windows.System;
 using Windows.UI.Xaml.Controls;
 using Galaga.Model;
+using System.Runtime.CompilerServices;
 
 namespace Galaga.ViewModel
 {
@@ -14,18 +15,22 @@ namespace Galaga.ViewModel
         private readonly GameManager gameManager;
         private readonly HashSet<VirtualKey> activeKeys;
 
+        private int score;
+        private bool hasWon;
+        private bool hasLost;
+
         #endregion
 
         #region Properties
 
         public int Score
         {
-            get => this.gameManager.Score;
+            get => this.score;
             set
             {
-                if (this.gameManager.Score != value)
+                if (this.score != value)
                 {
-                    this.gameManager.Score = value;
+                    this.score = value;
                     this.OnPropertyChanged(nameof(this.Score));
                 }
             }
@@ -33,12 +38,12 @@ namespace Galaga.ViewModel
 
         public bool HasWon
         {
-            get => this.gameManager.HasWon;
+            get => this.hasWon;
             set
             {
-                if (this.gameManager.HasWon != value)
+                if (this.hasWon != value)
                 {
-                    this.gameManager.HasWon = value;
+                    this.hasWon = value;
                     this.OnPropertyChanged(nameof(this.HasWon));
                 }
             }
@@ -46,12 +51,12 @@ namespace Galaga.ViewModel
 
         public bool HasLost
         {
-            get => this.gameManager.HasLost;
+            get => this.hasLost;
             set
             {
-                if (this.gameManager.HasLost != value)
+                if (this.hasLost != value)
                 {
-                    this.gameManager.HasLost = value;
+                    this.hasLost = value;
                     this.OnPropertyChanged(nameof(this.HasLost));
                 }
             }
@@ -66,24 +71,6 @@ namespace Galaga.ViewModel
             this.canvas = canvas;
             this.gameManager = new GameManager(canvas);
             this.activeKeys = new HashSet<VirtualKey>();
-
-            this.gameManager.PropertyChanged += (sender, e) =>
-            {
-                if (e.PropertyName == nameof(this.gameManager.Score))
-                {
-                    this.OnPropertyChanged(nameof(this.Score));
-                }
-
-                if (e.PropertyName == nameof(this.gameManager.HasWon))
-                {
-                    this.OnPropertyChanged(nameof(this.HasWon));
-                }
-
-                if (e.PropertyName == nameof(this.gameManager.HasLost))
-                {
-                    this.OnPropertyChanged(nameof(this.HasLost));
-                }
-            };
         }
 
         #endregion
@@ -92,7 +79,7 @@ namespace Galaga.ViewModel
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected virtual void OnPropertyChanged(string propertyName)
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
@@ -124,6 +111,9 @@ namespace Galaga.ViewModel
                 this.gameManager.PlacePlayerBullet();
             }
 
+            this.Score = this.gameManager.Score;
+            this.HasWon = this.gameManager.HasWon;
+            this.HasLost = this.gameManager.HasLost;
             this.gameManager.CheckGameStatus();
         }
 
