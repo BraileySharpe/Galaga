@@ -47,13 +47,13 @@ namespace Galaga.View.Sprites
             switch (this.currentFrame)
             {
                 case 1:
-                    VisualStateManager.GoToState(this, "frame1", false);
+                    VisualStateManager.GoToState(this, "Frame1", false);
                     break;
                 case 2:
-                    VisualStateManager.GoToState(this, "frame2", false);
+                    VisualStateManager.GoToState(this, "Frame2", false);
                     break;
                 case 3:
-                    VisualStateManager.GoToState(this, "frame3", false);
+                    VisualStateManager.GoToState(this, "Frame3", false);
                     break;
             }
         }
