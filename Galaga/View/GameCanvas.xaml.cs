@@ -1,48 +1,36 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using Windows.Foundation;
-using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
-using Galaga.Model;
+using Galaga.ViewModel;
 
 namespace Galaga.View
 {
-    /// <summary>
-    ///     The Canvas for the Galaga Game.
-    /// </summary>
     public sealed partial class GameCanvas
     {
         #region Data members
 
-        private readonly GameManager gameManager;
-        private readonly HashSet<VirtualKey> activeKeys;
+        private readonly GameViewModel gameViewModel;
 
         #endregion
 
         #region Constructors
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="GameCanvas" /> class.
-        /// </summary>
         public GameCanvas()
         {
             this.InitializeComponent();
+            DataContext = this.gameViewModel = new GameViewModel(this.canvas);
+            this.gameViewModel.PropertyChanged += this.OnViewModelPropertyChanged;
+
             this.setupWindowPreferences();
 
-            this.activeKeys = new HashSet<VirtualKey>();
-            this.gameManager = new GameManager(this.canvas);
-
-            CompositionTarget.Rendering += this.gameLoop;
+            CompositionTarget.Rendering += (sender, args) => this.gameViewModel.UpdateGameState();
 
             Window.Current.CoreWindow.KeyDown += this.coreWindowOnKeyDown;
             Window.Current.CoreWindow.KeyUp += this.coreWindowOnKeyUp;
-
-            DataContext = this.gameManager;
-            this.gameManager.PropertyChanged += this.OnGameManagerPropertyChanged;
         }
 
         #endregion
@@ -60,42 +48,22 @@ namespace Galaga.View
 
         private void coreWindowOnKeyDown(CoreWindow sender, KeyEventArgs args)
         {
-            this.activeKeys.Add(args.VirtualKey);
+            this.gameViewModel.KeyDown(args.VirtualKey);
         }
 
         private void coreWindowOnKeyUp(CoreWindow sender, KeyEventArgs args)
         {
-            this.activeKeys.Remove(args.VirtualKey);
+            this.gameViewModel.KeyUp(args.VirtualKey);
         }
 
-        private void gameLoop(object sender, object e)
+        private void OnViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (this.activeKeys.Contains(VirtualKey.Left))
-            {
-                this.gameManager.MovePlayerLeft();
-            }
-
-            if (this.activeKeys.Contains(VirtualKey.Right))
-            {
-                this.gameManager.MovePlayerRight();
-            }
-
-            if (this.activeKeys.Contains(VirtualKey.Space))
-            {
-                this.gameManager.PlacePlayerBullet();
-            }
-
-            this.gameManager.CheckGameStatus();
-        }
-
-        private void OnGameManagerPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(this.gameManager.HasLost) && this.gameManager.HasLost)
+            if (e.PropertyName == nameof(this.gameViewModel.HasLost) && this.gameViewModel.HasLost)
             {
                 this.endGame("GAME OVER");
             }
 
-            if (e.PropertyName == nameof(this.gameManager.HasWon) && this.gameManager.HasWon)
+            if (e.PropertyName == nameof(this.gameViewModel.HasWon) && this.gameViewModel.HasWon)
             {
                 this.endGame("YOU WIN!");
             }
@@ -103,9 +71,9 @@ namespace Galaga.View
 
         private void endGame(string endgameText)
         {
+            CompositionTarget.Rendering -= (sender, args) => this.gameViewModel.UpdateGameState();
             this.disableAllSprites();
-            CompositionTarget.Rendering -= this.gameLoop;
-            this.gameManager.StopAllTimers();
+            this.gameViewModel.StopAllTimers();
 
             this.endGameTextBlock.Text = endgameText;
             this.endGameTextBlock.Visibility = Visibility.Visible;
