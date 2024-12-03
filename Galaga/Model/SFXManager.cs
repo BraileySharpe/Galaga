@@ -84,6 +84,14 @@ namespace Galaga.Model
         }
 
         /// <summary>
+        ///     Wait until all sounds are preloaded
+        /// </summary>
+        public async Task WaitForPreloadingAsync()
+        {
+            await this.preloadTaskCompletionSource.Task;
+        }
+
+        /// <summary>
         ///     Plays a sound effect.
         /// </summary>
         /// <param name="key">Key of the sound effect to play.</param>

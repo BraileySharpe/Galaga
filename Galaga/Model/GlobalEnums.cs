@@ -57,22 +57,22 @@
             /// <summary>
             ///     Represents the level 1 enemy ship.
             /// </summary>
-            Lvl1Enemy,
+            Lvl1Enemy = 1,
 
             /// <summary>
             ///     Represents the level 2 enemy ship.
             /// </summary>
-            Lvl2Enemy,
+            Lvl2Enemy = 2,
 
             /// <summary>
             ///     Represents the level 3 enemy ship.
             /// </summary>
-            Lvl3Enemy,
+            Lvl3Enemy = 3,
 
             /// <summary>
             ///     Represents the level 4 enemy ship.
             /// </summary>
-            Lvl4Enemy,
+            Lvl4Enemy = 4,
 
             /// <summary>
             ///     Represent the bonus enemy ship.
