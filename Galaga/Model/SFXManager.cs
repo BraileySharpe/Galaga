@@ -64,11 +64,6 @@ namespace Galaga.Model
             }
         }
 
-        public async Task WaitForPreloadingAsync()
-        {
-            await preloadTaskCompletionSource.Task;
-        }
-
         private async Task addSoundFile(GlobalEnums.AudioFiles key, StorageFolder audioFolder)
         {
             try

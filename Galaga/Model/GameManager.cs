@@ -151,7 +151,7 @@ namespace Galaga.Model
             if (e.PropertyName == nameof(this.enemyManager.HasBonusEnemyStartedMoving) &&
                 this.enemyManager.HasBonusEnemyStartedMoving)
             {
-                this.sfxManager.Play("bonusenemy_sound");
+                this.sfxManager.Play(GlobalEnums.AudioFiles.BONUSENEMY_SOUND);
             }
         }
 
@@ -331,7 +331,7 @@ namespace Galaga.Model
                 switch (this.roundData.CurrentRound)
                 {
                     case GlobalEnums.GameRound.Round3:
-                        this.sfxManager.Play(GlobalEnums.AudioFile.GAMEOVER_WIN);
+                        this.sfxManager.Play(GlobalEnums.AudioFiles.GAMEOVER_WIN);
                         this.HasWon = true;
 
                         break;
