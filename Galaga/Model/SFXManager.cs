@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
@@ -55,7 +54,6 @@ namespace Galaga.Model
                         throw new Exception("Error adding sound effect", exception);
                     }
                 }
-
             }
             catch (Exception exception)
             {
@@ -98,8 +96,8 @@ namespace Galaga.Model
                     Volume = Volume
                 };
 
-                mediaPlayer.MediaEnded += (sender, args) => 
-                { 
+                mediaPlayer.MediaEnded += (sender, args) =>
+                {
                     mediaPlayer.Dispose();
                     this.activePlayers.Remove(key);
                 };
