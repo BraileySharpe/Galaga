@@ -69,6 +69,14 @@ namespace Galaga.Model
         /// </value>
         public bool HasLost { get; set; }
 
+        /// <summary>
+        ///     Gets a value indicating whether this instance is initialized.
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if this instance is initialized; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsInitialized { get; private set; }
+
         #endregion
 
         #region Constructors
@@ -93,7 +101,7 @@ namespace Galaga.Model
 
             this.initializeGame();
         }
-        
+
         #endregion
 
         #region Methods
@@ -143,6 +151,7 @@ namespace Galaga.Model
 
             this.enemyManager.CreateAndPlaceEnemies();
             this.timeManager.InitializeTimers();
+            this.IsInitialized = true;
         }
 
         /// <summary>
