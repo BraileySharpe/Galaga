@@ -138,17 +138,8 @@ namespace Galaga.Model
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private async void initializeGame()
+        private void initializeGame()
         {
-            try
-            {
-                await this.sfxManager.WaitForPreloadingAsync();
-            }
-            catch (Exception exception)
-            {
-                throw new TimeoutException("Error preloading sfx", exception);
-            }
-
             this.enemyManager.CreateAndPlaceEnemies();
             this.timeManager.InitializeTimers();
             this.IsInitialized = true;
@@ -217,7 +208,6 @@ namespace Galaga.Model
                 {
                     this.sfxManager.Play(GlobalEnums.AudioFiles.ENEMY_DEATH);
                     this.Score += enemy.Score;
-                    Debug.WriteLine(this.Score);
 
                     if (enemy is BonusEnemy)
                     {

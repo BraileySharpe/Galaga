@@ -55,7 +55,6 @@ namespace Galaga.Model
             this.setUpPlayerBulletTimer();
             this.setUpEnemyMovementTimer();
             this.setUpEnemyBulletTimer();
-            this.setUpPlayerBulletCooldownTimer();
             this.setUpBonusEnemyMovementTimer();
             this.setUpPlayerBulletCooldownTimer();
             this.setUpBonusEnemyActivationTimer();

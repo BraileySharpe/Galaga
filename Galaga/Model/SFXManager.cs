@@ -18,7 +18,7 @@ namespace Galaga.Model
 
         private readonly Dictionary<GlobalEnums.AudioFiles, StorageFile> soundFiles;
         private readonly Dictionary<GlobalEnums.AudioFiles, MediaPlayer> activePlayers = new Dictionary<GlobalEnums.AudioFiles, MediaPlayer>();
-        private readonly TaskCompletionSource<bool> preloadTaskCompletionSource = new TaskCompletionSource<bool>();
+        private const double Volume = 0.13;
 
         #endregion
 
@@ -52,15 +52,14 @@ namespace Galaga.Model
                     }
                     catch (Exception exception)
                     {
-                        throw new Exception("Error loading sound effects", exception);
+                        throw new Exception("Error adding sound effect", exception);
                     }
                 }
 
-                preloadTaskCompletionSource.SetResult(true);
             }
             catch (Exception exception)
             {
-                preloadTaskCompletionSource.SetException(exception);
+                throw new Exception($"Error loading sound effects {exception}");
             }
         }
 
@@ -76,14 +75,6 @@ namespace Galaga.Model
             {
                 throw new Exception("Error loading sound file " + key, exception);
             }
-        }
-
-        /// <summary>
-        ///     Wait until all sounds are preloaded
-        /// </summary>
-        public async Task WaitForPreloadingAsync()
-        {
-            await this.preloadTaskCompletionSource.Task;
         }
 
         /// <summary>
@@ -104,7 +95,7 @@ namespace Galaga.Model
                 var mediaPlayer = new MediaPlayer
                 {
                     Source = MediaSource.CreateFromStorageFile(file),
-                    Volume = 0.15
+                    Volume = Volume
                 };
 
                 mediaPlayer.MediaEnded += (sender, args) => 
