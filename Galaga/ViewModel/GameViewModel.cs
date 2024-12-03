@@ -6,6 +6,8 @@ using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Galaga.Model;
+using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
 namespace Galaga.ViewModel
 {
@@ -15,6 +17,8 @@ namespace Galaga.ViewModel
 
         private const int GameLoopTimerIntervalMilliseconds = 16;
 
+        private readonly HighScoreBoard highScoreBoard;
+
         private DispatcherTimer gameLoopTimer;
         private readonly Canvas canvas;
         private readonly GameManager gameManager;
@@ -23,24 +27,12 @@ namespace Galaga.ViewModel
         private int score;
         private bool hasWon;
         private bool hasLost;
-        private string endGameText;
+
+        public ObservableCollection<HighScoreEntry> HighScores { get; }
 
         #endregion
 
         #region Properties
-
-        public string EndGameText
-        {
-            get => this.endGameText;
-            set
-            {
-                if (this.endGameText != value)
-                {
-                    this.endGameText = value;
-                    this.OnPropertyChanged();
-                }
-            }
-        }
 
         public int Score
         {
@@ -90,6 +82,7 @@ namespace Galaga.ViewModel
             this.canvas = canvas ?? throw new ArgumentNullException(nameof(canvas));
             this.gameManager = new GameManager(canvas);
             this.activeKeys = new HashSet<VirtualKey>();
+            this.HighScores = new ObservableCollection<HighScoreEntry>();
             this.setUpGameLoopTimer();
         }
 
@@ -147,12 +140,19 @@ namespace Galaga.ViewModel
             this.gameManager.CheckGameStatus();
         }
 
-        public void EndGame(string endgameText)
+        /// <summary>
+        ///     Ends the game.
+        /// </summary>
+        public async Task EndGameAsync(string playerName)
         {
+
             this.disableAllSprites();
             this.StopAllTimers();
 
-            this.EndGameText = endgameText;
+            var newEntry = new HighScoreEntry(playerName, this.Score, this.gameManager.CurrentLevel);
+            var updatedHighScores = await this.highScoreBoard.AddHighScoreAsync(newEntry);
+            this.UpdateHighScoresCollection(updatedHighScores);
+            
         }
 
         private void disableAllSprites()
@@ -170,6 +170,51 @@ namespace Galaga.ViewModel
         {
             this.gameManager.StopAllTimers();
             this.gameLoopTimer?.Stop();
+        }
+
+        public async Task LoadHighScoresAsync()
+        {
+            var highScores = await this.highScoreBoard.GetHighScoresAsync();
+            this.UpdateHighScoresCollection(highScores);
+        }
+
+        private void UpdateHighScoresCollection(IEnumerable<HighScoreEntry> highScores)
+        {
+            this.HighScores.Clear();
+            foreach (var score in highScores)
+            {
+                this.HighScores.Add(score);
+            }
+        }
+
+        public void SortHighScoresByScoreNameLevel()
+        {
+            var sortedScores = this.HighScores
+                .OrderByDescending(h => h.Score)
+                .ThenBy(h => h.PlayerName)
+                .ThenBy(h => h.LevelCompleted)
+                .ToList();
+            this.UpdateHighScoresCollection(sortedScores);
+        }
+
+        public void SortHighScoresByNameScoreLevel()
+        {
+            var sortedScores = this.HighScores
+                .OrderBy(h => h.PlayerName)
+                .ThenByDescending(h => h.Score)
+                .ThenBy(h => h.LevelCompleted)
+                .ToList();
+            this.UpdateHighScoresCollection(sortedScores);
+        }
+
+        public void SortHighScoresByLevelScoreName()
+        {
+            var sortedScores = this.HighScores
+                .OrderBy(h => h.LevelCompleted)
+                .ThenByDescending(h => h.Score)
+                .ThenBy(h => h.PlayerName)
+                .ToList();
+            this.UpdateHighScoresCollection(sortedScores);
         }
 
         #endregion

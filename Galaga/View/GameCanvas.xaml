@@ -18,9 +18,12 @@
                    FontWeight="Bold"
                    Canvas.Left="791" Canvas.Top="55" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Top"
                    Foreground="White" TextAlignment="Right" />
-        <TextBlock x:Name="endGameTextBlock" Text ="{Binding Path=EndGameText, Mode=TwoWay}" Visibility="Visible" FontFamily="ModeNine"
+        <TextBlock x:Name="hasLostTextBlock" Text ="GAME OVER" Visibility="{Binding Path=HasLost, Mode=OneWay}" FontFamily="ModeNine"
                    FontWeight="Bold" FontSize="50" Canvas.Left="327" Canvas.Top="285" Foreground="White"
                    TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Top" />
+        <TextBlock x:Name="hasWonTextBlock" Text ="YOU WIN!" Visibility="{Binding Path=HasWon, Mode=OneWay}" FontFamily="ModeNine"
+                   FontWeight="Bold" FontSize="50" Canvas.Left="347" Canvas.Top="285" Foreground="White"
+                   TextAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Center" />
         <Grid x:Name="lifeGrid" Canvas.Left="780" Canvas.Top="200" Margin="10" Background="Transparent" />
     </Canvas>
 </Page>

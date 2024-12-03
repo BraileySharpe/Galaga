@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
@@ -17,7 +16,10 @@ namespace Galaga.Model
         #region Data members
 
         private readonly Dictionary<GlobalEnums.AudioFiles, StorageFile> soundFiles;
-        private readonly Dictionary<GlobalEnums.AudioFiles, MediaPlayer> activePlayers = new Dictionary<GlobalEnums.AudioFiles, MediaPlayer>();
+
+        private readonly Dictionary<GlobalEnums.AudioFiles, MediaPlayer> activePlayers =
+            new Dictionary<GlobalEnums.AudioFiles, MediaPlayer>();
+
         private readonly TaskCompletionSource<bool> preloadTaskCompletionSource = new TaskCompletionSource<bool>();
 
         #endregion
@@ -56,11 +58,11 @@ namespace Galaga.Model
                     }
                 }
 
-                preloadTaskCompletionSource.SetResult(true);
+                this.preloadTaskCompletionSource.SetResult(true);
             }
             catch (Exception exception)
             {
-                preloadTaskCompletionSource.SetException(exception);
+                this.preloadTaskCompletionSource.SetException(exception);
             }
         }
 
@@ -107,8 +109,8 @@ namespace Galaga.Model
                     Volume = 0.15
                 };
 
-                mediaPlayer.MediaEnded += (sender, args) => 
-                { 
+                mediaPlayer.MediaEnded += (sender, args) =>
+                {
                     mediaPlayer.Dispose();
                     this.activePlayers.Remove(key);
                 };

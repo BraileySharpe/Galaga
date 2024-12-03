@@ -1,9 +1,13 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
+using System.Diagnostics;
 using Windows.Foundation;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Galaga.ViewModel;
+using System.Threading.Tasks;
+using Windows.UI.Xaml.Controls;
 
 namespace Galaga.View
 {
@@ -53,17 +57,31 @@ namespace Galaga.View
             this.gameViewModel.KeyUp(args.VirtualKey);
         }
 
-        private void OnViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private async void OnViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(this.gameViewModel.HasLost) && this.gameViewModel.HasLost)
+            if ((e.PropertyName == nameof(this.gameViewModel.HasLost) && this.gameViewModel.HasLost) || e.PropertyName == nameof(this.gameViewModel.HasWon) && this.gameViewModel.HasWon)
             {
-                this.gameViewModel.EndGame("GAME OVER");
+                string playerName = await this.promptForPlayerNameAsync();
+                await this.gameViewModel.EndGameAsync(playerName);
+                await this.ShowHighScoreBoardAsync();
+            }
+        }
+
+        private async Task<string> promptForPlayerNameAsync()
+        {
+            var dialog = new ContentDialog
+            {
+                Title = "Enter Your Name",
+                Content = new TextBox { PlaceholderText = "Player Name" },
+                PrimaryButtonText = "OK",
+            };
+
+            if (await dialog.ShowAsync() == ContentDialogResult.Primary)
+            {
+                return ((TextBox)dialog.Content).Text;
             }
 
-            if (e.PropertyName == nameof(this.gameViewModel.HasWon) && this.gameViewModel.HasWon)
-            {
-                this.gameViewModel.EndGame("YOU WIN!");
-            }
+            return "Anonymous";
         }
 
         #endregion
