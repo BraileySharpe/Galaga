@@ -31,17 +31,17 @@
             /// <summary>
             ///     Round 1.
             /// </summary>
-            Round1,
+            Round1 = 1,
 
             /// <summary>
             ///     Round 2.
             /// </summary>
-            Round2,
+            Round2 = 2,
 
             /// <summary>
             ///     Round 3.
             /// </summary>
-            Round3
+            Round3 = 3
         }
 
         /// <summary>

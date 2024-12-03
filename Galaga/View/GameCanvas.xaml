@@ -8,22 +8,38 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Canvas x:Name="canvas" Width="900" Height="650" Background="Black">
-        <TextBlock Text="HIGH" Height="17" Width="58" FontFamily="ModeNine" FontWeight="Bold" Canvas.Left="791"
-                   FontSize="20" Foreground="#FFD01919" HorizontalAlignment="Left"
-                   VerticalAlignment="Top" Canvas.Top="9" />
         <TextBlock Text="SCORE" Height="17" Width="64" FontFamily="ModeNine" FontWeight="Bold" Canvas.Left="809"
-                   FontSize="20" Foreground="#FFD01919" HorizontalAlignment="Left"
-                   VerticalAlignment="Top" Canvas.Top="29" />
+                   FontSize="20" Foreground="#FFD01919" HorizontalAlignment="Center"
+                   VerticalAlignment="Top" Canvas.Top="16" />
         <TextBlock Text="{Binding Path=Score, Mode=OneWay}" Height="31" Width="79" FontFamily="ModeNine"
                    FontWeight="Bold"
-                   Canvas.Left="791" Canvas.Top="55" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Top"
+                   Canvas.Left="791" Canvas.Top="40" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Top"
                    Foreground="White" TextAlignment="Right" />
         <TextBlock x:Name="hasLostTextBlock" Text ="GAME OVER" Visibility="{Binding Path=HasLost, Mode=OneWay}" FontFamily="ModeNine"
-                   FontWeight="Bold" FontSize="50" Canvas.Left="327" Canvas.Top="285" Foreground="White"
+                   FontWeight="Bold" FontSize="50" Canvas.Left="327" Canvas.Top="183" Foreground="White"
                    TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Top" />
         <TextBlock x:Name="hasWonTextBlock" Text ="YOU WIN!" Visibility="{Binding Path=HasWon, Mode=OneWay}" FontFamily="ModeNine"
-                   FontWeight="Bold" FontSize="50" Canvas.Left="347" Canvas.Top="285" Foreground="White"
-                   TextAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                   FontWeight="Bold" FontSize="50" Canvas.Left="347" Canvas.Top="187" Foreground="White"
+                   TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Top" />
         <Grid x:Name="lifeGrid" Canvas.Left="780" Canvas.Top="200" Margin="10" Background="Transparent" />
+        <ListView x:Name="highScoreBoardListView" ItemsSource="{Binding HighScores}" Visibility="Collapsed" FontFamily="ModeNine"
+                  FontWeight="Bold" Canvas.Left="271" Canvas.Top="255" SelectionMode="None">
+            <ListView.Header>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Player Name" Width="150" FontWeight="Bold" />
+                    <TextBlock Text="Score" Width="100" FontWeight="Bold" />
+                    <TextBlock Text="Level Completed" Width="150" FontWeight="Bold" />
+                </StackPanel>
+            </ListView.Header>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding PlayerName}" Width="150" />
+                        <TextBlock Text="{Binding Score}" Width="100" />
+                        <TextBlock Text="{Binding LevelCompleted}" Width="150" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </Canvas>
 </Page>
