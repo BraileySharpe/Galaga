@@ -3,8 +3,6 @@ using Windows.Foundation;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media;
 using Galaga.ViewModel;
 
 namespace Galaga.View
@@ -24,14 +22,12 @@ namespace Galaga.View
             this.InitializeComponent();
             this.setupWindowPreferences();
             this.gameViewModel = new GameViewModel(this.canvas);
-            CompositionTarget.Rendering += (sender, args) => this.gameViewModel.UpdateGameState();
 
             Window.Current.CoreWindow.KeyDown += this.coreWindowOnKeyDown;
             Window.Current.CoreWindow.KeyUp += this.coreWindowOnKeyUp;
 
             DataContext = this.gameViewModel;
             this.gameViewModel.PropertyChanged += this.OnViewModelPropertyChanged;
-
         }
 
         #endregion
@@ -61,33 +57,12 @@ namespace Galaga.View
         {
             if (e.PropertyName == nameof(this.gameViewModel.HasLost) && this.gameViewModel.HasLost)
             {
-                this.endGame("GAME OVER");
+                this.gameViewModel.EndGame("GAME OVER");
             }
 
             if (e.PropertyName == nameof(this.gameViewModel.HasWon) && this.gameViewModel.HasWon)
             {
-                this.endGame("YOU WIN!");
-            }
-        }
-
-        private void endGame(string endgameText)
-        {
-            CompositionTarget.Rendering -= (sender, args) => this.gameViewModel.UpdateGameState();
-            this.disableAllSprites();
-            this.gameViewModel.StopAllTimers();
-
-            this.endGameTextBlock.Text = endgameText;
-            this.endGameTextBlock.Visibility = Visibility.Visible;
-        }
-
-        private void disableAllSprites()
-        {
-            foreach (var uiElement in this.canvas.Children)
-            {
-                if (!(uiElement is TextBlock))
-                {
-                    uiElement.Visibility = Visibility.Collapsed;
-                }
+                this.gameViewModel.EndGame("YOU WIN!");
             }
         }
 

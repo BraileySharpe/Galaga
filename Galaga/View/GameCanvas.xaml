@@ -18,7 +18,7 @@
                    FontWeight="Bold"
                    Canvas.Left="791" Canvas.Top="55" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Top"
                    Foreground="White" TextAlignment="Right" />
-        <TextBlock x:Name="endGameTextBlock" Visibility="Collapsed" FontFamily="ModeNine"
+        <TextBlock x:Name="endGameTextBlock" Text ="{Binding Path=EndGameText, Mode=TwoWay}" Visibility="Visible" FontFamily="ModeNine"
                    FontWeight="Bold" FontSize="50" Canvas.Left="327" Canvas.Top="285" Foreground="White"
                    TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Top" />
         <Grid x:Name="lifeGrid" Canvas.Left="780" Canvas.Top="200" Margin="10" Background="Transparent" />

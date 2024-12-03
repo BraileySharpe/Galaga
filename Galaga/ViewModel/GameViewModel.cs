@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using Windows.System;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Galaga.Model;
-using System.Runtime.CompilerServices;
 
 namespace Galaga.ViewModel
 {
@@ -11,6 +13,9 @@ namespace Galaga.ViewModel
     {
         #region Data members
 
+        private const int GameLoopTimerIntervalMilliseconds = 16;
+
+        private DispatcherTimer gameLoopTimer;
         private readonly Canvas canvas;
         private readonly GameManager gameManager;
         private readonly HashSet<VirtualKey> activeKeys;
@@ -18,10 +23,24 @@ namespace Galaga.ViewModel
         private int score;
         private bool hasWon;
         private bool hasLost;
+        private string endGameText;
 
         #endregion
 
         #region Properties
+
+        public string EndGameText
+        {
+            get => this.endGameText;
+            set
+            {
+                if (this.endGameText != value)
+                {
+                    this.endGameText = value;
+                    this.OnPropertyChanged();
+                }
+            }
+        }
 
         public int Score
         {
@@ -31,7 +50,7 @@ namespace Galaga.ViewModel
                 if (this.score != value)
                 {
                     this.score = value;
-                    this.OnPropertyChanged(nameof(this.Score));
+                    this.OnPropertyChanged();
                 }
             }
         }
@@ -44,7 +63,7 @@ namespace Galaga.ViewModel
                 if (this.hasWon != value)
                 {
                     this.hasWon = value;
-                    this.OnPropertyChanged(nameof(this.HasWon));
+                    this.OnPropertyChanged();
                 }
             }
         }
@@ -57,7 +76,7 @@ namespace Galaga.ViewModel
                 if (this.hasLost != value)
                 {
                     this.hasLost = value;
-                    this.OnPropertyChanged(nameof(this.HasLost));
+                    this.OnPropertyChanged();
                 }
             }
         }
@@ -68,9 +87,10 @@ namespace Galaga.ViewModel
 
         public GameViewModel(Canvas canvas)
         {
-            this.canvas = canvas;
+            this.canvas = canvas ?? throw new ArgumentNullException(nameof(canvas));
             this.gameManager = new GameManager(canvas);
             this.activeKeys = new HashSet<VirtualKey>();
+            this.setUpGameLoopTimer();
         }
 
         #endregion
@@ -94,7 +114,17 @@ namespace Galaga.ViewModel
             this.activeKeys.Remove(key);
         }
 
-        public void UpdateGameState()
+        private void setUpGameLoopTimer()
+        {
+            this.gameLoopTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromMilliseconds(GameLoopTimerIntervalMilliseconds)
+            };
+            this.gameLoopTimer.Tick += this.GameLoop;
+            this.gameLoopTimer.Start();
+        }
+
+        public void GameLoop(object sender, object e)
         {
             if (this.activeKeys.Contains(VirtualKey.Left))
             {
@@ -114,15 +144,32 @@ namespace Galaga.ViewModel
             this.Score = this.gameManager.Score;
             this.HasWon = this.gameManager.HasWon;
             this.HasLost = this.gameManager.HasLost;
-            if (this.gameManager.IsInitialized)
+            this.gameManager.CheckGameStatus();
+        }
+
+        public void EndGame(string endgameText)
+        {
+            this.disableAllSprites();
+            this.StopAllTimers();
+
+            this.EndGameText = endgameText;
+        }
+
+        private void disableAllSprites()
+        {
+            foreach (var uiElement in this.canvas.Children)
             {
-                this.gameManager.CheckGameStatus();
+                if (!(uiElement is TextBlock))
+                {
+                    uiElement.Visibility = Visibility.Collapsed;
+                }
             }
         }
 
         public void StopAllTimers()
         {
             this.gameManager.StopAllTimers();
+            this.gameLoopTimer?.Stop();
         }
 
         #endregion
