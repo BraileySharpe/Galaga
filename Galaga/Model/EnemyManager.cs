@@ -20,12 +20,12 @@ namespace Galaga.Model
         private const int Level2EnemyIndex = 1;
         private const int Level3EnemyIndex = 2;
         private const int Level4EnemyIndex = 3;
-        private const int StepCountMaxValue = 30;
-        private const int StepCountReverseDirectionValue = 15;
+        private const int StepCountMaxValue = 28;
+        private const int StepCountReverseDirectionValue = 14;
         private readonly RoundData roundData;
         private BonusEnemy bonusEnemy;
         private bool hasBonusEnemyStartedMoving;
-        private int stepCounter = 4;
+        private int stepCounter = 7;
 
         private readonly Canvas canvas;
 
