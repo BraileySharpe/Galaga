@@ -22,7 +22,7 @@ namespace Galaga.Model
         {
             Sprite = new BonusEnemySprite();
             SetSpeed(SpeedXDirection, 0);
-            EnemyBulletSpeedY = 15;
+            EnemyBulletSpeed = 15;
         }
 
         #endregion
