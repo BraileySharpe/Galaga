@@ -5,9 +5,11 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Galaga.Command;
 using Galaga.Model;
 
 namespace Galaga.ViewModel;
@@ -34,6 +36,12 @@ public class GameViewModel : INotifyPropertyChanged
     #region Properties
 
     public ObservableCollection<HighScoreEntry> HighScores { get; }
+
+    public ICommand SortHighScoresByNameCommand { get; }
+
+    public ICommand SortHighScoresByScoreCommand { get; }
+
+    public ICommand SortHighScoresByLevelCommand { get; }
 
     public int Score
     {
@@ -86,6 +94,10 @@ public class GameViewModel : INotifyPropertyChanged
         this.HighScores = new ObservableCollection<HighScoreEntry>();
         this.highScoreBoard = new HighScoreBoard();
         this.setUpGameLoopTimer();
+
+        this.SortHighScoresByNameCommand = new RelayCommand(_=> this.SortHighScoresByNameScoreLevel());
+        this.SortHighScoresByScoreCommand = new RelayCommand(_=>this.SortHighScoresByScoreNameLevel());
+        this.SortHighScoresByLevelCommand = new RelayCommand(_=>this.SortHighScoresByLevelScoreName());
     }
 
     #endregion
@@ -216,7 +228,7 @@ public class GameViewModel : INotifyPropertyChanged
     public void SortHighScoresByLevelScoreName()
     {
         var sortedScores = this.HighScores
-            .OrderBy(h => h.LevelCompleted)
+            .OrderByDescending(h => h.LevelCompleted)
             .ThenByDescending(h => h.Score)
             .ThenBy(h => h.PlayerName)
             .ToList();

@@ -86,7 +86,10 @@ public class SfxManager
         {
             if (this.activePlayers.TryGetValue(key, out var existingPlayer))
             {
-                existingPlayer.Pause();
+                if (existingPlayer.PlaybackSession.CanPause)
+                {
+                    existingPlayer.Pause();
+                }
                 existingPlayer.Dispose();
                 this.activePlayers.Remove(key);
             }
