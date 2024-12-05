@@ -1,36 +1,41 @@
-﻿using Galaga.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
 
+namespace Galaga.Model;
+
 public class HighScoreBoard
 {
+    #region Data members
+
     private const string FilenameDataContractSerialization = "HighScores.xml";
+
+    #endregion
+
+    #region Methods
 
     public async Task<List<HighScoreEntry>> GetHighScoresAsync()
     {
         try
         {
             var folder = ApplicationData.Current.LocalFolder;
-            var file = await folder.TryGetItemAsync(FilenameDataContractSerialization) as StorageFile;
 
-            if (file == null)
+            if (await folder.TryGetItemAsync(FilenameDataContractSerialization) is not StorageFile file)
             {
-                return new List<HighScoreEntry>();
+                return [];
             }
 
             using var inStream = await file.OpenStreamForReadAsync();
             var deserializer = new DataContractSerializer(typeof(List<HighScoreEntry>));
-            return (List<HighScoreEntry>?)deserializer.ReadObject(inStream) ?? new List<HighScoreEntry>();
+            return (List<HighScoreEntry>)deserializer.ReadObject(inStream) ?? [];
         }
         catch
         {
-            return new List<HighScoreEntry>();
+            return [];
         }
     }
 
@@ -68,4 +73,6 @@ public class HighScoreBoard
 
         return highScores;
     }
+
+    #endregion
 }
