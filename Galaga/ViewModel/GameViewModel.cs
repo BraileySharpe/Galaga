@@ -95,9 +95,9 @@ public class GameViewModel : INotifyPropertyChanged
         this.highScoreBoard = new HighScoreBoard();
         this.setUpGameLoopTimer();
 
-        this.SortHighScoresByNameCommand = new RelayCommand(_=> this.SortHighScoresByNameScoreLevel());
-        this.SortHighScoresByScoreCommand = new RelayCommand(_=>this.SortHighScoresByScoreNameLevel());
-        this.SortHighScoresByLevelCommand = new RelayCommand(_=>this.SortHighScoresByLevelScoreName());
+        this.SortHighScoresByNameCommand = new RelayCommand(_ => this.SortHighScoresByNameScoreLevel());
+        this.SortHighScoresByScoreCommand = new RelayCommand(_ => this.SortHighScoresByScoreNameLevel());
+        this.SortHighScoresByLevelCommand = new RelayCommand(_ => this.SortHighScoresByLevelScoreName());
     }
 
     #endregion
