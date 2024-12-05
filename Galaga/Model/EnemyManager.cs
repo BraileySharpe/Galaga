@@ -221,6 +221,26 @@ namespace Galaga.Model
             }
 
             this.stepCounter = (this.stepCounter + 1) % StepCountMaxValue;
+
+            //var groupedEnemies = this.Enemies.GroupBy(enemy => enemy.MovementPattern)
+            //    .ToDictionary(g => g.Key, g => g.ToList());
+
+            //switch (this.roundData.CurrentRound)
+            //{
+            //    case GlobalEnums.GameRound.Round1:
+            //        this.moveGroup(groupedEnemies.ToList(), this.stepCounter <= StepCountReverseDirectionValue);
+            //        break;
+            //    case GlobalEnums.GameRound.Round2:
+            //        this.handleGroupedMovement(groupedEnemies, new[] { 1, 2 }, new[] { 3, 4 });
+            //        break;
+            //    case GlobalEnums.GameRound.Round3:
+            //        this.handleGroupedMovement(groupedEnemies, new[] { 1, 3 }, new[] { 2, 4 });
+            //        break;
+            //    default:
+            //        throw new ArgumentException("Invalid round.");
+            //}
+
+            //this.stepCounter = (this.stepCounter + 1) % StepCountMaxValue;
         }
 
         private void handleMovement(IEnumerable<Enemy> enemies, int reverseStepThreshold, bool bidirectional)
