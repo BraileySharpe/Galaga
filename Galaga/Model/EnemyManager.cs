@@ -186,15 +186,15 @@ namespace Galaga.Model
         {
             this.bonusEnemy.MoveRight();
 
+            if (!this.hasBonusEnemyStartedMoving)
+            {
+                this.HasBonusEnemyStartedMoving = true;
+            }
+
             if (this.bonusEnemy.X > this.canvas.Width)
             {
                 this.canvas.Children.Remove(this.bonusEnemy.Sprite);
                 this.Enemies.Remove(this.bonusEnemy);
-            }
-
-            if (!this.hasBonusEnemyStartedMoving)
-            {
-                this.HasBonusEnemyStartedMoving = true;
             }
         }
 

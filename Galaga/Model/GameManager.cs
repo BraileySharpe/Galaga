@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Galaga.View.Sprites;
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using Windows.UI.Xaml.Controls;
@@ -227,7 +228,21 @@ namespace Galaga.Model
                 var randomIndex = random.Next(0, this.enemyManager.RemainingShootingEnemies);
                 var enemy = this.enemyManager.ShootingEnemies[randomIndex];
 
-                var bullet = enemy.Shoot();
+                Bullet bullet;
+
+                if (enemy.Sprite is Level4EnemySprite)
+                {
+                    bullet = enemy.Shoot(this.playerManager.Player);
+                }
+                else if (enemy.Sprite is BonusEnemySprite && this.enemyManager.HasBonusEnemyStartedMoving)
+                {
+                    bullet = enemy.Shoot(this.playerManager.Player);
+                }
+                else
+                {
+                    bullet = enemy.Shoot();
+                }
+                
                 this.sfxManager.Play(GlobalEnums.AudioFiles.ENEMY_SHOOT);
                 this.bulletManager.PlaceEnemyBullet(bullet);
             }

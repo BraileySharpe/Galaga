@@ -9,7 +9,7 @@ namespace Galaga.Model
     {
         #region Data members
 
-        private const int SpeedXDirection = 0;
+        private int speedXDirection = 0;
         private readonly int speedYDirection = 15;
 
         #endregion
@@ -30,7 +30,7 @@ namespace Galaga.Model
                 this.speedYDirection = -this.speedYDirection;
             }
 
-            SetSpeed(SpeedXDirection, this.speedYDirection);
+            SetSpeed(speedXDirection, this.speedYDirection);
         }
 
         #endregion
@@ -42,6 +42,7 @@ namespace Galaga.Model
         /// </summary>
         public void Move()
         {
+            X += SpeedX;
             Y += SpeedY;
         }
 
