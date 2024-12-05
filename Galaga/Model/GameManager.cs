@@ -69,6 +69,11 @@ namespace Galaga.Model
         /// </value>
         public bool HasLost { get; set; }
 
+        /// <summary>
+        ///    Gets the current round.
+        /// </summary>
+        public int CurrentRoundNumber => (int)this.roundData.CurrentRound;
+
         #endregion
 
         #region Constructors

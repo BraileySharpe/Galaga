@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using Windows.Foundation;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
@@ -32,6 +31,8 @@ namespace Galaga.View
 
             DataContext = this.gameViewModel;
             this.gameViewModel.PropertyChanged += this.OnViewModelPropertyChanged;
+
+            _ = this.gameViewModel.LoadHighScoresAsync();
         }
 
         #endregion
@@ -61,9 +62,10 @@ namespace Galaga.View
         {
             if ((e.PropertyName == nameof(this.gameViewModel.HasLost) && this.gameViewModel.HasLost) || e.PropertyName == nameof(this.gameViewModel.HasWon) && this.gameViewModel.HasWon)
             {
+                this.gameViewModel.EndGame();
                 string playerName = await this.promptForPlayerNameAsync();
                 await this.gameViewModel.EndGameAsync(playerName);
-                await this.ShowHighScoreBoardAsync();
+                this.highScoreBoardListView.Visibility = Visibility.Visible;
             }
         }
 
@@ -78,7 +80,12 @@ namespace Galaga.View
 
             if (await dialog.ShowAsync() == ContentDialogResult.Primary)
             {
-                return ((TextBox)dialog.Content).Text;
+                var name = ((TextBox)dialog.Content).Text;
+                if (name.Length > 0)
+                {
+                    return name;
+                }
+                return "Rico";
             }
 
             return "Anonymous";
