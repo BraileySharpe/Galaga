@@ -44,6 +44,9 @@
             Round3
         }
 
+        /// <summary>
+        ///     Represents the type of ship
+        /// </summary>
         public enum ShipType
         {
             /// <summary>
@@ -54,27 +57,74 @@
             /// <summary>
             ///     Represents the level 1 enemy ship.
             /// </summary>
-            Lvl1Enemy,
+            Lvl1Enemy = 1,
 
             /// <summary>
             ///     Represents the level 2 enemy ship.
             /// </summary>
-            Lvl2Enemy,
+            Lvl2Enemy = 2,
 
             /// <summary>
             ///     Represents the level 3 enemy ship.
             /// </summary>
-            Lvl3Enemy,
+            Lvl3Enemy = 3,
 
             /// <summary>
             ///     Represents the level 4 enemy ship.
             /// </summary>
-            Lvl4Enemy,
+            Lvl4Enemy = 4,
 
             /// <summary>
             ///     Represent the bonus enemy ship.
             /// </summary>
             BonusEnemy
+        }
+
+        /// <summary>
+        ///     Represents the audio file.
+        /// </summary>
+        public enum AudioFiles
+        {
+            /// <summary>
+            ///     Sound for enemy death.
+            /// </summary>
+            ENEMY_DEATH,
+            /// <summary>
+            ///     Sound for enemy shooting.
+            /// </summary>
+            ENEMY_SHOOT,
+            /// <summary>
+            ///     Sound for player death.
+            /// </summary>
+            PLAYER_DEATH,
+            /// <summary>
+            ///     Sound for player shooting.
+            /// </summary>
+            PLAYER_SHOOT,
+            /// <summary>
+            ///    Sound for game over when player loses.
+            /// </summary>
+            GAMEOVER_LOSE,
+            /// <summary>
+            ///     Sound for game over when player wins.
+            /// </summary>
+            GAMEOVER_WIN,
+            /// <summary>
+            ///     Sound for bonus enemy.
+            /// </summary>
+            BONUSENEMY_SOUND,
+            /// <summary>
+            ///     Sound for power up activation.
+            /// </summary>
+            POWERUP_ACTIVATE,
+            /// <summary>
+            ///    Sound for power up deactivation.
+            /// </summary>
+            POWERUP_DEACTIVATE,
+            /// <summary>
+            ///    Sound for shield hit.
+            /// </summary>
+            SHIELDHIT
         }
 
         #endregion

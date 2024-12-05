@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using Windows.UI.Xaml.Controls;
 
 namespace Galaga.Model
@@ -15,11 +16,11 @@ namespace Galaga.Model
         private readonly EnemyManager enemyManager;
         private readonly BulletManager bulletManager;
         private readonly PlayerManager playerManager;
+        private readonly TimeManager timeManager;
         private readonly SfxManager sfxManager;
         private readonly RoundData roundData;
-        private bool hasWon;
-        private bool hasLost;
         private bool endOfRound;
+        private bool canShoot;
 
         #endregion
 
@@ -50,18 +51,7 @@ namespace Galaga.Model
         /// <value>
         ///     The score.
         /// </value>
-        public int Score
-        {
-            get => this.playerManager.Score;
-            set
-            {
-                if (this.playerManager.Score != value)
-                {
-                    this.playerManager.Score = value;
-                    this.OnPropertyChanged(nameof(this.Score));
-                }
-            }
-        }
+        public int Score { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether this instance has won.
@@ -69,18 +59,7 @@ namespace Galaga.Model
         /// <value>
         ///     <c>true</c> if this instance has won; otherwise, <c>false</c>.
         /// </value>
-        public bool HasWon
-        {
-            get => this.hasWon;
-            set
-            {
-                if (this.hasWon != value)
-                {
-                    this.hasWon = value;
-                    this.OnPropertyChanged(nameof(this.HasWon));
-                }
-            }
-        }
+        public bool HasWon { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether this instance has lost.
@@ -88,18 +67,7 @@ namespace Galaga.Model
         /// <value>
         ///     <c>true</c> if this instance has lost; otherwise, <c>false</c>.
         /// </value>
-        public bool HasLost
-        {
-            get => this.hasLost;
-            set
-            {
-                if (this.hasLost != value)
-                {
-                    this.hasLost = value;
-                    this.OnPropertyChanged(nameof(this.HasLost));
-                }
-            }
-        }
+        public bool HasLost { get; set; }
 
         #endregion
 
@@ -118,18 +86,12 @@ namespace Galaga.Model
             this.playerManager = new PlayerManager(canvas);
             this.bulletManager = new BulletManager(canvas);
             this.sfxManager = new SfxManager();
-
+            this.timeManager = new TimeManager(this);
+            this.canShoot = true;
             this.enemyManager.PropertyChanged += this.EnemyManagerOnPropertyChanged;
+            this.PropertyChanged += this.GameManagerOnPropertyChanged;
 
             this.initializeGame();
-        }
-
-        private void EnemyManagerOnPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(this.enemyManager.HasBonusEnemyStartedMoving) && this.enemyManager.HasBonusEnemyStartedMoving)
-            {
-                this.sfxManager.Play("bonusenemy_sound");
-            }
         }
 
         #endregion
@@ -142,6 +104,23 @@ namespace Galaga.Model
         /// <returns></returns>
         public event PropertyChangedEventHandler PropertyChanged;
 
+        private void GameManagerOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(this.EndOfRound) && this.EndOfRound)
+            {
+                this.ResetBonusEnemyTimers();
+            }
+        }
+
+        private void EnemyManagerOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(this.enemyManager.HasBonusEnemyStartedMoving) &&
+                this.enemyManager.HasBonusEnemyStartedMoving)
+            {
+                this.sfxManager.Play(GlobalEnums.AudioFiles.BONUSENEMY_SOUND);
+            }
+        }
+
         /// <summary>
         ///     Called when [property changed].
         /// </summary>
@@ -151,18 +130,10 @@ namespace Galaga.Model
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private async void initializeGame()
+        private void initializeGame()
         {
-            try
-            {
-                await this.sfxManager.WaitForPreloadingAsync();
-            }
-            catch (Exception exception)
-            {
-                throw new TimeoutException("Error preloading sfx", exception);
-            }
-
             this.enemyManager.CreateAndPlaceEnemies();
+            this.timeManager.InitializeTimers();
         }
 
         /// <summary>
@@ -202,10 +173,16 @@ namespace Galaga.Model
         /// </summary>
         public void PlacePlayerBullet()
         {
-            var bullet = this.playerManager.Shoot();
-            if (this.bulletManager.PlacePlayerBullet(bullet))
+            if (this.canShoot)
             {
-                this.sfxManager.Play("player_shoot");
+                var bullet = this.playerManager.Shoot();
+                if (this.bulletManager.PlacePlayerBullet(bullet))
+                {
+                    this.sfxManager.Play(GlobalEnums.AudioFiles.PLAYER_SHOOT);
+                }
+
+                this.canShoot = false;
+                this.timeManager.StartPlayerBulletCooldown();
             }
         }
 
@@ -220,13 +197,15 @@ namespace Galaga.Model
                 var enemy = this.enemyManager.CheckWhichEnemyIsShot(collidingBullet);
                 if (enemy != null)
                 {
-                    this.sfxManager.Play("enemy_death");
+                    this.sfxManager.Play(GlobalEnums.AudioFiles.ENEMY_DEATH);
                     this.Score += enemy.Score;
 
                     if (enemy is BonusEnemy)
                     {
                         this.playerManager.GainExtraLife();
-                        this.sfxManager.Stop("bonusenemy_sound");
+                        this.sfxManager.Stop(GlobalEnums.AudioFiles.BONUSENEMY_SOUND);
+                        this.playerManager.ActivateShield();
+                        this.sfxManager.Play(GlobalEnums.AudioFiles.POWERUP_ACTIVATE);
                     }
                 }
             }
@@ -244,7 +223,7 @@ namespace Galaga.Model
                 var enemy = this.enemyManager.ShootingEnemies[randomIndex];
 
                 var bullet = enemy.Shoot();
-                this.sfxManager.Play("enemy_shoot");
+                this.sfxManager.Play(GlobalEnums.AudioFiles.ENEMY_SHOOT);
                 this.bulletManager.PlaceEnemyBullet(bullet);
             }
         }
@@ -256,7 +235,22 @@ namespace Galaga.Model
         {
             if (this.bulletManager.MoveEnemyBullet(this.playerManager.Player))
             {
-                this.sfxManager.Play("player_death");
+                if (this.playerManager.HasPowerUp)
+                {
+                    this.playerManager.HandleHitToShield();
+                    if (this.playerManager.HasPowerUp)
+                    {
+                        this.sfxManager.Play(GlobalEnums.AudioFiles.SHIELDHIT);
+                    }
+                    else
+                    {
+                        this.sfxManager.Play(GlobalEnums.AudioFiles.POWERUP_DEACTIVATE);
+                    }
+
+                    return;
+                }
+
+                this.sfxManager.Play(GlobalEnums.AudioFiles.PLAYER_DEATH);
                 if (this.playerManager.RemainingLives > 0)
                 {
                     this.canvas.Children.Remove(this.playerManager.Player.Sprite);
@@ -283,35 +277,58 @@ namespace Galaga.Model
         /// </summary>
         public void CheckGameStatus()
         {
-            if (this.playerManager.RemainingLives <= 0 && !this.hasLost)
+            if (this.playerManager.RemainingLives <= 0 && !this.HasLost)
             {
-                this.sfxManager.Play("gameover_lose");
+                this.sfxManager.Play(GlobalEnums.AudioFiles.GAMEOVER_LOSE);
                 this.HasLost = true;
             }
 
-            if (this.enemyManager.RemainingEnemies == 0 && !this.hasWon)
+            if (this.enemyManager.RemainingEnemies == 0 && !this.HasWon)
             {
                 switch (this.roundData.CurrentRound)
                 {
-                    case GlobalEnums.GameRound.Round1:
-                        this.roundData.MoveToNextRound();
-                        this.EndOfRound = true;
-                        this.enemyManager.CreateAndPlaceEnemies();
-                        this.EndOfRound = false;
-                        break;
-                    case GlobalEnums.GameRound.Round2:
-                        this.roundData.MoveToNextRound();
-                        this.EndOfRound = true;
-                        this.enemyManager.CreateAndPlaceEnemies();
-                        this.EndOfRound = false;
-                        break;
                     case GlobalEnums.GameRound.Round3:
-                        this.sfxManager.Play("gameover_win");
+                        this.sfxManager.Play(GlobalEnums.AudioFiles.GAMEOVER_WIN);
                         this.HasWon = true;
 
                         break;
+                    default:
+                        this.roundData.MoveToNextRound();
+                        this.EndOfRound = true;
+                        this.enemyManager.CreateAndPlaceEnemies();
+                        this.EndOfRound = false;
+                        break;
                 }
             }
+        }
+
+        /// <summary>
+        ///     Stops all timers.
+        /// </summary>
+        public void StopAllTimers()
+        {
+            this.timeManager.StopAllTimers();
+        }
+
+        /// <summary>
+        ///     Resets the bonus enemy timers.
+        /// </summary>
+        public void ResetBonusEnemyTimers()
+        {
+            this.timeManager.ResetBonusEnemyTimers();
+        }
+
+        /// <summary>
+        ///     Called when the player bullet cooldown is complete.
+        /// </summary>
+        public void PlayerBulletCooldownComplete()
+        {
+            this.EnableShooting();
+        }
+
+        public void EnableShooting()
+        {
+            this.canShoot = true;
         }
 
         #endregion

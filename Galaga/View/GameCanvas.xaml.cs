@@ -1,40 +1,37 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using Windows.Foundation;
-using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
+using Galaga.ViewModel;
+using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
-using Galaga.Model;
 
 namespace Galaga.View
 {
-    /// <summary>
-    ///     The Canvas for the Galaga Game.
-    /// </summary>
     public sealed partial class GameCanvas
     {
+        #region Data members
+
+        private readonly GameViewModel gameViewModel;
+
+        #endregion
+
         #region Constructors
 
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="GameCanvas" /> class.
-        /// </summary>
         public GameCanvas()
         {
             this.InitializeComponent();
-            this.activeKeys = new HashSet<VirtualKey>();
-
             this.setupWindowPreferences();
-
-            this.gameManager = new GameManager(this.canvas);
-            this.timeManager = new TimeManager(this);
-            this.timeManager.InitializeTimers();
+            this.gameViewModel = new GameViewModel(this.canvas);
 
             Window.Current.CoreWindow.KeyDown += this.coreWindowOnKeyDown;
             Window.Current.CoreWindow.KeyUp += this.coreWindowOnKeyUp;
-            DataContext = this.gameManager;
-            this.gameManager.PropertyChanged += this.OnGameManagerPropertyChanged;
+
+            DataContext = this.gameViewModel;
+            this.gameViewModel.PropertyChanged += this.OnViewModelPropertyChanged;
         }
 
         #endregion
@@ -50,151 +47,42 @@ namespace Galaga.View
             ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(Width, Height));
         }
 
-        /// <summary>
-        ///     Loops the game at a set interval to track player input and game state.
-        /// </summary>
-        public void GameLoop()
-        {
-            if (this.activeKeys.Contains(VirtualKey.Left))
-            {
-                this.gameManager.MovePlayerLeft();
-            }
-
-            if (this.activeKeys.Contains(VirtualKey.Right))
-            {
-                this.gameManager.MovePlayerRight();
-            }
-
-            if (this.activeKeys.Contains(VirtualKey.Space))
-            {
-                if (!this.spacePressedPreviously && this.canShoot)
-                {
-                    this.gameManager.PlacePlayerBullet();
-                    this.canShoot = false;
-                    this.spacePressedPreviously = true;
-                    this.timeManager.StartPlayerBulletCooldown();
-                }
-            }
-            else
-            {
-                this.spacePressedPreviously = false;
-            }
-
-            this.gameManager.CheckGameStatus();
-        }
-
-        /// <summary>
-        ///     Moves the player bullet.
-        /// </summary>
-        public void MovePlayerBullet()
-        {
-            this.gameManager.MovePlayerBullet();
-        }
-
-        /// <summary>
-        ///     Places the enemy bullet.
-        /// </summary>
-        public void PlaceEnemyBullet()
-        {
-            this.gameManager.PlaceEnemyBullet();
-        }
-
-        /// <summary>
-        ///     Moves the enemy bullet.
-        /// </summary>
-        public void MoveEnemyBullet()
-        {
-            this.gameManager.MoveEnemyBullet();
-        }
-
-        /// <summary>
-        ///     Moves the enemies.
-        /// </summary>
-        public void MoveEnemies()
-        {
-            this.gameManager.MoveEnemies();
-        }
-
-        /// <summary>
-        ///     Moves the bonus enemy.
-        /// </summary>
-        public void MoveBonusEnemy()
-        {
-            this.gameManager.MoveBonusEnemy();
-        }
-
-        /// <summary>
-        ///     Toggles the sprites for animation.
-        /// </summary>
-        public void ToggleSpritesForAnimation()
-        {
-            this.gameManager.ToggleSpritesForAnimation();
-        }
-
-        /// <summary>
-        ///     Enables the player shooting.
-        /// </summary>
-        public void EnablePlayerShooting()
-        {
-            this.canShoot = true;
-        }
-
         private void coreWindowOnKeyDown(CoreWindow sender, KeyEventArgs args)
         {
-            this.activeKeys.Add(args.VirtualKey);
+            this.gameViewModel.KeyDown(args.VirtualKey);
         }
 
         private void coreWindowOnKeyUp(CoreWindow sender, KeyEventArgs args)
         {
-            this.activeKeys.Remove(args.VirtualKey);
+            this.gameViewModel.KeyUp(args.VirtualKey);
         }
 
-        private void OnGameManagerPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private async void OnViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(this.gameManager.EndOfRound) && this.gameManager.EndOfRound)
+            if ((e.PropertyName == nameof(this.gameViewModel.HasLost) && this.gameViewModel.HasLost) || e.PropertyName == nameof(this.gameViewModel.HasWon) && this.gameViewModel.HasWon)
             {
-                this.timeManager.ResetBonusEnemyTimers();
-            }
-
-            if (e.PropertyName == nameof(this.gameManager.HasLost) && this.gameManager.HasLost)
-            {
-                this.endGame(this.gameOverTextBlock);
-            }
-
-            if (e.PropertyName == nameof(this.gameManager.HasWon) && this.gameManager.HasWon)
-            {
-                this.endGame(this.youWinTextBlock);
+                string playerName = await this.promptForPlayerNameAsync();
+                await this.gameViewModel.EndGameAsync(playerName);
+                await this.ShowHighScoreBoardAsync();
             }
         }
 
-        private void endGame(TextBlock endgameTextBlock)
+        private async Task<string> promptForPlayerNameAsync()
         {
-            this.disableAllSprites();
-            this.timeManager.StopAllTimers();
-
-            endgameTextBlock.Visibility = Visibility.Visible;
-        }
-
-        private void disableAllSprites()
-        {
-            foreach (var uiElement in this.canvas.Children)
+            var dialog = new ContentDialog
             {
-                if (!(uiElement is TextBlock))
-                {
-                    uiElement.Visibility = Visibility.Collapsed;
-                }
+                Title = "Enter Your Name",
+                Content = new TextBox { PlaceholderText = "Player Name" },
+                PrimaryButtonText = "OK",
+            };
+
+            if (await dialog.ShowAsync() == ContentDialogResult.Primary)
+            {
+                return ((TextBox)dialog.Content).Text;
             }
+
+            return "Anonymous";
         }
-
-        #endregion
-
-        #region Data Members
-
-        private readonly GameManager gameManager;
-        private readonly TimeManager timeManager;
-        private readonly HashSet<VirtualKey> activeKeys;
-        private bool spacePressedPreviously;
-        private bool canShoot = true;
 
         #endregion
     }

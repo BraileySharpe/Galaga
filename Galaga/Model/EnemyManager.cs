@@ -23,11 +23,13 @@ namespace Galaga.Model
         private const int StepCountMaxValue = 28;
         private const int StepCountReverseDirectionValue = 14;
         private readonly RoundData roundData;
+
         private BonusEnemy bonusEnemy;
         private bool hasBonusEnemyStartedMoving;
         private int stepCounter = 7;
 
         private readonly Canvas canvas;
+        private readonly RoundData roundData;
 
         #endregion
 
@@ -103,6 +105,7 @@ namespace Galaga.Model
         /// </summary>
         public void CreateAndPlaceEnemies()
         {
+            this.Enemies.Clear();
             var numEnemiesForCurrentRound = this.roundData.GetNumEnemiesForCurrentRound();
             this.createEnemiesForRound(GlobalEnums.ShipType.Lvl1Enemy, numEnemiesForCurrentRound[Level1EnemyIndex],
                 new Level1EnemySprite().Width);
@@ -144,20 +147,18 @@ namespace Galaga.Model
             }
         }
 
+        /// <summary>
+        ///     Movement pattern group number for the enemy type.
+        /// </summary>
         private int getEnemyMovementPatternGroupNumber(GlobalEnums.ShipType shipType)
         {
-            switch (shipType)
+            try
             {
-                case GlobalEnums.ShipType.Lvl1Enemy:
-                    return 1;
-                case GlobalEnums.ShipType.Lvl2Enemy:
-                    return 2;
-                case GlobalEnums.ShipType.Lvl3Enemy:
-                    return 3;
-                case GlobalEnums.ShipType.Lvl4Enemy:
-                    return 4;
-                default:
-                    throw new ArgumentException("Invalid enemy type.");
+                return (int)shipType;
+            }
+            catch (InvalidCastException)
+            {
+                throw new ArgumentException("Invalid ship type.");
             }
         }
 
@@ -198,111 +199,76 @@ namespace Galaga.Model
             }
         }
 
-        /// <summary>
-        ///     Moves enemies based on the current round and movement pattern group.
-        /// </summary>
-        /// <exception cref="ArgumentException">
-        ///     "Invalid round." if the round is not in GlobalEnums.GameRound
-        /// </exception>
         public void MoveEnemies()
         {
-            var group1Enemies = this.Enemies.Where(enemy => enemy.MovementPattern == 1).ToList();
-            var group2Enemies = this.Enemies.Where(enemy => enemy.MovementPattern == 2).ToList();
-            var group3Enemies = this.Enemies.Where(enemy => enemy.MovementPattern == 3).ToList();
-            var group4Enemies = this.Enemies.Where(enemy => enemy.MovementPattern == 4).ToList();
-
+            var groupedEnemies = this.Enemies.GroupBy(enemy => enemy.MovementPattern)
+                .ToDictionary(g => g.Key, g => g.ToList());
             var allEnemiesButBonus = this.Enemies.Where(enemy => !(enemy is BonusEnemy)).ToList();
 
             switch (this.roundData.CurrentRound)
             {
                 case GlobalEnums.GameRound.Round1:
-                    this.handleRound1Movement(allEnemiesButBonus);
-                    this.stepCounter++;
+                    this.handleMovement(allEnemiesButBonus, StepCountReverseDirectionValue, true);
                     break;
                 case GlobalEnums.GameRound.Round2:
-                    this.handleRound2Movement(group1Enemies.Concat(group2Enemies), group3Enemies.Concat(group4Enemies));
-                    this.stepCounter++;
+                    this.handleGroupedMovement(groupedEnemies, new[] { 1, 2 }, new[] { 3, 4 });
                     break;
                 case GlobalEnums.GameRound.Round3:
-                    this.handleRound3Movement(group1Enemies.Concat(group3Enemies), group2Enemies.Concat(group4Enemies));
-                    this.stepCounter++;
+                    this.handleGroupedMovement(groupedEnemies, new[] { 1, 3 }, new[] { 2, 4 });
                     break;
                 default:
                     throw new ArgumentException("Invalid round.");
             }
 
-            if (this.stepCounter == StepCountMaxValue)
-            {
-                this.stepCounter = 0;
-            }
+            this.stepCounter = (this.stepCounter + 1) % StepCountMaxValue;
         }
 
-        private void handleRound1Movement(IList<Enemy> enemies)
+        private void handleMovement(IEnumerable<Enemy> enemies, int reverseStepThreshold, bool bidirectional)
         {
-            if (this.stepCounter < StepCountReverseDirectionValue)
+            foreach (var enemy in enemies)
             {
-                foreach (var enemy in enemies)
+                if (this.stepCounter < reverseStepThreshold)
                 {
                     enemy.MoveRight();
                 }
-            }
-            else
-            {
-                foreach (var enemy in enemies)
+                else
                 {
                     enemy.MoveLeft();
                 }
             }
         }
 
-        private void handleRound2Movement(IEnumerable<Enemy> group1, IEnumerable<Enemy> group2)
+        private void handleGroupedMovement(Dictionary<int, List<Enemy>> groupedEnemies, IEnumerable<int> group1Patterns,
+            IEnumerable<int> group2Patterns)
         {
-            if (this.stepCounter <= StepCountReverseDirectionValue)
+            foreach (var pattern in group1Patterns)
             {
-                foreach (var enemy in group1)
+                if (groupedEnemies.TryGetValue(pattern, out var group1))
                 {
-                    enemy.MoveRight();
-                }
-                foreach (var enemy in group2)
-                {
-                    enemy.MoveLeft();
+                    this.moveGroup(group1, this.stepCounter <= StepCountReverseDirectionValue);
                 }
             }
-            else
+
+            foreach (var pattern in group2Patterns)
             {
-                foreach (var enemy in group1)
+                if (groupedEnemies.TryGetValue(pattern, out var group2))
                 {
-                    enemy.MoveLeft();
-                }
-                foreach (var enemy in group2)
-                {
-                    enemy.MoveRight();
+                    this.moveGroup(group2, this.stepCounter > StepCountReverseDirectionValue);
                 }
             }
         }
 
-        private void handleRound3Movement(IEnumerable<Enemy> group1, IEnumerable<Enemy> group2)
+        private void moveGroup(IEnumerable<Enemy> enemies, bool moveRight)
         {
-            if (this.stepCounter <= StepCountReverseDirectionValue)
+            foreach (var enemy in enemies)
             {
-                foreach (var enemy in group1)
+                if (moveRight)
                 {
                     enemy.MoveRight();
                 }
-                foreach (var enemy in group2)
+                else
                 {
                     enemy.MoveLeft();
-                }
-            }
-            else
-            {
-                foreach (var enemy in group1)
-                {
-                    enemy.MoveLeft();
-                }
-                foreach (var enemy in group2)
-                {
-                    enemy.MoveRight();
                 }
             }
         }
