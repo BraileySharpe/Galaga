@@ -3,25 +3,20 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:converters="using:Galaga.Converters"
     xmlns:custom="using:Galaga.View.Sprites"
     x:Class="Galaga.View.GameCanvas"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Page.Resources>
-        <converters:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
-    </Page.Resources>
-
     <Canvas x:Name="canvas" Width="900" Height="650" Background="Black">
         <!-- Top Background -->
-        <Image x:Name="BackgroundTop" Source="ms-appx:///Galaga/View/Sprites/background_top.png" Width="900" Height="325" 
-               Canvas.Top="0" Canvas.ZIndex="-3" 
-               Visibility="{Binding HasGameStarted, Converter={StaticResource booleanToVisibilityConverter}}"/>
+        <Image x:Name="backgroundTop" Source="/View/Sprites/background_top.png" Width="900" Height="325"
+               Canvas.Top="0" Canvas.ZIndex="-3"
+               Visibility="{Binding HasGameStarted, Converter={StaticResource booleanToVisibilityConverter}}" />
         <!-- Bottom Background -->
-        <Image x:Name="BackgroundBottom" Source="ms-appx:///Galaga/View/Sprites/background_bottom.png" Width="900" Height="325" 
+        <Image x:Name="backgroundBottom" Source="/View/Sprites/background_bottom.png" Width="900" Height="325"
                Canvas.Top="325" Canvas.ZIndex="-3"
-               Visibility="{Binding HasGameStarted, Converter={StaticResource booleanToVisibilityConverter}}"/>
+               Visibility="{Binding HasGameStarted, Converter={StaticResource booleanToVisibilityConverter}}" />
         <TextBlock Text="SCORE" Height="17" Width="64" FontFamily="ModeNine" FontWeight="Bold" Canvas.Left="809"
                    FontSize="20" Foreground="#FFD01919" HorizontalAlignment="Center"
                    VerticalAlignment="Top" Canvas.Top="16" Visibility="{Binding HasGameStarted}" />
@@ -73,11 +68,11 @@
         <Button Width="200" Height="30" Content="HIGH SCORE BOARD" Canvas.Left="350" Canvas.Top="550"
                 Background="Transparent"
                 Visibility="{Binding HasGameStarted, Converter={StaticResource booleanToOppositeConverter}}"
-                FontFamily="ModeNine" FontWeight="Bold" VerticalAlignment="Top" IsTabStop="False"/>
+                FontFamily="ModeNine" FontWeight="Bold" VerticalAlignment="Top" IsTabStop="False" />
         <Button Command="{Binding ResetHighScoreBoardCommand}" Width="240" Height="30" Content="RESET HIGH SCORE BOARD"
                 Canvas.Left="332" Canvas.Top="580"
                 Foreground="#FFD01919" Background="Transparent"
                 Visibility="{Binding HasGameStarted, Converter={StaticResource booleanToOppositeConverter}}"
-                FontFamily="ModeNine" FontWeight="Bold" FontStyle="Oblique" VerticalAlignment="Top" IsTabStop="False"/>
+                FontFamily="ModeNine" FontWeight="Bold" FontStyle="Oblique" VerticalAlignment="Top" IsTabStop="False" />
     </Canvas>
 </Page>
