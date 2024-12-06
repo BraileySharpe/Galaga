@@ -10,11 +10,11 @@
 
     <Canvas x:Name="canvas" Width="900" Height="650" Background="Black">
         <!-- Top Background -->
-        <Image x:Name="backgroundTop" Source="/View/Sprites/background_top.png" Width="900" Height="325"
+        <Image x:Name="backgroundTop" Source="/View/Sprites/background_top.png" Width="900" Height="900"
                Canvas.Top="0" Canvas.ZIndex="-3"
                Visibility="{Binding HasGameStarted, Converter={StaticResource booleanToVisibilityConverter}}" />
         <!-- Bottom Background -->
-        <Image x:Name="backgroundBottom" Source="/View/Sprites/background_bottom.png" Width="900" Height="325"
+        <Image x:Name="backgroundBottom" Source="/View/Sprites/background_bottom.png" Width="900" Height="900"
                Canvas.Top="325" Canvas.ZIndex="-3"
                Visibility="{Binding HasGameStarted, Converter={StaticResource booleanToVisibilityConverter}}" />
         <TextBlock Text="SCORE" Height="17" Width="64" FontFamily="ModeNine" FontWeight="Bold" Canvas.Left="809"

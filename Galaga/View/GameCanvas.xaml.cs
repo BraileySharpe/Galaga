@@ -37,6 +37,9 @@ public sealed partial class GameCanvas
         DataContext = this.gameViewModel;
         this.gameViewModel.PropertyChanged += this.OnViewModelPropertyChanged;
 
+        this.backgroundTopPosition = 0;
+        this.backgroundBottomPosition = this.backgroundTopPosition + this.backgroundTop.Height;
+
         _ = this.gameViewModel.LoadHighScoresAsync();
     }
 
@@ -100,20 +103,17 @@ public sealed partial class GameCanvas
 
     private void UpdateParallaxBackground()
     {
-        Debug.WriteLine("Updating Parallax Background");
-        Debug.WriteLine("BackgroundTopPosition: " + this.backgroundTopPosition);
-        Debug.WriteLine("BackgroundBottomPosition: " + this.backgroundBottomPosition);
         this.backgroundTopPosition += BackgroundSpeed;
         this.backgroundBottomPosition += BackgroundSpeed;
 
-        if (this.backgroundTopPosition >= 650)
+        if (this.backgroundTopPosition >= this.canvas.Height)
         {
-            this.backgroundTopPosition = -325;
+            this.backgroundTopPosition = this.backgroundBottomPosition - this.backgroundBottom.Height;
         }
 
-        if (this.backgroundBottomPosition >= 650)
+        if (this.backgroundBottomPosition >= this.canvas.Height)
         {
-            this.backgroundBottomPosition = -325;
+            this.backgroundBottomPosition = this.backgroundTopPosition - this.backgroundTop.Height;
         }
 
         Canvas.SetTop(this.backgroundTop, this.backgroundTopPosition);
