@@ -9,6 +9,10 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Canvas x:Name="canvas" Width="900" Height="650" Background="Black">
+        <!-- Top Background -->
+        <Image x:Name="BackgroundTop" Source="Assets/Background/background_top.png" Width="900" Height="325" Canvas.Top="0" />
+        <!-- Bottom Background -->
+        <Image x:Name="BackgroundBottom" Source="Assets/Background/background_bottom.png" Width="900" Height="325" Canvas.Top="325" />
         <TextBlock Text="SCORE" Height="17" Width="64" FontFamily="ModeNine" FontWeight="Bold" Canvas.Left="809"
                    FontSize="20" Foreground="#FFD01919" HorizontalAlignment="Center"
                    VerticalAlignment="Top" Canvas.Top="16" Visibility="{Binding HasGameStarted}" />
