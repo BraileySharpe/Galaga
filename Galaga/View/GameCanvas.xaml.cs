@@ -21,6 +21,7 @@ public sealed partial class GameCanvas
     private const double BackgroundSpeed = 1.0;
     private const double MidBackgroundSpeedOffset = .66;
     private const double FarBackgroundSpeedOffset = .33;
+    private const double FarBackgroundPositionOffset = .5;
     private const double BluePlanetInitialTopPosition = 800;
     private const double RedPlanetInitialTopPosition = 125;
     private const string DefaultPlayerName = "Rico";
@@ -182,7 +183,7 @@ public sealed partial class GameCanvas
         }
 
         Canvas.SetTop(this.backgroundTop, this.backgroundTopPosition);
-        Canvas.SetTop(this.backgroundBottom, this.backgroundBottomPosition);
+        Canvas.SetTop(this.backgroundBottom, this.backgroundBottomPosition + FarBackgroundPositionOffset);
     }
         #endregion
 }
