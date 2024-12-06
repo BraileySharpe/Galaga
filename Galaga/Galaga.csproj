@@ -249,7 +249,11 @@
     <Content Include="View\Sprites\background_bottom.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="View\Sprites\background_stars_bottom.png" />
+    <Content Include="View\Sprites\background_stars_top.png" />
     <Content Include="View\Sprites\background_top.png" />
+    <Content Include="View\Sprites\planet_blue.png" />
+    <Content Include="View\Sprites\planet_red.png" />
     <Content Include="View\Sprites\Shield_frame1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

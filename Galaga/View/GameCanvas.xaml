@@ -17,6 +17,22 @@
         <Image x:Name="backgroundBottom" Source="/View/Sprites/background_bottom.png" Width="900" Height="900"
                Canvas.Top="325" Canvas.ZIndex="-3"
                Visibility="{Binding HasGameStarted, Converter={StaticResource booleanToVisibilityConverter}}" />
+        <!-- Stars Top Background -->
+        <Image x:Name="backgroundStarsTop" Source="/View/Sprites/background_stars_top.png" Width="900" Height="900"
+               Canvas.Top="0" Canvas.ZIndex="-2"
+               Visibility="{Binding HasGameStarted, Converter={StaticResource booleanToVisibilityConverter}}" />
+        <!-- Stars Bottom Background -->
+        <Image x:Name="backgroundStarsBottom" Source="/View/Sprites/background_stars_bottom.png" Width="900" Height="900"
+               Canvas.Top="0" Canvas.ZIndex="-2"
+               Visibility="{Binding HasGameStarted, Converter={StaticResource booleanToVisibilityConverter}}" />
+        <!-- Red Planet -->
+        <Image x:Name="redPlanet" Source="/View/Sprites/planet_red.png" Width="250" Height="250"
+               Canvas.Top="125" Canvas.ZIndex="-1"
+               Visibility="{Binding HasGameStarted, Converter={StaticResource booleanToVisibilityConverter}}" />
+        <!-- Blue Planet-->
+        <Image x:Name="bluePlanet" Source="/View/Sprites/planet_blue.png" Width="250" Height="250"
+               Canvas.Top="800" Canvas.Left="600" Canvas.ZIndex="-1"
+               Visibility="{Binding HasGameStarted, Converter={StaticResource booleanToVisibilityConverter}}" />
         <TextBlock Text="SCORE" Height="17" Width="64" FontFamily="ModeNine" FontWeight="Bold" Canvas.Left="809"
                    FontSize="20" Foreground="#FFD01919" HorizontalAlignment="Center"
                    VerticalAlignment="Top" Canvas.Top="16" Visibility="{Binding HasGameStarted}" />

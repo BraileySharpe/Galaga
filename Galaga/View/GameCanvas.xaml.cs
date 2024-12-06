@@ -16,10 +16,18 @@ public sealed partial class GameCanvas
     #region Data members
 
     private const double BackgroundSpeed = 1.0;
+    private const double MidBackgroundSpeedOffset = .66;
+    private const double FarBackgroundSpeedOffset = .33;
+    private const double BluePlanetInitialTopPosition = 800;
+    private const double RedPlanetInitialTopPosition = 125;
 
     private readonly GameViewModel gameViewModel;
     private double backgroundTopPosition;
-    private double backgroundBottomPosition = 325;
+    private double backgroundBottomPosition;
+    private double backgroundStarsTopPosition;
+    private double backgroundStarsBottomPosition;
+    private double redPlanetTopPosition;
+    private double bluePlanetTopPosition;
 
     #endregion
 
@@ -39,6 +47,10 @@ public sealed partial class GameCanvas
 
         this.backgroundTopPosition = 0;
         this.backgroundBottomPosition = this.backgroundTopPosition + this.backgroundTop.Height;
+        this.backgroundStarsTopPosition = 0;
+        this.backgroundStarsBottomPosition = this.backgroundStarsTopPosition + this.backgroundStarsTop.Height;
+        this.redPlanetTopPosition = RedPlanetInitialTopPosition;
+        this.bluePlanetTopPosition = BluePlanetInitialTopPosition;
 
         _ = this.gameViewModel.LoadHighScoresAsync();
     }
@@ -103,8 +115,53 @@ public sealed partial class GameCanvas
 
     private void UpdateParallaxBackground()
     {
-        this.backgroundTopPosition += BackgroundSpeed;
-        this.backgroundBottomPosition += BackgroundSpeed;
+        this.handleNearBackgroundAnimation();
+        this.handleMidBackgroundAnimation();
+        this.handleFarBackgroundAnimation();
+    }
+
+    private void handleNearBackgroundAnimation()
+    {
+        this.redPlanetTopPosition += BackgroundSpeed;
+        this.bluePlanetTopPosition += BackgroundSpeed;
+
+        if (this.redPlanetTopPosition >= this.canvas.Height)
+        {
+            this.redPlanetTopPosition = -this.redPlanet.Height * 2;
+        }
+
+        if (this.bluePlanetTopPosition >= this.canvas.Height)
+        {
+            this.bluePlanetTopPosition = -this.bluePlanet.Height * 2;
+        }
+
+        Canvas.SetTop(this.redPlanet, this.redPlanetTopPosition);
+        Canvas.SetTop(this.bluePlanet, this.bluePlanetTopPosition);
+    }
+
+    private void handleMidBackgroundAnimation()
+    {
+        this.backgroundStarsTopPosition += BackgroundSpeed * MidBackgroundSpeedOffset;
+        this.backgroundStarsBottomPosition += BackgroundSpeed * MidBackgroundSpeedOffset;
+
+        if (this.backgroundStarsTopPosition >= this.canvas.Height)
+        {
+            this.backgroundStarsTopPosition = this.backgroundStarsBottomPosition - this.backgroundStarsBottom.Height;
+        }
+
+        if (this.backgroundStarsBottomPosition >= this.canvas.Height)
+        {
+            this.backgroundStarsBottomPosition = this.backgroundStarsTopPosition - this.backgroundStarsTop.Height;
+        }
+
+        Canvas.SetTop(this.backgroundStarsTop, this.backgroundStarsTopPosition);
+        Canvas.SetTop(this.backgroundStarsBottom, this.backgroundStarsBottomPosition);
+    }
+
+    private void handleFarBackgroundAnimation()
+    {
+        this.backgroundTopPosition += BackgroundSpeed * FarBackgroundSpeedOffset;
+        this.backgroundBottomPosition += BackgroundSpeed * FarBackgroundSpeedOffset;
 
         if (this.backgroundTopPosition >= this.canvas.Height)
         {
@@ -118,7 +175,6 @@ public sealed partial class GameCanvas
 
         Canvas.SetTop(this.backgroundTop, this.backgroundTopPosition);
         Canvas.SetTop(this.backgroundBottom, this.backgroundBottomPosition);
-
-        #endregion
     }
+        #endregion
 }
