@@ -36,7 +36,9 @@ namespace Galaga.Model
         /// <summary>
         ///     Initializes a new instance of the <see cref="TimeManager" /> class.
         /// </summary>
-        /// <param name="gameManager">The game manager.</param>
+        /// <param name="gameManager">
+        ///     The game manager.
+        /// </param>
         public TimeManager(GameManager gameManager)
         {
             this.gameManager = gameManager ?? throw new ArgumentNullException(nameof(gameManager));

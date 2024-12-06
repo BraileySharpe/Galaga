@@ -15,6 +15,9 @@ public class SfxManager
 {
     #region Data members
 
+    private const string AssetsFolder = "Assets";
+    private const string AudioFolder = "Audio";
+    private const string SoundEffectExtension = ".wav";
     private const double Volume = 0.13;
 
     private readonly Dictionary<GlobalEnums.AudioFiles, StorageFile> soundFiles;
@@ -41,8 +44,8 @@ public class SfxManager
     {
         try
         {
-            var assetsFolder = await Package.Current.InstalledLocation.GetFolderAsync("Assets");
-            var audioFolder = await assetsFolder.GetFolderAsync("Audio");
+            var assetsFolder = await Package.Current.InstalledLocation.GetFolderAsync(AssetsFolder);
+            var audioFolder = await assetsFolder.GetFolderAsync(AudioFolder);
 
             foreach (GlobalEnums.AudioFiles file in Enum.GetValues(typeof(GlobalEnums.AudioFiles)))
             {
@@ -66,7 +69,7 @@ public class SfxManager
     {
         try
         {
-            var fileName = $"{key.ToString().ToLower()}.wav";
+            var fileName = $"{key.ToString().ToLower()}{SoundEffectExtension}";
             var file = await audioFolder.GetFileAsync(fileName);
             this.soundFiles.Add(key, file);
         }

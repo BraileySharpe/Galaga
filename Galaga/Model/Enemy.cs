@@ -36,7 +36,9 @@ namespace Galaga.Model
         /// <summary>
         ///     Initializes a new instance of the <see cref="Enemy" /> class.
         /// </summary>
-        /// <param name="sprite">The enemy sprite.</param>
+        /// <param name="sprite">
+        ///     The enemy sprite.
+        /// </param>
         public Enemy(BaseSprite sprite)
         {
             Sprite = sprite;

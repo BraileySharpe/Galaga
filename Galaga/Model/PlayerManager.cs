@@ -23,7 +23,6 @@ namespace Galaga.Model
 
         private readonly Canvas canvas;
         private readonly Grid lifeGrid;
-
         private readonly IList<PlayerLife> lives;
         private readonly double canvasHeight;
         private readonly double canvasWidth;
@@ -74,7 +73,9 @@ namespace Galaga.Model
         /// <summary>
         ///     Initializes a new instance of the <see cref="PlayerManager" /> class.
         /// </summary>
-        /// <param name="canvas">The canvas.</param>
+        /// <param name="canvas">
+        ///     The canvas.
+        /// </param>
         public PlayerManager(Canvas canvas)
         {
             this.canvas = canvas ?? throw new ArgumentNullException(nameof(canvas));

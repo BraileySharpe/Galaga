@@ -15,10 +15,12 @@ public class GameManager : INotifyPropertyChanged
     private readonly Canvas canvas;
     private readonly EnemyManager enemyManager;
     private readonly BulletManager bulletManager;
-    private PlayerManager playerManager;
     private readonly TimeManager timeManager;
     private readonly SfxManager sfxManager;
     private readonly RoundData roundData;
+
+    private PlayerManager playerManager;
+
     private bool endOfRound;
     private bool canShoot;
 
@@ -81,8 +83,12 @@ public class GameManager : INotifyPropertyChanged
     /// <summary>
     ///     Initializes a new instance of the <see cref="GameManager" /> class.
     /// </summary>
-    /// <param name="canvas">The canvas.</param>
-    /// <exception cref="System.ArgumentNullException">canvas</exception>
+    /// <param name="canvas">
+    ///     The canvas.
+    /// </param>
+    /// <exception cref="System.ArgumentNullException">
+    ///     canvas
+    /// </exception>
     public GameManager(Canvas canvas)
     {
         this.canvas = canvas ?? throw new ArgumentNullException(nameof(canvas));
@@ -103,7 +109,6 @@ public class GameManager : INotifyPropertyChanged
     /// <summary>
     ///     Occurs when a property value changes.
     /// </summary>
-    /// <returns></returns>
     public event PropertyChangedEventHandler PropertyChanged;
 
     private void GameManagerOnPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -117,7 +122,7 @@ public class GameManager : INotifyPropertyChanged
     private void EnemyManagerOnPropertyChanged(object sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(this.enemyManager.HasBonusEnemyStartedMoving) &&
-            this.enemyManager.HasBonusEnemyStartedMoving)
+                              this.enemyManager.HasBonusEnemyStartedMoving)
         {
             this.sfxManager.Play(GlobalEnums.AudioFiles.BONUSENEMY_SOUND);
         }
@@ -126,7 +131,9 @@ public class GameManager : INotifyPropertyChanged
     /// <summary>
     ///     Called when [property changed].
     /// </summary>
-    /// <param name="propertyName">Name of the property.</param>
+    /// <param name="propertyName">
+    ///     Name of the property.
+    /// </param>
     protected virtual void OnPropertyChanged(string propertyName)
     {
         this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -135,7 +142,6 @@ public class GameManager : INotifyPropertyChanged
     /// <summary>
     ///     Starts the game.
     /// </summary>
-    /// }
     public void StartGame()
     {
         this.playerManager = new PlayerManager(this.canvas);
@@ -344,6 +350,9 @@ public class GameManager : INotifyPropertyChanged
         this.EnableShooting();
     }
 
+    /// <summary>
+    ///    Enables the player to shoot.
+    /// </summary>
     public void EnableShooting()
     {
         this.canShoot = true;

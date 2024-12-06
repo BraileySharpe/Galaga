@@ -20,9 +20,15 @@ namespace Galaga.Model
         /// <summary>
         ///     Creates ships for the game.
         /// </summary>
-        /// <param name="shipType">Type of ship to be created.</param>
-        /// <returns></returns>
-        /// <exception cref="System.NotSupportedException"></exception>
+        /// <param name="shipType">
+        ///     Type of ship to be created.
+        /// </param>
+        /// <returns>
+        ///     A new ship of the specified type.
+        /// </returns>
+        /// <exception cref="System.NotSupportedException">
+        ///     "{shipType} is not supported as a ship type." is thrown when the ship type is not supported.
+        /// </exception>
         public static GameObject CreateShip(GlobalEnums.ShipType shipType)
         {
             switch (shipType)

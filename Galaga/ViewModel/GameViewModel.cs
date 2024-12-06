@@ -14,6 +14,9 @@ using VirtualKey = Windows.System.VirtualKey;
 
 namespace Galaga.ViewModel;
 
+/// <summary>
+///    The game view model.
+/// </summary>
 public class GameViewModel : INotifyPropertyChanged
 {
     #region Data members
@@ -36,17 +39,34 @@ public class GameViewModel : INotifyPropertyChanged
     #endregion
 
     #region Properties
-
+    /// <summary>
+    ///     Gets the high scores.
+    /// </summary>
     public ObservableCollection<HighScoreEntry> HighScores { get; }
 
+    /// <summary>
+    ///     Gets the sort high scores by name command.
+    /// </summary>
     public ICommand SortHighScoresByNameCommand { get; }
 
+    /// <summary>
+    ///     Gets the sort high scores by score command.
+    /// </summary>
     public ICommand SortHighScoresByScoreCommand { get; }
 
+    /// <summary>
+    ///     Gets the sort high scores by level command.
+    /// </summary>
     public ICommand SortHighScoresByLevelCommand { get; }
 
+    /// <summary>
+    ///     Gets the reset high score board command.
+    /// </summary>
     public ICommand ResetHighScoreBoardCommand { get; }
 
+    /// <summary>
+    ///     Gets or sets the score.
+    /// </summary>
     public int Score
     {
         get => this.score;
@@ -60,6 +80,9 @@ public class GameViewModel : INotifyPropertyChanged
         }
     }
 
+    /// <summary>
+    ///     Gets or sets a value indicating whether the player has won.
+    /// </summary>
     public bool HasWon
     {
         get => this.hasWon;
@@ -73,6 +96,9 @@ public class GameViewModel : INotifyPropertyChanged
         }
     }
 
+    /// <summary>
+    ///     Gets or sets a value indicating whether the player has lost.
+    /// </summary>
     public bool HasLost
     {
         get => this.hasLost;
@@ -106,6 +132,18 @@ public class GameViewModel : INotifyPropertyChanged
 
     #region Constructors
 
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="GameViewModel" /> class.
+    /// </summary>
+    /// <param name="canvas">
+    ///     The canvas for the game.
+    /// </param>
+    /// <param name="updateParallaxBackground">
+    ///     Action to update the parallax background.
+    /// </param>
+    /// <exception cref="ArgumentNullException">
+    ///     canvas or updateParallaxBackground is null.
+    /// </exception>
     public GameViewModel(Canvas canvas, Action updateParallaxBackground)
     {
         this.canvas = canvas ?? throw new ArgumentNullException(nameof(canvas));
@@ -125,7 +163,9 @@ public class GameViewModel : INotifyPropertyChanged
     #endregion
 
     #region Methods
-
+    /// <summary>
+    ///     Occurs when a property value changes.
+    /// </summary>
     public event PropertyChangedEventHandler PropertyChanged;
 
     private async void execute(object _)
@@ -133,21 +173,42 @@ public class GameViewModel : INotifyPropertyChanged
         await this.ResetHighScoreBoard();
     }
 
+    /// <summary>
+    ///     Raises the PropertyChanged event.
+    /// </summary>
+    /// <param name="propertyName">
+    ///     The name of the property that changed.
+    /// </param>
     protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
         this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
+    /// <summary>
+    ///     Handles the key down event.
+    /// </summary>
+    /// <param name="key">
+    ///     The key that was pressed.
+    /// </param>
     public void KeyDown(VirtualKey key)
     {
         this.activeKeys.Add(key);
     }
 
+    /// <summary>
+    ///     Handles the key up event.
+    /// </summary>
+    /// <param name="key">
+    ///     The key that was released.
+    /// </param>
     public void KeyUp(VirtualKey key)
     {
         this.activeKeys.Remove(key);
     }
 
+    /// <summary>
+    ///     Sets up the game loop timer.
+    /// </summary>
     private void setUpGameLoopTimer()
     {
         this.gameLoopTimer = new DispatcherTimer
@@ -161,8 +222,12 @@ public class GameViewModel : INotifyPropertyChanged
     /// <summary>
     ///     The game loop to track the player's key presses and game status.
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
+    /// <param name="sender">
+    ///     The sender of the event.
+    /// </param>
+    /// <param name="e">
+    ///     The event arguments.
+    /// </param>
     public void GameLoop(object sender, object e)
     {
         if (this.activeKeys.Contains(VirtualKey.Enter) && !this.HasGameStarted)
@@ -231,12 +296,21 @@ public class GameViewModel : INotifyPropertyChanged
         }
     }
 
+    /// <summary>
+    ///     Stops all timers.
+    /// </summary>
     public void StopAllTimers()
     {
         this.gameManager.StopAllTimers();
         this.gameLoopTimer?.Stop();
     }
 
+    /// <summary>
+    ///     Loads the high scores asynchronously.
+    /// </summary>
+    /// <returns>
+    ///     The task that loads the high scores.
+    /// </returns>
     public async Task LoadHighScoresAsync()
     {
         var highScores = await this.highScoreBoard.GetHighScoresAsync();
@@ -252,6 +326,9 @@ public class GameViewModel : INotifyPropertyChanged
         }
     }
 
+    /// <summary>
+    ///     Sorts the high scores by score, name, and level.
+    /// </summary>
     public void SortHighScoresByScoreNameLevel()
     {
         var sortedScores = this.HighScores
@@ -262,6 +339,9 @@ public class GameViewModel : INotifyPropertyChanged
         this.updateHighScoresCollection(sortedScores);
     }
 
+    /// <summary>
+    ///     Sorts the high scores by name, score, and level.
+    /// </summary>
     public void SortHighScoresByNameScoreLevel()
     {
         var sortedScores = this.HighScores
@@ -272,6 +352,9 @@ public class GameViewModel : INotifyPropertyChanged
         this.updateHighScoresCollection(sortedScores);
     }
 
+    /// <summary>
+    ///     Sorts the high scores by level, score, and name.
+    /// </summary>
     public void SortHighScoresByLevelScoreName()
     {
         var sortedScores = this.HighScores
@@ -282,6 +365,12 @@ public class GameViewModel : INotifyPropertyChanged
         this.updateHighScoresCollection(sortedScores);
     }
 
+    /// <summary>
+    ///     Resets the high score board.
+    /// </summary>
+    /// <returns>
+    ///     The task that resets the high score board.
+    /// </returns>
     public async Task ResetHighScoreBoard()
     {
         await this.highScoreBoard.ClearHighScoreBoardAsync();
