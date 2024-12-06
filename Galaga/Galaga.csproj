@@ -128,7 +128,8 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Command\RelayCommand.cs" />
+    <Compile Include="Commands\RelayCommand.cs" />
+    <Compile Include="Converters\BooleanToOppositeConverter.cs" />
     <Compile Include="Model\BonusEnemy.cs" />
     <Compile Include="Model\Bullet.cs" />
     <Compile Include="Model\BulletManager.cs" />
@@ -155,6 +156,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="View\Sprites\AnimatedSprite.xaml.cs">
       <DependentUpon>AnimatedSprite.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Sprites\GalagaLogo.xaml.cs">
+      <DependentUpon>GalagaLogo.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Sprites\ShieldSprite.xaml.cs">
       <DependentUpon>ShieldSprite.xaml</DependentUpon>
@@ -255,6 +259,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Sprites\AnimatedSprite.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Sprites\GalagaLogo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

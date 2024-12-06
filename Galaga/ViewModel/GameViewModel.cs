@@ -6,11 +6,11 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Galaga.Command;
 using Galaga.Model;
+using VirtualKey = Windows.System.VirtualKey;
 
 namespace Galaga.ViewModel;
 
@@ -20,7 +20,7 @@ public class GameViewModel : INotifyPropertyChanged
 
     private const int GameLoopTimerIntervalMilliseconds = 16;
 
-    private readonly HighScoreBoard highScoreBoard;
+    private HighScoreBoard highScoreBoard;
 
     private DispatcherTimer gameLoopTimer;
     private readonly Canvas canvas;
@@ -28,6 +28,7 @@ public class GameViewModel : INotifyPropertyChanged
     private readonly HashSet<VirtualKey> activeKeys;
 
     private int score;
+    private bool hasGameStarted;
     private bool hasWon;
     private bool hasLost;
 
@@ -42,6 +43,8 @@ public class GameViewModel : INotifyPropertyChanged
     public ICommand SortHighScoresByScoreCommand { get; }
 
     public ICommand SortHighScoresByLevelCommand { get; }
+
+    public ICommand ResetHighScoreBoardCommand { get; }
 
     public int Score
     {
@@ -82,6 +85,22 @@ public class GameViewModel : INotifyPropertyChanged
         }
     }
 
+    /// <summary>
+    ///     Gets or sets a value indicating whether the game has started.
+    /// </summary>
+    public bool HasGameStarted
+    {
+        get => this.hasGameStarted;
+        set
+        {
+            if (this.hasGameStarted != value)
+            {
+                this.hasGameStarted = value;
+                this.OnPropertyChanged();
+            }
+        }
+    }
+
     #endregion
 
     #region Constructors
@@ -89,15 +108,16 @@ public class GameViewModel : INotifyPropertyChanged
     public GameViewModel(Canvas canvas)
     {
         this.canvas = canvas ?? throw new ArgumentNullException(nameof(canvas));
-        this.gameManager = new GameManager(canvas);
         this.activeKeys = new HashSet<VirtualKey>();
         this.HighScores = new ObservableCollection<HighScoreEntry>();
         this.highScoreBoard = new HighScoreBoard();
         this.setUpGameLoopTimer();
 
-        this.SortHighScoresByNameCommand = new RelayCommand(_=> this.SortHighScoresByNameScoreLevel());
-        this.SortHighScoresByScoreCommand = new RelayCommand(_=>this.SortHighScoresByScoreNameLevel());
-        this.SortHighScoresByLevelCommand = new RelayCommand(_=>this.SortHighScoresByLevelScoreName());
+        this.SortHighScoresByNameCommand = new RelayCommand(_ => this.SortHighScoresByNameScoreLevel());
+        this.SortHighScoresByScoreCommand = new RelayCommand(_ => this.SortHighScoresByScoreNameLevel());
+        this.SortHighScoresByLevelCommand = new RelayCommand(_ => this.SortHighScoresByLevelScoreName());
+        this.ResetHighScoreBoardCommand = new RelayCommand(_ => this.ResetHighScoreBoard());
+        this.gameManager = new GameManager(canvas);
     }
 
     #endregion
@@ -131,23 +151,42 @@ public class GameViewModel : INotifyPropertyChanged
         this.gameLoopTimer.Start();
     }
 
+    /// <summary>
+    ///    The game loop to track the player's key presses and game status.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     public void GameLoop(object sender, object e)
     {
-        if (this.activeKeys.Contains(VirtualKey.Left))
+        if (this.activeKeys.Contains(VirtualKey.Enter) && !this.HasGameStarted)
         {
-            this.gameManager.MovePlayerLeft();
+            this.gameManager.StartGame();
+            this.HasGameStarted = true;
         }
 
-        if (this.activeKeys.Contains(VirtualKey.Right))
+        if (this.HasGameStarted)
         {
-            this.gameManager.MovePlayerRight();
-        }
+            if (this.activeKeys.Contains(VirtualKey.Left))
+            {
+                this.gameManager.MovePlayerLeft();
+            }
 
-        if (this.activeKeys.Contains(VirtualKey.Space))
-        {
-            this.gameManager.PlacePlayerBullet();
-        }
+            if (this.activeKeys.Contains(VirtualKey.Right))
+            {
+                this.gameManager.MovePlayerRight();
+            }
 
+            if (this.activeKeys.Contains(VirtualKey.Space))
+            {
+                this.gameManager.PlacePlayerBullet();
+            }
+
+            this.updateGameStatus();
+        }
+    }
+
+    private void updateGameStatus()
+    {
         this.Score = this.gameManager.Score;
         this.HasWon = this.gameManager.HasWon;
         this.HasLost = this.gameManager.HasLost;
@@ -233,6 +272,11 @@ public class GameViewModel : INotifyPropertyChanged
             .ThenBy(h => h.PlayerName)
             .ToList();
         this.updateHighScoresCollection(sortedScores);
+    }
+
+    public async Task ResetHighScoreBoard()
+    {
+        await this.highScoreBoard.ClearHighScoreBoardAsync();
     }
 
     #endregion

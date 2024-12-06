@@ -11,7 +11,7 @@
                       Height="60">
 
     <UserControl.Resources>
-        <SolidColorBrush x:Key="BaseColor" Color="#1B9594" />
+        <SolidColorBrush x:Key="BaseColor" Color="#00A800" />
         <SolidColorBrush x:Key="AccentColor" Color="#FFFF00" />
         <SolidColorBrush x:Key="TrimColor" Color="#E04600" />
     </UserControl.Resources>

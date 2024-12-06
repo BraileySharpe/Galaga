@@ -74,5 +74,13 @@ public class HighScoreBoard
         return highScores;
     }
 
+    public async Task<List<HighScoreEntry>> ClearHighScoreBoardAsync()
+    {
+        var highScores = await this.GetHighScoresAsync();
+        highScores.Clear();
+        await this.SaveHighScoresAsync(highScores);
+        return highScores;
+    }
+
     #endregion
 }
