@@ -4,8 +4,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:converters="using:Galaga.Converters">
 
+    <!-- Application Resources -->
     <Application.Resources>
+        <!-- Converters -->
         <converters:BooleanToOppositeConverter x:Key="booleanToOppositeConverter" />
+        <converters:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
     </Application.Resources>
 
 </Application>
