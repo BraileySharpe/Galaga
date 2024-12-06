@@ -24,6 +24,7 @@ public class GameViewModel : INotifyPropertyChanged
     private readonly Canvas canvas;
     private readonly GameManager gameManager;
     private readonly HashSet<VirtualKey> activeKeys;
+    private readonly Action updateParallaxBackground;
 
     private DispatcherTimer gameLoopTimer;
 
@@ -105,9 +106,10 @@ public class GameViewModel : INotifyPropertyChanged
 
     #region Constructors
 
-    public GameViewModel(Canvas canvas)
+    public GameViewModel(Canvas canvas, Action updateParallaxBackground)
     {
         this.canvas = canvas ?? throw new ArgumentNullException(nameof(canvas));
+        this.updateParallaxBackground = updateParallaxBackground ?? throw new ArgumentNullException(nameof(updateParallaxBackground));
         this.activeKeys = new HashSet<VirtualKey>();
         this.HighScores = new ObservableCollection<HighScoreEntry>();
         this.highScoreBoard = new HighScoreBoard();
@@ -187,6 +189,7 @@ public class GameViewModel : INotifyPropertyChanged
             }
 
             this.updateGameStatus();
+            this.updateParallaxBackground?.Invoke();
         }
     }
 

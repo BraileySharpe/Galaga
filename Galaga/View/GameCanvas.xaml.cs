@@ -8,6 +8,7 @@ using Galaga.ViewModel;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
+using System.Diagnostics;
 
 namespace Galaga.View
 {
@@ -17,6 +18,10 @@ namespace Galaga.View
 
         private readonly GameViewModel gameViewModel;
 
+        private const double BackgroundSpeed = 1.0;
+        private double backgroundTopPosition = 0;
+        private double backgroundBottomPosition = 325;
+
         #endregion
 
         #region Constructors
@@ -25,7 +30,7 @@ namespace Galaga.View
         {
             this.InitializeComponent();
             this.setupWindowPreferences();
-            this.gameViewModel = new GameViewModel(this.canvas);
+            this.gameViewModel = new GameViewModel(this.canvas, this.UpdateParallaxBackground);
 
             Window.Current.CoreWindow.KeyDown += this.coreWindowOnKeyDown;
             Window.Current.CoreWindow.KeyUp += this.coreWindowOnKeyUp;
@@ -92,6 +97,28 @@ namespace Galaga.View
             return "Anonymous";
         }
 
-        #endregion
+        private void UpdateParallaxBackground()
+        {
+            Debug.WriteLine("Updating Parallax Background");
+            Debug.WriteLine("BackgroundTopPosition: " + backgroundTopPosition);
+            Debug.WriteLine("BackgroundBottomPosition: " + backgroundBottomPosition);
+            backgroundTopPosition += BackgroundSpeed;
+            backgroundBottomPosition += BackgroundSpeed;
+
+            if (backgroundTopPosition >= 650)
+            {
+                backgroundTopPosition = -325;
+            }
+
+            if (backgroundBottomPosition >= 650)
+            {
+                backgroundBottomPosition = -325;
+            }
+
+            Canvas.SetTop(BackgroundTop, backgroundTopPosition);
+            Canvas.SetTop(BackgroundBottom, backgroundBottomPosition);
+
+            #endregion
+        }
     }
 }
