@@ -184,7 +184,9 @@ namespace Galaga.Model
         {
             if (this.bonusEnemy != null)
             {
+                this.Enemies.Remove(this.bonusEnemy);
                 this.canvas.Children.Remove(this.bonusEnemy.Sprite);
+                this.bonusEnemy = null;
             }
 
             this.bonusEnemy = ShipFactory.CreateShip(shipType) as BonusEnemy;
