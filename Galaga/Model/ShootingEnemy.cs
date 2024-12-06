@@ -19,7 +19,9 @@ namespace Galaga.Model
         /// <summary>
         ///     Initializes a new instance of the <see cref="ShootingEnemy" /> class.
         /// </summary>
-        /// <param name="sprite">The enemy sprite.</param>
+        /// <param name="sprite">
+        ///     The enemy sprite.
+        /// </param>
         public ShootingEnemy(BaseSprite sprite) : base(sprite)
         {
         }
@@ -31,7 +33,9 @@ namespace Galaga.Model
         /// <summary>
         ///     Enemy shoots a bullet.
         /// </summary>
-        /// <returns>The enemy bullet</returns>
+        /// <returns>
+        ///     The enemy bullet
+        /// </returns>
         public Bullet Shoot()
         {
             var bullet = new Bullet(new EnemyBulletSprite(), GlobalEnums.CharacterType.Enemy);
@@ -43,6 +47,15 @@ namespace Galaga.Model
             return bullet;
         }
 
+        /// <summary>
+        ///     Enemy shoots a bullet at the player.
+        /// </summary>
+        /// <param name="player">
+        ///     The player.
+        /// </param>
+        /// <returns>
+        ///     The enemy bullet that is shot.
+        /// </returns>
         public Bullet Shoot(Player player)
         {
             var bullet = new Bullet(new EnemyBulletSprite(), GlobalEnums.CharacterType.Enemy);

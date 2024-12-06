@@ -17,10 +17,14 @@ namespace Galaga.Model
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Bullet"/> class.
+        ///     Initializes a new instance of the <see cref="Bullet"/> class.
         /// </summary>
-        /// <param name="sprite">The sprite.</param>
-        /// <param name="type">The type.</param>
+        /// <param name="sprite">
+        ///     The sprite of the bullet.
+        /// </param>
+        /// <param name="type">
+        ///     The type of the character.
+        /// </param>
         public Bullet(BaseSprite sprite, GlobalEnums.CharacterType type)
         {
             Sprite = sprite;

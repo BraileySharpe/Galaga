@@ -32,7 +32,9 @@ namespace Galaga.Model
         /// <summary>
         ///     Player shoots a bullet.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>
+        ///     The bullet.
+        /// </returns>
         public Bullet Shoot()
         {
             var bullet = new Bullet(new PlayerBulletSprite(), GlobalEnums.CharacterType.Player);

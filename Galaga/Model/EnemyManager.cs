@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using Windows.UI.Xaml.Controls;
 using Galaga.View.Sprites;
+using System.Runtime.CompilerServices;
 
 namespace Galaga.Model
 {
@@ -15,24 +16,31 @@ namespace Galaga.Model
         #region Data members
 
         private const double EnemySpacing = 15;
-
         private const int Level1EnemyIndex = 0;
         private const int Level2EnemyIndex = 1;
         private const int Level3EnemyIndex = 2;
         private const int Level4EnemyIndex = 3;
+        private const int MovementPatternGroup1 = 1;
+        private const int MovementPatternGroup2 = 2;
+        private const int MovementPatternGroup3 = 3;
+        private const int MovementPatternGroup4 = 4;
         private const int StepCountMaxValue = 28;
         private const int StepCountReverseDirectionValue = 14;
+
         private readonly RoundData roundData;
+        private readonly Canvas canvas;
+        
         private BonusEnemy bonusEnemy;
         private bool hasBonusEnemyStartedMoving;
         private int stepCounter = 7;
-
-        private readonly Canvas canvas;
 
         #endregion
 
         #region Properties
 
+        /// <summary>
+        ///    Gets a value indicating whether the bonus enemy has started moving.
+        /// </summary>
         public bool HasBonusEnemyStartedMoving
         {
             get => this.hasBonusEnemyStartedMoving;
@@ -73,9 +81,15 @@ namespace Galaga.Model
         /// <summary>
         ///     Initializes a new instance of the <see cref="EnemyManager" /> class.
         /// </summary>
-        /// <param name="canvas">The canvas.</param>
-        /// <param name="roundData">The round data.</param>
-        /// <exception cref="System.ArgumentNullException">canvas</exception>
+        /// <param name="canvas">
+        ///     The canvas.
+        /// </param>
+        /// <param name="roundData">
+        ///     The round data.
+        /// </param>
+        /// <exception cref="System.ArgumentNullException">
+        ///     canvas
+        /// </exception>
         public EnemyManager(Canvas canvas, RoundData roundData)
         {
             this.Enemies = new List<Enemy>();
@@ -92,7 +106,9 @@ namespace Galaga.Model
         /// <summary>
         ///     Called when [property changed].
         /// </summary>
-        /// <param name="propertyName">Name of the property.</param>
+        /// <param name="propertyName">
+        ///     Name of the property.
+        /// </param>
         protected virtual void OnPropertyChanged(string propertyName)
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -104,15 +120,18 @@ namespace Galaga.Model
         public void CreateAndPlaceEnemies()
         {
             var numEnemiesForCurrentRound = this.roundData.GetNumEnemiesForCurrentRound();
+
             this.createEnemiesForRound(GlobalEnums.ShipType.Lvl1Enemy, numEnemiesForCurrentRound[Level1EnemyIndex],
-                new Level1EnemySprite().Width);
+                                        new Level1EnemySprite().Width);
             this.createEnemiesForRound(GlobalEnums.ShipType.Lvl2Enemy, numEnemiesForCurrentRound[Level2EnemyIndex],
-                new Level2EnemySprite().Width);
+                                        new Level2EnemySprite().Width);
             this.createEnemiesForRound(GlobalEnums.ShipType.Lvl3Enemy, numEnemiesForCurrentRound[Level3EnemyIndex],
-                new Level3EnemySprite().Width);
+                                        new Level3EnemySprite().Width);
             this.createEnemiesForRound(GlobalEnums.ShipType.Lvl4Enemy, numEnemiesForCurrentRound[Level4EnemyIndex],
-                new Level4EnemySprite().Width);
+                                        new Level4EnemySprite().Width);
+
             this.createBonusEnemyForRound(GlobalEnums.ShipType.BonusEnemy);
+
             this.hasBonusEnemyStartedMoving = false;
         }
 
@@ -149,13 +168,13 @@ namespace Galaga.Model
             switch (shipType)
             {
                 case GlobalEnums.ShipType.Lvl1Enemy:
-                    return 1;
+                    return MovementPatternGroup1;
                 case GlobalEnums.ShipType.Lvl2Enemy:
-                    return 2;
+                    return MovementPatternGroup2;
                 case GlobalEnums.ShipType.Lvl3Enemy:
-                    return 3;
+                    return MovementPatternGroup3;
                 case GlobalEnums.ShipType.Lvl4Enemy:
-                    return 4;
+                    return MovementPatternGroup4;
                 default:
                     throw new ArgumentException("Invalid enemy type.");
             }
@@ -219,10 +238,12 @@ namespace Galaga.Model
                     }
                     break;
                 case GlobalEnums.GameRound.Round2:
-                    this.handleGroupedMovement(groupedEnemies, new[] { 1, 2 }, new[] { 3, 4 });
+                    this.handleGroupedMovement(groupedEnemies, new[] { MovementPatternGroup1, MovementPatternGroup2 },
+                                                               new[] { MovementPatternGroup3, MovementPatternGroup4 });
                     break;
                 case GlobalEnums.GameRound.Round3:
-                    this.handleGroupedMovement(groupedEnemies, new[] { 1, 3 }, new[] { 2, 4 });
+                    this.handleGroupedMovement(groupedEnemies, new[] { MovementPatternGroup1, MovementPatternGroup3 }, 
+                                                               new[] { MovementPatternGroup2, MovementPatternGroup4 });
                     break;
                 default:
                     throw new ArgumentException("Invalid round.");
@@ -274,7 +295,9 @@ namespace Galaga.Model
         /// <summary>
         ///     Removes the enemy from the enemy list and the canvas.
         /// </summary>
-        /// <param name="enemy">The enemy to remove.</param>
+        /// <param name="enemy">
+        ///     The enemy to remove.
+        /// </param>
         public void RemoveEnemy(Enemy enemy)
         {
             this.Enemies.Remove(enemy);
@@ -284,8 +307,12 @@ namespace Galaga.Model
         /// <summary>
         ///     Checks the which enemy is shot, removes it, and returns it.
         /// </summary>
-        /// <param name="bullet">The bullet to compare collision.</param>
-        /// <returns>The enemy that was hit, and null if no enemies were hit</returns>
+        /// <param name="bullet">
+        ///     The bullet to compare collision.
+        /// </param>
+        /// <returns>
+        ///     The enemy that was hit, and null if no enemies were hit
+        /// </returns>
         public Enemy CheckWhichEnemyIsShot(Bullet bullet)
         {
             if (bullet == null)

@@ -20,7 +20,7 @@ namespace Galaga.Model
         ///     Gets or sets the x location of the game object.
         /// </summary>
         /// <value>
-        ///     The x.
+        ///     The X location.
         /// </value>
         public double X
         {
@@ -36,7 +36,7 @@ namespace Galaga.Model
         ///     Gets or sets the y location of the game object.
         /// </summary>
         /// <value>
-        ///     The y.
+        ///     The Y location.
         /// </value>
         public double Y
         {
@@ -144,8 +144,12 @@ namespace Galaga.Model
         ///     Precondition: speedX >= 0 AND speedY >=0
         ///     Postcondition: SpeedX == speedX AND SpeedY == speedY
         /// </summary>
-        /// <param name="speedX">The speed x.</param>
-        /// <param name="speedY">The speed y.</param>
+        /// <param name="speedX">
+        ///     The speed x.
+        /// </param>
+        /// <param name="speedY">
+        ///     The speed y.
+        /// </param>
         protected internal void SetSpeed(int speedX, int speedY)
         {
             this.SpeedX = speedX;
@@ -155,8 +159,12 @@ namespace Galaga.Model
         /// <summary>
         ///     Checks if the target object collides with another game object.
         /// </summary>
-        /// <param name="gameObject">The game object to compare with.</param>
-        /// <returns>true if gameObjects intersect, false otherwise</returns>
+        /// <param name="gameObject">
+        ///     The game object to compare with.
+        /// </param>
+        /// <returns>
+        ///     true if gameObjects intersect, false otherwise
+        /// </returns>
         public bool CollidesWith(GameObject gameObject)
         {
             if (gameObject == null)

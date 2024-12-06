@@ -11,6 +11,9 @@ using Galaga.ViewModel;
 
 namespace Galaga.View;
 
+/// <summary>
+///     The main game canvas.
+/// </summary>
 public sealed partial class GameCanvas
 {
     #region Data members
@@ -20,6 +23,8 @@ public sealed partial class GameCanvas
     private const double FarBackgroundSpeedOffset = .33;
     private const double BluePlanetInitialTopPosition = 800;
     private const double RedPlanetInitialTopPosition = 125;
+    private const string DefaultPlayerName = "Rico";
+    private const string AnonymousPlayerName = "Anonymous";
 
     private readonly GameViewModel gameViewModel;
     private double backgroundTopPosition;
@@ -33,6 +38,9 @@ public sealed partial class GameCanvas
 
     #region Constructors
 
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="GameCanvas"/> class.
+    /// </summary>
     public GameCanvas()
     {
         this.InitializeComponent();
@@ -80,8 +88,8 @@ public sealed partial class GameCanvas
 
     private async void OnViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if ((e.PropertyName == nameof(this.gameViewModel.HasLost) && this.gameViewModel.HasLost) ||
-            (e.PropertyName == nameof(this.gameViewModel.HasWon) && this.gameViewModel.HasWon))
+        if ((e.PropertyName == nameof(this.gameViewModel.HasLost) && this.gameViewModel.HasLost) 
+            || (e.PropertyName == nameof(this.gameViewModel.HasWon) && this.gameViewModel.HasWon))
         {
             this.gameViewModel.EndGame();
             var playerName = await this.promptForPlayerNameAsync();
@@ -107,10 +115,10 @@ public sealed partial class GameCanvas
                 return name;
             }
 
-            return "Rico";
+            return DefaultPlayerName;
         }
 
-        return "Anonymous";
+        return AnonymousPlayerName;
     }
 
     private void UpdateParallaxBackground()

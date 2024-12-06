@@ -66,20 +66,17 @@ namespace Galaga.Model
 
         private void initializeGameData()
         {
-            this.initializeRoundData(GlobalEnums.GameRound.Round1,
-                new[]
+            this.initializeRoundData(GlobalEnums.GameRound.Round1, new[]
                 {
                     NumberOfLevel1EnemiesInRound1, NumberOfLevel2EnemiesInRound1, NumberOfLevel3EnemiesInRound1,
                     NumberOfLevel4EnemiesInRound1, NumberOfBonusEnemiesPerRound
                 });
-            this.initializeRoundData(GlobalEnums.GameRound.Round2,
-                new[]
+            this.initializeRoundData(GlobalEnums.GameRound.Round2, new[]
                 {
                     NumberOfLevel1EnemiesInRound2, NumberOfLevel2EnemiesInRound2, NumberOfLevel3EnemiesInRound2,
                     NumberOfLevel4EnemiesInRound2, NumberOfBonusEnemiesPerRound
                 });
-            this.initializeRoundData(GlobalEnums.GameRound.Round3,
-                new[]
+            this.initializeRoundData(GlobalEnums.GameRound.Round3, new[]
                 {
                     NumberOfLevel1EnemiesInRound3, NumberOfLevel2EnemiesInRound3, NumberOfLevel3EnemiesInRound3,
                     NumberOfLevel4EnemiesInRound3, NumberOfBonusEnemiesPerRound

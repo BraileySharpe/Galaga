@@ -26,8 +26,12 @@ namespace Galaga.Model
         /// <summary>
         ///     Initializes a new instance of the <see cref="BulletManager" /> class.
         /// </summary>
-        /// <param name="canvas">The canvas.</param>
-        /// <exception cref="System.ArgumentNullException">canvas</exception>
+        /// <param name="canvas">
+        ///     The canvas.
+        /// </param>
+        /// <exception cref="System.ArgumentNullException">
+        ///     canvas
+        /// </exception>
         public BulletManager(Canvas canvas)
         {
             this.canvas = canvas ?? throw new ArgumentNullException(nameof(canvas));
@@ -41,8 +45,12 @@ namespace Galaga.Model
         /// <summary>
         ///     Places a new player bullet onto the Canvas if less than 3 are active.
         /// </summary>
-        /// <param name="bullet">The bullet.</param>
-        /// <returns>True if a bullet was placed, false otherwise</returns>
+        /// <param name="bullet">
+        ///     The bullet.
+        /// </param>
+        /// <returns>
+        ///     True if a bullet was placed, false otherwise
+        /// </returns>
         public bool PlacePlayerBullet(Bullet bullet)
         {
             if (this.activePlayerBullets.Count < MaxActivePlayerBullets)
@@ -58,8 +66,12 @@ namespace Galaga.Model
         /// <summary>
         ///     Moves the player bullet, checks if an enemy is hit, and returns the bullet that hit an enemy.
         /// </summary>
-        /// <param name="enemies">The enemies.</param>
-        /// <returns>The bullet that hit an enemy, null if no enemies hit</returns>
+        /// <param name="enemies">
+        ///     The enemies.
+        /// </param>
+        /// <returns>
+        ///     The bullet that hit an enemy, null if no enemies hit
+        /// </returns>
         public Bullet MovePlayerBullet(IList<Enemy> enemies)
         {
             for (var i = 0; i <= this.activePlayerBullets.Count - 1; i++)
@@ -89,7 +101,9 @@ namespace Galaga.Model
         /// <summary>
         ///     Places an enemy bullet on a random enemy.
         /// </summary>
-        /// <param name="bullet">The bullet.</param>
+        /// <param name="bullet">
+        ///     The bullet.
+        /// </param>
         public void PlaceEnemyBullet(Bullet bullet)
         {
             this.activeEnemyBullets.Add(bullet);
@@ -99,8 +113,12 @@ namespace Galaga.Model
         /// <summary>
         ///     Moves all active enemy bullets downward.
         /// </summary>
-        /// <param name="player">The player.</param>
-        /// <returns>true if the bullet hits the player, false otherwise</returns>
+        /// <param name="player">
+        ///     The player.
+        /// </param>
+        /// <returns>
+        ///     true if the bullet hits the player, false otherwise
+        /// </returns>
         public bool MoveEnemyBullet(Player player)
         {
             for (var i = this.activeEnemyBullets.Count - 1; i >= 0; i--)

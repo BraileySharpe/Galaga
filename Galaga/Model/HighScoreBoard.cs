@@ -18,6 +18,12 @@ public class HighScoreBoard
 
     #region Methods
 
+    /// <summary>
+    ///    Gets the high scores.
+    /// </summary>
+    /// <returns>
+    ///     The high scores if they exist; otherwise, an empty list.
+    /// </returns>
     public async Task<List<HighScoreEntry>> GetHighScoresAsync()
     {
         try
@@ -39,6 +45,18 @@ public class HighScoreBoard
         }
     }
 
+    /// <summary>
+    ///    Saves the high scores.
+    /// </summary>
+    /// <param name="highScores">
+    ///     The high scores
+    /// </param>
+    /// <returns>
+    ///     The task object representing the asynchronous operation.
+    /// </returns>
+    /// <exception cref="IOException">
+    ///     "Error saving high scores." if an error occurs while saving the high scores.
+    /// </exception>
     public async Task SaveHighScoresAsync(List<HighScoreEntry> highScores)
     {
         try
@@ -57,6 +75,15 @@ public class HighScoreBoard
         }
     }
 
+    /// <summary>
+    ///   Adds a high score.
+    /// </summary>
+    /// <param name="newEntry">
+    ///     The new entry
+    /// </param>
+    /// <returns>
+    ///     The high scores list after adding the new entry.
+    /// </returns>
     public async Task<List<HighScoreEntry>> AddHighScoreAsync(HighScoreEntry newEntry)
     {
         var highScores = await this.GetHighScoresAsync();
@@ -74,6 +101,12 @@ public class HighScoreBoard
         return highScores;
     }
 
+    /// <summary>
+    ///     Clears the high score board.
+    /// </summary>
+    /// <returns>
+    ///     The high scores list after clearing the high score board.
+    /// </returns>
     public async Task<List<HighScoreEntry>> ClearHighScoreBoardAsync()
     {
         var highScores = await this.GetHighScoresAsync();
