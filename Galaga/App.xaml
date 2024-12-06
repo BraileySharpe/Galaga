@@ -1,6 +1,11 @@
 ﻿<Application
     x:Class="Galaga.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="using:Galaga.Converters">
+
+    <Application.Resources>
+        <converters:BooleanToOppositeConverter x:Key="booleanToOppositeConverter" />
+    </Application.Resources>
 
 </Application>

@@ -7,6 +7,7 @@ using Windows.UI.Xaml;
 using Galaga.ViewModel;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 
 namespace Galaga.View
 {

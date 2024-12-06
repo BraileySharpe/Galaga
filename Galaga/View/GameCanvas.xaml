@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:custom="using:Galaga.View.Sprites"
     x:Class="Galaga.View.GameCanvas"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -10,18 +11,23 @@
     <Canvas x:Name="canvas" Width="900" Height="650" Background="Black">
         <TextBlock Text="SCORE" Height="17" Width="64" FontFamily="ModeNine" FontWeight="Bold" Canvas.Left="809"
                    FontSize="20" Foreground="#FFD01919" HorizontalAlignment="Center"
-                   VerticalAlignment="Top" Canvas.Top="16" />
-        <TextBlock Text="{Binding Path=Score, Mode=OneWay}" Height="31" Width="79" FontFamily="ModeNine"
+                   VerticalAlignment="Top" Canvas.Top="16" Visibility="{Binding HasGameStarted}" />
+        <TextBlock Text="{Binding Score, Mode=OneWay}" Height="31" Width="79" FontFamily="ModeNine"
                    FontWeight="Bold"
                    Canvas.Left="791" Canvas.Top="40" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Top"
-                   Foreground="White" TextAlignment="Right" />
-        <TextBlock x:Name="hasLostTextBlock" Text="GAME OVER" Visibility="{Binding Path=HasLost, Mode=OneWay}"
+                   Foreground="White" TextAlignment="Right" Visibility="{Binding HasGameStarted}" />
+        <TextBlock Text="GAME OVER" Visibility="{Binding HasLost, Mode=OneWay}"
                    FontFamily="ModeNine"
                    FontWeight="Bold" FontSize="50" Canvas.Left="327" Canvas.Top="78" Foreground="White"
                    TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Top" />
-        <TextBlock x:Name="hasWonTextBlock" Text="YOU WIN!" Visibility="{Binding Path=HasWon, Mode=OneWay}"
+        <TextBlock Text="YOU WIN!" Visibility="{Binding HasWon, Mode=OneWay}"
                    FontFamily="ModeNine"
                    FontWeight="Bold" FontSize="50" Canvas.Left="347" Canvas.Top="78" Foreground="White"
+                   TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Top" />
+        <TextBlock Text="PRESS ENTER TO START"
+                   Visibility="{Binding HasGameStarted, Converter={StaticResource booleanToOppositeConverter}}"
+                   FontFamily="ModeNine"
+                   FontWeight="Bold" FontSize="30" Canvas.Left="265" Canvas.Top="365" Foreground="White"
                    TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Top" />
         <Grid x:Name="lifeGrid" Canvas.Left="780" Canvas.Top="200" Margin="10" Background="Transparent" />
         <ListView x:Name="highScoreBoardListView" ItemsSource="{Binding HighScores}" Visibility="Collapsed"
@@ -48,5 +54,17 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+        <custom:GalagaLogo Canvas.Left="272" Canvas.Top="103" Width="360" Height="180" HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Visibility="{Binding HasGameStarted, Converter={StaticResource booleanToOppositeConverter}}" />
+        <Button Width="200" Height="30" Content="HIGH SCORE BOARD" Canvas.Left="350" Canvas.Top="550"
+                Background="Transparent"
+                Visibility="{Binding HasGameStarted, Converter={StaticResource booleanToOppositeConverter}}"
+                FontFamily="ModeNine" FontWeight="Bold" VerticalAlignment="Top" IsTabStop="False"/>
+        <Button Command="{Binding ResetHighScoreBoardCommand}" Width="240" Height="30" Content="RESET HIGH SCORE BOARD"
+                Canvas.Left="332" Canvas.Top="580"
+                Foreground="#FFD01919" Background="Transparent"
+                Visibility="{Binding HasGameStarted, Converter={StaticResource booleanToOppositeConverter}}"
+                FontFamily="ModeNine" FontWeight="Bold" FontStyle="Oblique" VerticalAlignment="Top" IsTabStop="False"/>
     </Canvas>
 </Page>
