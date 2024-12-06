@@ -20,12 +20,12 @@ public class GameViewModel : INotifyPropertyChanged
 
     private const int GameLoopTimerIntervalMilliseconds = 16;
 
-    private HighScoreBoard highScoreBoard;
-
-    private DispatcherTimer gameLoopTimer;
+    private readonly HighScoreBoard highScoreBoard;
     private readonly Canvas canvas;
     private readonly GameManager gameManager;
     private readonly HashSet<VirtualKey> activeKeys;
+
+    private DispatcherTimer gameLoopTimer;
 
     private int score;
     private bool hasGameStarted;
@@ -116,7 +116,7 @@ public class GameViewModel : INotifyPropertyChanged
         this.SortHighScoresByNameCommand = new RelayCommand(_ => this.SortHighScoresByNameScoreLevel());
         this.SortHighScoresByScoreCommand = new RelayCommand(_ => this.SortHighScoresByScoreNameLevel());
         this.SortHighScoresByLevelCommand = new RelayCommand(_ => this.SortHighScoresByLevelScoreName());
-        this.ResetHighScoreBoardCommand = new RelayCommand(_ => this.ResetHighScoreBoard());
+        this.ResetHighScoreBoardCommand = new RelayCommand(this.execute);
         this.gameManager = new GameManager(canvas);
     }
 
@@ -125,6 +125,11 @@ public class GameViewModel : INotifyPropertyChanged
     #region Methods
 
     public event PropertyChangedEventHandler PropertyChanged;
+
+    private async void execute(object _)
+    {
+        await this.ResetHighScoreBoard();
+    }
 
     protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
@@ -152,7 +157,7 @@ public class GameViewModel : INotifyPropertyChanged
     }
 
     /// <summary>
-    ///    The game loop to track the player's key presses and game status.
+    ///     The game loop to track the player's key presses and game status.
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>

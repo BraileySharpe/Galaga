@@ -1,7 +1,7 @@
-using Galaga.View.Sprites;
 using System;
 using System.ComponentModel;
 using Windows.UI.Xaml.Controls;
+using Galaga.View.Sprites;
 
 namespace Galaga.Model;
 
@@ -138,7 +138,7 @@ public class GameManager : INotifyPropertyChanged
     /// }
     public void StartGame()
     {
-        this.playerManager = new PlayerManager(canvas);
+        this.playerManager = new PlayerManager(this.canvas);
         this.enemyManager.CreateAndPlaceEnemies();
         this.timeManager.InitializeTimers();
     }
@@ -228,27 +228,23 @@ public class GameManager : INotifyPropertyChanged
             var random = new Random();
             var randomIndex = random.Next(0, this.enemyManager.RemainingShootingEnemies);
             var enemy = this.enemyManager.ShootingEnemies[randomIndex];
-            
+
             Bullet bullet;
 
-            if (enemy.Sprite is Level4EnemySprite)
+            if (enemy.Sprite is Level4EnemySprite ||
+                (enemy.Sprite is BonusEnemySprite && this.enemyManager.HasBonusEnemyStartedMoving))
             {
-                 bullet = enemy.Shoot(this.playerManager.Player);
-            }
-            else if (enemy.Sprite is BonusEnemySprite && this.enemyManager.HasBonusEnemyStartedMoving)
-            {
-                 bullet = enemy.Shoot(this.playerManager.Player);
+                bullet = enemy.Shoot(this.playerManager.Player);
             }
             else
             {
-                 bullet = enemy.Shoot();
+                bullet = enemy.Shoot();
             }
-            
+
             this.sfxManager.Play(GlobalEnums.AudioFiles.ENEMY_SHOOT);
             this.bulletManager.PlaceEnemyBullet(bullet);
-           }
-      }
-  }
+        }
+    }
 
     /// <summary>
     ///     Moves the enemy bullet.
