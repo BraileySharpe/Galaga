@@ -309,6 +309,8 @@ public class GameManager : INotifyPropertyChanged
 
         if (this.enemyManager.RemainingEnemies == 0 && !this.HasWon)
         {
+            this.enemyManager.ShootingEnemies.Clear();
+
             switch (this.roundData.CurrentRound)
             {
                 case GlobalEnums.GameRound.Round3:
