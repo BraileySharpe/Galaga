@@ -100,12 +100,6 @@ public class SfxManager
                 Volume = Volume
             };
 
-            mediaPlayer.MediaEnded += (sender, args) =>
-            {
-                mediaPlayer.Dispose();
-                this.activePlayers.Remove(key);
-            };
-
             this.activePlayers.Add(key, mediaPlayer);
 
             mediaPlayer.Play();
