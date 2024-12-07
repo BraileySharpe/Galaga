@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.UI.Core;
@@ -40,13 +39,13 @@ public sealed partial class GameCanvas
     #region Constructors
 
     /// <summary>
-    ///     Initializes a new instance of the <see cref="GameCanvas"/> class.
+    ///     Initializes a new instance of the <see cref="GameCanvas" /> class.
     /// </summary>
     public GameCanvas()
     {
         this.InitializeComponent();
         this.setupWindowPreferences();
-        this.gameViewModel = new GameViewModel(this.canvas, this.UpdateParallaxBackground);
+        this.gameViewModel = new GameViewModel(this.canvas, this.updateParallaxBackground);
 
         Window.Current.CoreWindow.KeyDown += this.coreWindowOnKeyDown;
         Window.Current.CoreWindow.KeyUp += this.coreWindowOnKeyUp;
@@ -89,7 +88,7 @@ public sealed partial class GameCanvas
 
     private async void OnViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if ((e.PropertyName == nameof(this.gameViewModel.HasLost) && this.gameViewModel.HasLost) 
+        if ((e.PropertyName == nameof(this.gameViewModel.HasLost) && this.gameViewModel.HasLost)
             || (e.PropertyName == nameof(this.gameViewModel.HasWon) && this.gameViewModel.HasWon))
         {
             this.gameViewModel.EndGame();
@@ -97,6 +96,26 @@ public sealed partial class GameCanvas
             await this.gameViewModel.EndGameAsync(playerName);
             this.highScoreBoardListView.Visibility = Visibility.Visible;
         }
+    }
+
+    private void displayHighScoreBoard(object sender, RoutedEventArgs e)
+    {
+        this.galagaLogo.Opacity = 0;
+        this.viewHighScoreButton.Opacity = 0;
+        this.startContextTextBlock.Opacity = 0;
+        this.highScoreBoardListView.Visibility = Visibility.Visible;
+        this.returnToStartButton.Visibility = Visibility.Visible;
+        this.highScoresTextBlock.Visibility = Visibility.Visible;
+    }
+
+    private void returnToStart(object sender, RoutedEventArgs e)
+    {
+        this.galagaLogo.Opacity = 100;
+        this.viewHighScoreButton.Opacity = 100;
+        this.startContextTextBlock.Opacity = 100;
+        this.highScoreBoardListView.Visibility = Visibility.Collapsed;
+        this.returnToStartButton.Visibility = Visibility.Collapsed;
+        this.highScoresTextBlock.Visibility = Visibility.Collapsed;
     }
 
     private async Task<string> promptForPlayerNameAsync()
@@ -122,7 +141,7 @@ public sealed partial class GameCanvas
         return AnonymousPlayerName;
     }
 
-    private void UpdateParallaxBackground()
+    private void updateParallaxBackground()
     {
         this.handleNearBackgroundAnimation();
         this.handleMidBackgroundAnimation();
@@ -185,5 +204,6 @@ public sealed partial class GameCanvas
         Canvas.SetTop(this.backgroundTop, this.backgroundTopPosition);
         Canvas.SetTop(this.backgroundBottom, this.backgroundBottomPosition + FarBackgroundPositionOffset);
     }
-        #endregion
+
+    #endregion
 }

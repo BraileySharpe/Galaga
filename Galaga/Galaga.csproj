@@ -161,6 +161,9 @@
     <Compile Include="View\Sprites\GalagaLogo.xaml.cs">
       <DependentUpon>GalagaLogo.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Sprites\ExplosionAnimation.xaml.cs">
+      <DependentUpon>ExplosionAnimation.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Sprites\ShieldSprite.xaml.cs">
       <DependentUpon>ShieldSprite.xaml</DependentUpon>
     </Compile>
@@ -278,6 +281,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Sprites\GalagaLogo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Sprites\ExplosionAnimation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

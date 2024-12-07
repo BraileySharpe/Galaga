@@ -22,8 +22,7 @@
                Canvas.Top="0" Canvas.ZIndex="-2"
                Visibility="{Binding HasGameStarted, Converter={StaticResource booleanToVisibilityConverter}}" />
         <!-- Stars Bottom Background -->
-        <Image x:Name="backgroundStarsBottom" Source="/View/Sprites/background_stars_bottom.png" Width="900" Height="900"
-               Canvas.Top="0" Canvas.ZIndex="-2"
+        <Image x:Name="backgroundStarsBottom" Source="/View/Sprites/background_stars_bottom.png" Width="900" Height="900" Canvas.ZIndex="-2"
                Visibility="{Binding HasGameStarted, Converter={StaticResource booleanToVisibilityConverter}}" />
         <!-- Red Planet -->
         <Image x:Name="redPlanet" Source="/View/Sprites/planet_red.png" Width="250" Height="250"
@@ -35,20 +34,20 @@
                Visibility="{Binding HasGameStarted, Converter={StaticResource booleanToVisibilityConverter}}" />
         <TextBlock Text="SCORE" Height="17" Width="64" FontFamily="ModeNine" FontWeight="Bold" Canvas.Left="809"
                    FontSize="20" Foreground="#FFD01919" HorizontalAlignment="Center"
-                   VerticalAlignment="Top" Canvas.Top="16" Visibility="{Binding HasGameStarted}" />
+                   VerticalAlignment="Top" Canvas.Top="16" Visibility="{Binding HasGameStarted, Converter={StaticResource booleanToVisibilityConverter}}" />
         <TextBlock Text="{Binding Score, Mode=OneWay}" Height="31" Width="79" FontFamily="ModeNine"
                    FontWeight="Bold"
                    Canvas.Left="791" Canvas.Top="40" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Top"
                    Foreground="White" TextAlignment="Right" Visibility="{Binding HasGameStarted}" />
-        <TextBlock Text="GAME OVER" Visibility="{Binding HasLost, Mode=OneWay}"
+        <TextBlock Text="GAME OVER" Visibility="{Binding HasLost, Converter={StaticResource booleanToVisibilityConverter}}"
                    FontFamily="ModeNine"
                    FontWeight="Bold" FontSize="50" Canvas.Left="327" Canvas.Top="78" Foreground="White"
                    TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Top" />
-        <TextBlock Text="YOU WIN!" Visibility="{Binding HasWon, Mode=OneWay}"
+        <TextBlock Text="YOU WIN!" Visibility="{Binding HasWon, Converter={StaticResource booleanToVisibilityConverter}}"
                    FontFamily="ModeNine"
                    FontWeight="Bold" FontSize="50" Canvas.Left="347" Canvas.Top="78" Foreground="White"
                    TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Top" />
-        <TextBlock Text="PRESS ENTER TO START"
+        <TextBlock x:Name="startContextTextBlock" Text="PRESS ENTER TO START"
                    Visibility="{Binding HasGameStarted, Converter={StaticResource booleanToOppositeConverter}}"
                    FontFamily="ModeNine"
                    FontWeight="Bold" FontSize="30" Canvas.Left="265" Canvas.Top="365" Foreground="White"
@@ -78,17 +77,25 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <custom:GalagaLogo Canvas.Left="272" Canvas.Top="103" Width="360" Height="180" HorizontalAlignment="Left"
+        <custom:GalagaLogo x:Name="galagaLogo" Canvas.Left="272" Canvas.Top="103" Width="360" Height="180" HorizontalAlignment="Left"
                            VerticalAlignment="Center"
                            Visibility="{Binding HasGameStarted, Converter={StaticResource booleanToOppositeConverter}}" />
-        <Button Width="200" Height="30" Content="HIGH SCORE BOARD" Canvas.Left="350" Canvas.Top="550"
+        <Button x:Name="viewHighScoreButton" Width="240" Height="30" Content="VIEW HIGH SCORE BOARD" Canvas.Left="332" Canvas.Top="550"
                 Background="Transparent"
                 Visibility="{Binding HasGameStarted, Converter={StaticResource booleanToOppositeConverter}}"
-                FontFamily="ModeNine" FontWeight="Bold" VerticalAlignment="Top" IsTabStop="False" />
-        <Button Command="{Binding ResetHighScoreBoardCommand}" Width="240" Height="30" Content="RESET HIGH SCORE BOARD"
+                FontFamily="ModeNine" FontWeight="Bold" IsTabStop="False" Click="displayHighScoreBoard" />
+        <Button x:Name="resetButton" Command="{Binding ResetHighScoreBoardCommand}" Width="240" Height="30" Content="RESET HIGH SCORE BOARD"
                 Canvas.Left="332" Canvas.Top="580"
                 Foreground="#FFD01919" Background="Transparent"
                 Visibility="{Binding HasGameStarted, Converter={StaticResource booleanToOppositeConverter}}"
                 FontFamily="ModeNine" FontWeight="Bold" FontStyle="Oblique" VerticalAlignment="Top" IsTabStop="False" />
+        <Button x:Name="returnToStartButton" Width="240" Height="30" Content="RETURN TO START" Canvas.Left="332" Canvas.Top="550"
+                Background="Transparent"
+                Visibility="Collapsed"
+                FontFamily="ModeNine" FontWeight="Bold" IsTabStop="False" Click="returnToStart" />
+        <TextBlock x:Name="highScoresTextBlock" Text="HIGH SCORES" Visibility="Collapsed"
+            FontFamily="ModeNine"
+            FontWeight="Bold" FontSize="50" Canvas.Left="280" Canvas.Top="78" Foreground="White"
+            TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Top" />
     </Canvas>
 </Page>
