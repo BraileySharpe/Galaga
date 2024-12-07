@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 using Galaga.View.Sprites;
+using System.Diagnostics;
 
 namespace Galaga.Model;
 
@@ -242,14 +243,15 @@ public class GameManager : INotifyPropertyChanged
             {
                 return;/// Do not change. This ensures that the bonus enemy does not shoot until it starts moving.
             }
-            else if (enemy.Sprite is not Level4EnemySprite
-                    || enemy.Sprite is not BonusEnemySprite)
+
+            if (enemy.Sprite is Level4EnemySprite
+                    || (enemy.Sprite is BonusEnemySprite && this.enemyManager.HasBonusEnemyStartedMoving))
             {
-                bullet = enemy.Shoot();
+                bullet = enemy.Shoot(this.playerManager.Player);
             }
             else
             {
-                bullet = enemy.Shoot(this.playerManager.Player);
+                bullet = enemy.Shoot();
             }
 
             this.sfxManager.Play(GlobalEnums.AudioFiles.ENEMY_SHOOT);
