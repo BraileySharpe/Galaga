@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.Media.Core;
@@ -86,14 +87,31 @@ public class SfxManager
     /// <param name="key">Key of the sound effect to play.</param>
     public void Play(GlobalEnums.AudioFiles key)
     {
-        if (this.soundFiles.TryGetValue(key, out var file))
+        if (!this.soundFiles.TryGetValue(key, out var file))
         {
-            if (this.activePlayers.TryGetValue(key, out var existingPlayer))
-            {
-                existingPlayer?.Dispose();
-                this.activePlayers.Remove(key);
-            }
+            throw new ArgumentException($"Sound effect '{key}' not found.");
+        }
 
+        if (this.activePlayers.TryGetValue(key, out var existingPlayer))
+        {
+            if (existingPlayer.PlaybackSession.PlaybackState == MediaPlaybackState.Playing)
+            {
+                var mediaPlayer = new MediaPlayer
+                {
+                    Source = MediaSource.CreateFromStorageFile(file),
+                    Volume = Volume
+                };
+
+                this.activePlayers[key] = mediaPlayer;
+                mediaPlayer.Play();
+            }
+            else
+            {
+                existingPlayer.Play();
+            }
+        }
+        else
+        {
             var mediaPlayer = new MediaPlayer
             {
                 Source = MediaSource.CreateFromStorageFile(file),
@@ -101,13 +119,9 @@ public class SfxManager
             };
 
             this.activePlayers.Add(key, mediaPlayer);
-
             mediaPlayer.Play();
         }
-        else
-        {
-            throw new ArgumentException($"Sound effect '{key}' not found.");
-        }
+
     }
 
     /// <summary>
