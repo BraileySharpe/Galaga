@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 using Galaga.View.Sprites;
-using System.Diagnostics;
 
 namespace Galaga.Model;
 
@@ -204,7 +203,7 @@ public class GameManager : INotifyPropertyChanged
     /// <summary>
     ///     Moves the player bullet.
     /// </summary>
-    public void MovePlayerBullet()
+    public async void MovePlayerBullet()
     {
         var collidingBullet = this.bulletManager.MovePlayerBullet(this.enemyManager.Enemies);
         if (collidingBullet != null)
@@ -212,6 +211,7 @@ public class GameManager : INotifyPropertyChanged
             var enemy = this.enemyManager.CheckWhichEnemyIsShot(collidingBullet);
             if (enemy != null)
             {
+                await this.triggerExplosion(enemy.X, enemy.Y);
                 this.sfxManager.Play(GlobalEnums.AudioFiles.ENEMY_DEATH);
                 this.Score += enemy.Score;
 
@@ -241,11 +241,11 @@ public class GameManager : INotifyPropertyChanged
 
             if (enemy.Sprite is BonusEnemySprite && !this.enemyManager.HasBonusEnemyStartedMoving)
             {
-                return;/// Do not change. This ensures that the bonus enemy does not shoot until it starts moving.
+                return;
             }
 
             if (enemy.Sprite is Level4EnemySprite
-                    || (enemy.Sprite is BonusEnemySprite && this.enemyManager.HasBonusEnemyStartedMoving))
+                || (enemy.Sprite is BonusEnemySprite && this.enemyManager.HasBonusEnemyStartedMoving))
             {
                 bullet = enemy.Shoot(this.playerManager.Player);
             }
@@ -284,15 +284,15 @@ public class GameManager : INotifyPropertyChanged
             this.sfxManager.Play(GlobalEnums.AudioFiles.PLAYER_DEATH);
             if (this.playerManager.RemainingLives > 0)
             {
+                this.canShoot = false;
                 this.canvas.Children.Remove(this.playerManager.Player.Sprite);
-                Explosion explosion = new Explosion(this.playerManager.Player.X, this.playerManager.Player.Y);
-                this.canvas.Children.Add(explosion.Sprite);
+                this.bulletManager.RemoveAllBullets();
                 this.timeManager.StopAllTimers();
-                await explosion.Explode();
-                this.canvas.Children.Remove(explosion.Sprite);
+                await this.triggerExplosion(this.playerManager.Player.X, this.playerManager.Player.Y);
                 await Task.Delay(1000);
                 this.playerManager.RespawnPlayer();
-                this.timeManager.InitializeTimers();
+                this.timeManager.StartAllTimers();
+                this.canShoot = true;
             }
             else
             {
@@ -300,6 +300,14 @@ public class GameManager : INotifyPropertyChanged
                 this.CheckGameStatus();
             }
         }
+    }
+
+    private async Task triggerExplosion(double x, double y)
+    {
+        var explosion = new Explosion(x, y);
+        this.canvas.Children.Add(explosion.Sprite);
+        await explosion.Explode();
+        this.canvas.Children.Remove(explosion.Sprite);
     }
 
     /// <summary>

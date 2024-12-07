@@ -142,6 +142,23 @@ namespace Galaga.Model
             return false;
         }
 
+        /// <summary>
+        ///     Removes all active bullets.
+        /// </summary>
+        public void RemoveAllBullets()
+        {
+            foreach (var bullet in this.activePlayerBullets)
+            {
+                this.canvas.Children.Remove(bullet.Sprite);
+            }
+            foreach (var bullet in this.activeEnemyBullets)
+            {
+                this.canvas.Children.Remove(bullet.Sprite);
+            }
+            this.activePlayerBullets.Clear();
+            this.activeEnemyBullets.Clear();
+        }
+
         #endregion
     }
 }
