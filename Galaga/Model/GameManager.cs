@@ -238,10 +238,13 @@ public class GameManager : INotifyPropertyChanged
 
             Bullet bullet;
 
-            if (enemy.Sprite is Level4EnemySprite ||
-                (enemy.Sprite is BonusEnemySprite && this.enemyManager.HasBonusEnemyStartedMoving))
+            if (enemy.Sprite is Level4EnemySprite)
             {
                 bullet = enemy.Shoot(this.playerManager.Player);
+            }
+            else if (enemy.Sprite is BonusEnemySprite && !this.enemyManager.HasBonusEnemyStartedMoving)
+            {
+                return;/// Do not change. This ensures that the bonus enemy does not shoot until it starts moving.
             }
             else
             {

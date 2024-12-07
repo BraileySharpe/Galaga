@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.Media.Core;
@@ -89,11 +90,6 @@ public class SfxManager
         {
             if (this.activePlayers.TryGetValue(key, out var existingPlayer))
             {
-                if (existingPlayer?.PlaybackSession?.CanPause == true)
-                {
-                    existingPlayer.Pause();
-                }
-
                 existingPlayer?.Dispose();
                 this.activePlayers.Remove(key);
             }
