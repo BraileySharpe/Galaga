@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Documents;
 using Galaga.Command;
 using Galaga.Model;
 using VirtualKey = Windows.System.VirtualKey;
@@ -32,6 +33,8 @@ public class GameViewModel : INotifyPropertyChanged
     private DispatcherTimer gameLoopTimer;
 
     private int score;
+    private bool isScoreBoardOpen;
+    private bool isInStartScreen;
     private bool hasGameStarted;
     private bool hasWon;
     private bool hasLost;
@@ -67,6 +70,44 @@ public class GameViewModel : INotifyPropertyChanged
     ///     <c>true</c> if this instance has scored high score; otherwise, <c>false</c>.
     /// </value>
     public bool HasScoredHighScore { get; private set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether this instance is in start screen.
+    /// </summary>
+    /// <value>
+    ///   <c>true</c> if this instance is in start screen; otherwise, <c>false</c>.
+    /// </value>
+    public bool IsInStartScreen
+    {
+        get => this.isInStartScreen;
+        set
+        {
+            if (this.isInStartScreen != value)
+            {
+                this.isInStartScreen = value;
+                this.OnPropertyChanged();
+            }
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether this instance is score board open.
+    /// </summary>
+    /// <value>
+    ///   <c>true</c> if this instance is score board open; otherwise, <c>false</c>.
+    /// </value>
+    public bool IsScoreBoardOpen
+    {
+        get => this.isScoreBoardOpen;
+        set
+        {
+            if (this.isScoreBoardOpen != value)
+            {
+                this.isScoreBoardOpen = value;
+                this.OnPropertyChanged();
+            }
+        }
+    }
 
     /// <summary>
     ///     Gets or sets the score.
@@ -157,6 +198,7 @@ public class GameViewModel : INotifyPropertyChanged
         this.HighScores = new ObservableCollection<HighScoreEntry>();
         this.highScoreBoard = new HighScoreBoard();
         this.setUpGameLoopTimer();
+        this.IsInStartScreen = true;
 
         this.SortHighScoresByNameCommand = new RelayCommand(_ => this.SortHighScoresByNameScoreLevel());
         this.SortHighScoresByScoreCommand = new RelayCommand(_ => this.SortHighScoresByScoreNameLevel());
@@ -234,6 +276,8 @@ public class GameViewModel : INotifyPropertyChanged
         {
             this.gameManager.StartGame();
             this.HasGameStarted = true;
+            this.IsScoreBoardOpen = false;
+            this.IsInStartScreen = false;
         }
 
         if (this.HasGameStarted)

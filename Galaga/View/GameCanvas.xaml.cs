@@ -53,6 +53,8 @@ public sealed partial class GameCanvas
         DataContext = this.gameViewModel;
         this.gameViewModel.PropertyChanged += this.OnViewModelPropertyChanged;
 
+
+        this.startGameFlashingAnimation.Begin();
         this.backgroundTopPosition = 0;
         this.backgroundBottomPosition = this.backgroundTopPosition + this.backgroundTop.Height;
         this.backgroundStarsTopPosition = 0;
@@ -104,22 +106,14 @@ public sealed partial class GameCanvas
 
     private void displayHighScoreBoard(object sender, RoutedEventArgs e)
     {
-        this.galagaLogo.Opacity = 0;
-        this.viewHighScoreButton.Opacity = 0;
-        this.startContextTextBlock.Opacity = 0;
-        this.highScoreBoardListView.Visibility = Visibility.Visible;
-        this.returnToStartButton.Visibility = Visibility.Visible;
-        this.highScoresTextBlock.Visibility = Visibility.Visible;
+        this.gameViewModel.IsScoreBoardOpen = true;
+        this.gameViewModel.IsInStartScreen = false;
     }
 
     private void returnToStart(object sender, RoutedEventArgs e)
     {
-        this.galagaLogo.Opacity = 100;
-        this.viewHighScoreButton.Opacity = 100;
-        this.startContextTextBlock.Opacity = 100;
-        this.highScoreBoardListView.Visibility = Visibility.Collapsed;
-        this.returnToStartButton.Visibility = Visibility.Collapsed;
-        this.highScoresTextBlock.Visibility = Visibility.Collapsed;
+        this.gameViewModel.IsScoreBoardOpen = false;
+        this.gameViewModel.IsInStartScreen = true;
     }
 
     private async void resetHighScoreBoard(object sender, RoutedEventArgs e)
