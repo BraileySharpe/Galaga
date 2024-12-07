@@ -10,9 +10,4 @@
     d:DesignWidth="60"
     Height="50"
     Width="60">
-
-    <UserControl.Resources>
-            <SolidColorBrush x:Key="Lvl2AccentColor" Color="#E04600" />
-    </UserControl.Resources>
-
 </local:Level1EnemySprite>
