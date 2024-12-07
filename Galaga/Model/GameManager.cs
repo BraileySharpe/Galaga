@@ -284,15 +284,7 @@ public class GameManager : INotifyPropertyChanged
             this.sfxManager.Play(GlobalEnums.AudioFiles.PLAYER_DEATH);
             if (this.playerManager.RemainingLives > 0)
             {
-                this.canShoot = false;
-                this.canvas.Children.Remove(this.playerManager.Player.Sprite);
-                this.bulletManager.RemoveAllBullets();
-                this.timeManager.StopAllTimers();
-                await this.triggerExplosion(this.playerManager.Player.X, this.playerManager.Player.Y);
-                await Task.Delay(1000);
-                this.playerManager.RespawnPlayer();
-                this.timeManager.StartAllTimers();
-                this.canShoot = true;
+                await this.triggerPlayerDeathAndRespawn();
             }
             else
             {
@@ -300,6 +292,23 @@ public class GameManager : INotifyPropertyChanged
                 this.CheckGameStatus();
             }
         }
+    }
+
+    private async Task triggerPlayerDeathAndRespawn()
+    {
+        this.canShoot = false;
+
+        this.canvas.Children.Remove(this.playerManager.Player.Sprite);
+        this.bulletManager.RemoveAllBullets();
+        this.timeManager.StopAllTimers();
+
+        await this.triggerExplosion(this.playerManager.Player.X, this.playerManager.Player.Y);
+        await Task.Delay(1000);
+
+        this.playerManager.RespawnPlayer();
+        this.timeManager.StartAllTimers();
+
+        this.canShoot = true;
     }
 
     private async Task triggerExplosion(double x, double y)

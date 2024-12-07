@@ -92,8 +92,12 @@ public sealed partial class GameCanvas
             || (e.PropertyName == nameof(this.gameViewModel.HasWon) && this.gameViewModel.HasWon))
         {
             this.gameViewModel.EndGame();
-            var playerName = await this.promptForPlayerNameAsync();
-            await this.gameViewModel.EndGameAsync(playerName);
+            if (this.gameViewModel.HasScoredHighScore)
+            {
+                var playerName = await this.promptForPlayerNameAsync();
+                await this.gameViewModel.EndGameAsync(playerName);
+            }
+
             this.highScoreBoardListView.Visibility = Visibility.Visible;
         }
     }

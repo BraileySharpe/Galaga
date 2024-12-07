@@ -15,7 +15,7 @@ using VirtualKey = Windows.System.VirtualKey;
 namespace Galaga.ViewModel;
 
 /// <summary>
-///    The game view model.
+///     The game view model.
 /// </summary>
 public class GameViewModel : INotifyPropertyChanged
 {
@@ -39,6 +39,7 @@ public class GameViewModel : INotifyPropertyChanged
     #endregion
 
     #region Properties
+
     /// <summary>
     ///     Gets the high scores.
     /// </summary>
@@ -58,6 +59,14 @@ public class GameViewModel : INotifyPropertyChanged
     ///     Gets the sort high scores by level command.
     /// </summary>
     public ICommand SortHighScoresByLevelCommand { get; }
+
+    /// <summary>
+    ///     Gets a value indicating whether this instance has scored high score.
+    /// </summary>
+    /// <value>
+    ///     <c>true</c> if this instance has scored high score; otherwise, <c>false</c>.
+    /// </value>
+    public bool HasScoredHighScore { get; private set; }
 
     /// <summary>
     ///     Gets or sets the score.
@@ -142,7 +151,8 @@ public class GameViewModel : INotifyPropertyChanged
     public GameViewModel(Canvas canvas, Action updateParallaxBackground)
     {
         this.canvas = canvas ?? throw new ArgumentNullException(nameof(canvas));
-        this.updateParallaxBackground = updateParallaxBackground ?? throw new ArgumentNullException(nameof(updateParallaxBackground));
+        this.updateParallaxBackground = updateParallaxBackground ??
+                                        throw new ArgumentNullException(nameof(updateParallaxBackground));
         this.activeKeys = new HashSet<VirtualKey>();
         this.HighScores = new ObservableCollection<HighScoreEntry>();
         this.highScoreBoard = new HighScoreBoard();
@@ -157,6 +167,7 @@ public class GameViewModel : INotifyPropertyChanged
     #endregion
 
     #region Methods
+
     /// <summary>
     ///     Occurs when a property value changes.
     /// </summary>
@@ -260,8 +271,29 @@ public class GameViewModel : INotifyPropertyChanged
     /// </summary>
     public void EndGame()
     {
+        if (!this.isHighScoreBoardFull())
+        {
+            this.HasScoredHighScore = true;
+        }
+        else
+        {
+            foreach (var score in this.HighScores)
+            {
+                if (this.Score > score.Score)
+                {
+                    this.HasScoredHighScore = true;
+                    break;
+                }
+            }
+        }
+
         this.disableAllSprites();
         this.StopAllTimers();
+    }
+
+    private bool isHighScoreBoardFull()
+    {
+        return !(this.HighScores.Count < 10);
     }
 
     /// <summary>
@@ -272,6 +304,7 @@ public class GameViewModel : INotifyPropertyChanged
         var newEntry = new HighScoreEntry(playerName, this.Score, this.gameManager.CurrentRoundNumber);
         var updatedHighScores = await this.highScoreBoard.AddHighScoreAsync(newEntry);
         this.updateHighScoresCollection(updatedHighScores);
+        this.HasScoredHighScore = true;
     }
 
     private void disableAllSprites()
