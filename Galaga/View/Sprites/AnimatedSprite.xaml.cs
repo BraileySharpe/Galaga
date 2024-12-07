@@ -21,6 +21,7 @@ public partial class AnimatedSprite
     /// <summary>
     ///     Initializes a new instance of the <see cref="AnimatedSprite" /> class.
     /// </summary>
+    /// <param name="spriteStates">The sprite states.</param>
     public AnimatedSprite(IList<string> spriteStates)
     {
         this.InitializeComponent();
@@ -39,19 +40,6 @@ public partial class AnimatedSprite
     {
         this.currentSpriteIndex = (this.currentSpriteIndex + 1) % this.spriteStates.Count;
         VisualStateManager.GoToState(this, this.spriteStates[this.currentSpriteIndex], true);
-    }
-
-    /// <summary>
-    ///     Sets the new sprite states.
-    /// </summary>
-    /// <param name="newSpriteStates">The new sprite states.</param>
-    public void SetNewSpriteStates(IList<string> newSpriteStates)
-    {
-        this.spriteStates.Clear();
-        foreach (var state in newSpriteStates)
-        {
-            this.spriteStates.Add(state);
-        }
     }
 
     #endregion

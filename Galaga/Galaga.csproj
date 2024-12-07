@@ -206,31 +206,31 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\Audio\bonusenemy_sound.wav">
+    <Content Include="Assets\Audio\bonusenemysound.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Audio\enemy_death.wav">
+    <Content Include="Assets\Audio\enemydeath.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Audio\enemy_shoot.wav">
+    <Content Include="Assets\Audio\enemyshoot.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Audio\gameover_lose.wav">
+    <Content Include="Assets\Audio\gameoverlose.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Audio\gameover_win.wav">
+    <Content Include="Assets\Audio\gameoverwin.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Audio\player_death.wav">
+    <Content Include="Assets\Audio\playerdeath.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Audio\player_shoot.wav">
+    <Content Include="Assets\Audio\playershoot.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Audio\powerup_activate.wav">
+    <Content Include="Assets\Audio\powerupactivate.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\Audio\powerup_deactivate.wav">
+    <Content Include="Assets\Audio\powerupdeactivate.wav">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\Audio\shieldhit.wav">

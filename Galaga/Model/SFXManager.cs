@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.Media.Core;
@@ -121,7 +119,6 @@ public class SfxManager
             this.activePlayers.Add(key, mediaPlayer);
             mediaPlayer.Play();
         }
-
     }
 
     /// <summary>

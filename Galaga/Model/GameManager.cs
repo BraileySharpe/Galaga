@@ -125,7 +125,7 @@ public class GameManager : INotifyPropertyChanged
         if (e.PropertyName == nameof(this.enemyManager.HasBonusEnemyStartedMoving) &&
             this.enemyManager.HasBonusEnemyStartedMoving)
         {
-            this.sfxManager.Play(GlobalEnums.AudioFiles.BONUSENEMY_SOUND);
+            this.sfxManager.Play(GlobalEnums.AudioFiles.BonusEnemySound);
         }
     }
 
@@ -192,7 +192,7 @@ public class GameManager : INotifyPropertyChanged
             var bullet = this.playerManager.Shoot();
             if (this.bulletManager.PlacePlayerBullet(bullet))
             {
-                this.sfxManager.Play(GlobalEnums.AudioFiles.PLAYER_SHOOT);
+                this.sfxManager.Play(GlobalEnums.AudioFiles.PlayerShoot);
             }
 
             this.canShoot = false;
@@ -212,15 +212,15 @@ public class GameManager : INotifyPropertyChanged
             if (enemy != null)
             {
                 await this.triggerExplosion(enemy.X, enemy.Y);
-                this.sfxManager.Play(GlobalEnums.AudioFiles.ENEMY_DEATH);
+                this.sfxManager.Play(GlobalEnums.AudioFiles.EnemyDeath);
                 this.Score += enemy.Score;
 
                 if (enemy is BonusEnemy)
                 {
                     this.playerManager.GainExtraLife();
-                    this.sfxManager.Stop(GlobalEnums.AudioFiles.BONUSENEMY_SOUND);
+                    this.sfxManager.Stop(GlobalEnums.AudioFiles.BonusEnemySound);
                     this.playerManager.ActivateShield();
-                    this.sfxManager.Play(GlobalEnums.AudioFiles.POWERUP_ACTIVATE);
+                    this.sfxManager.Play(GlobalEnums.AudioFiles.PowerUpActivate);
                 }
             }
         }
@@ -254,7 +254,7 @@ public class GameManager : INotifyPropertyChanged
                 bullet = enemy.Shoot();
             }
 
-            this.sfxManager.Play(GlobalEnums.AudioFiles.ENEMY_SHOOT);
+            this.sfxManager.Play(GlobalEnums.AudioFiles.EnemyShoot);
             this.bulletManager.PlaceEnemyBullet(bullet);
         }
     }
@@ -271,17 +271,17 @@ public class GameManager : INotifyPropertyChanged
                 this.playerManager.HandleHitToShield();
                 if (this.playerManager.HasPowerUp)
                 {
-                    this.sfxManager.Play(GlobalEnums.AudioFiles.SHIELDHIT);
+                    this.sfxManager.Play(GlobalEnums.AudioFiles.ShieldHit);
                 }
                 else
                 {
-                    this.sfxManager.Play(GlobalEnums.AudioFiles.POWERUP_DEACTIVATE);
+                    this.sfxManager.Play(GlobalEnums.AudioFiles.PowerUpDeactivate);
                 }
 
                 return;
             }
 
-            this.sfxManager.Play(GlobalEnums.AudioFiles.PLAYER_DEATH);
+            this.sfxManager.Play(GlobalEnums.AudioFiles.PlayerDeath);
             if (this.playerManager.RemainingLives > 0)
             {
                 await this.triggerPlayerDeathAndRespawn();
@@ -330,11 +330,11 @@ public class GameManager : INotifyPropertyChanged
     /// <summary>
     ///     Checks the game status to see whether the game has been won or lost.
     /// </summary>
-    public async void CheckGameStatus()
+    public void CheckGameStatus()
     {
         if (this.playerManager.RemainingLives <= 0 && !this.HasLost)
         {
-            this.sfxManager.Play(GlobalEnums.AudioFiles.GAMEOVER_LOSE);
+            this.sfxManager.Play(GlobalEnums.AudioFiles.GameOverLose);
             this.HasLost = true;
         }
 
@@ -343,7 +343,7 @@ public class GameManager : INotifyPropertyChanged
             switch (this.roundData.CurrentRound)
             {
                 case GlobalEnums.GameRound.Round3:
-                    this.sfxManager.Play(GlobalEnums.AudioFiles.GAMEOVER_WIN);
+                    this.sfxManager.Play(GlobalEnums.AudioFiles.GameOverWin);
                     this.HasWon = true;
 
                     break;

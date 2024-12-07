@@ -10,6 +10,11 @@ public class Explosion : GameObject
 {
     #region Constructors
 
+    /// <summary>
+    ///     Initializes a new instance of the <see cref="Explosion" /> class.
+    /// </summary>
+    /// <param name="x">The x.</param>
+    /// <param name="y">The y.</param>
     public Explosion(double x, double y)
     {
         Sprite = new ExplosionSprite();
@@ -29,7 +34,7 @@ public class Explosion : GameObject
         var sprite = Sprite as AnimatedSprite;
         for (var i = 0; i < 3; i++)
         {
-            sprite.ToggleSprite();
+            sprite?.ToggleSprite();
             await Task.Delay(100);
         }
     }

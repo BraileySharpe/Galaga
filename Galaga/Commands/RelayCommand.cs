@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace Galaga.Command;
+namespace Galaga.Commands;
 
 public class RelayCommand : ICommand
 {
@@ -60,14 +60,6 @@ public class RelayCommand : ICommand
     public void Execute(object parameter)
     {
         this.execute(parameter);
-    }
-
-    /// <summary>
-    ///     Triggers the <see cref="CanExecuteChanged" /> event.
-    /// </summary>
-    public void RaiseCanExecuteChanged()
-    {
-        this.CanExecuteChanged?.Invoke(this, EventArgs.Empty);
     }
 
     #endregion

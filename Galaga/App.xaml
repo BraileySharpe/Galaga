@@ -7,8 +7,8 @@
     <!-- Application Resources -->
     <Application.Resources>
         <!-- Converters -->
-        <converters:BooleanToOppositeConverter x:Key="booleanToOppositeConverter" />
-        <converters:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
+        <converters:BooleanToOppositeConverter x:Key="BooleanToOppositeConverter" />
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Application.Resources>
 
 </Application>

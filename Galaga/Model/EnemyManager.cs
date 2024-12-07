@@ -151,7 +151,7 @@ public class EnemyManager : INotifyPropertyChanged
                 throw new ArgumentException("Invalid enemy type.");
             }
 
-            currEnemy.MovementPattern = this.getEnemyMovementPatternGroupNumber(shipType);
+            currEnemy.MovementPattern = getEnemyMovementPatternGroupNumber(shipType);
 
             this.Enemies.Add(currEnemy);
             this.canvas.Children.Add(currEnemy.Sprite);
@@ -162,7 +162,7 @@ public class EnemyManager : INotifyPropertyChanged
         }
     }
 
-    private int getEnemyMovementPatternGroupNumber(GlobalEnums.ShipType shipType)
+    private static int getEnemyMovementPatternGroupNumber(GlobalEnums.ShipType shipType)
     {
         switch (shipType)
         {
@@ -235,7 +235,7 @@ public class EnemyManager : INotifyPropertyChanged
                 foreach (var group in this.Enemies.Where(enemy => enemy != this.bonusEnemy)
                              .GroupBy(enemy => enemy.MovementPattern))
                 {
-                    this.moveGroup(group, this.stepCounter <= StepCountReverseDirectionValue);
+                    moveGroup(group, this.stepCounter <= StepCountReverseDirectionValue);
                 }
 
                 break;
@@ -266,7 +266,7 @@ public class EnemyManager : INotifyPropertyChanged
         {
             if (groupedEnemies.TryGetValue(pattern, out var group1))
             {
-                this.moveGroup(group1, this.stepCounter <= StepCountReverseDirectionValue);
+                moveGroup(group1, this.stepCounter <= StepCountReverseDirectionValue);
             }
         }
 
@@ -274,12 +274,12 @@ public class EnemyManager : INotifyPropertyChanged
         {
             if (groupedEnemies.TryGetValue(pattern, out var group2))
             {
-                this.moveGroup(group2, this.stepCounter > StepCountReverseDirectionValue);
+                moveGroup(group2, this.stepCounter > StepCountReverseDirectionValue);
             }
         }
     }
 
-    private void moveGroup(IEnumerable<Enemy> enemies, bool moveRight)
+    private static void moveGroup(IEnumerable<Enemy> enemies, bool moveRight)
     {
         foreach (var enemy in enemies)
         {

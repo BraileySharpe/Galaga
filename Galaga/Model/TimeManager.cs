@@ -119,7 +119,7 @@ public class TimeManager
         {
             Interval = TimeSpan.FromMilliseconds(PlayerBulletMovementInMilliseconds)
         };
-        this.playerBulletTimer.Tick += (sender, e) => this.gameManager.MovePlayerBullet();
+        this.playerBulletTimer.Tick += (_, _) => this.gameManager.MovePlayerBullet();
         this.playerBulletTimer.Start();
     }
 
@@ -129,7 +129,7 @@ public class TimeManager
         {
             Interval = TimeSpan.FromMilliseconds(EnemyMovementInMilliseconds)
         };
-        this.enemyMovementTimer.Tick += (sender, e) =>
+        this.enemyMovementTimer.Tick += (_, _) =>
         {
             this.gameManager.MoveEnemies();
             this.gameManager.ToggleSpritesForAnimation();
@@ -143,7 +143,7 @@ public class TimeManager
         {
             Interval = TimeSpan.FromMilliseconds(BonusEnemyMovementInMilliseconds)
         };
-        this.bonusEnemyMovementTimer.Tick += (sender, e) => this.gameManager.MoveBonusEnemy();
+        this.bonusEnemyMovementTimer.Tick += (_, _) => this.gameManager.MoveBonusEnemy();
     }
 
     private void setUpBonusEnemyActivationTimer()
@@ -151,7 +151,7 @@ public class TimeManager
         this.bonusEnemyActivationTimer = new DispatcherTimer();
         this.setRandomBonusEnemyActivationTime();
 
-        this.bonusEnemyActivationTimer.Tick += (sender, e) =>
+        this.bonusEnemyActivationTimer.Tick += (_, _) =>
         {
             this.bonusEnemyMovementTimer.Start();
             this.bonusEnemyActivationTimer.Stop();
@@ -175,12 +175,12 @@ public class TimeManager
         };
 
         this.setRandomEnemyTimeInterval();
-        this.enemyBulletTimer.Tick += (sender, e) =>
+        this.enemyBulletTimer.Tick += (_, _) =>
         {
             this.gameManager.PlaceEnemyBullet();
             this.setRandomEnemyTimeInterval();
         };
-        this.enemyBulletMovementTimer.Tick += (sender, e) => this.gameManager.MoveEnemyBullet();
+        this.enemyBulletMovementTimer.Tick += async (_, _) => { await this.gameManager.MoveEnemyBullet(); };
 
         this.enemyBulletTimer.Start();
         this.enemyBulletMovementTimer.Start();
@@ -198,7 +198,7 @@ public class TimeManager
         {
             Interval = TimeSpan.FromMilliseconds(PlayerBulletCooldownInMilliseconds)
         };
-        this.playerBulletCooldownTimer.Tick += (sender, e) =>
+        this.playerBulletCooldownTimer.Tick += (_, _) =>
         {
             this.gameManager.PlayerBulletCooldownComplete();
             this.playerBulletCooldownTimer.Stop();

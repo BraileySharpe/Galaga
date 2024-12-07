@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Galaga.Command;
+using Galaga.Commands;
 using Galaga.Model;
 using VirtualKey = Windows.System.VirtualKey;
 

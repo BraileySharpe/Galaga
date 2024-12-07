@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Galaga.View.Sprites;
+﻿namespace Galaga.View.Sprites;
 
 /// <summary>
 ///     The Explosion Animation.

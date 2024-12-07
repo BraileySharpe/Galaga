@@ -23,42 +23,42 @@
         <!-- Top Background -->
         <Image x:Name="backgroundTop" Source="/View/Sprites/background_top.png" Width="900" Height="900"
                Canvas.Top="0" Canvas.ZIndex="-3"
-               Visibility="{Binding HasGameStarted, Converter={StaticResource booleanToVisibilityConverter}}" />
+               Visibility="{Binding HasGameStarted, Converter={StaticResource BooleanToVisibilityConverter}}" />
         <!-- Bottom Background -->
         <Image x:Name="backgroundBottom" Source="/View/Sprites/background_bottom.png" Width="900" Height="900"
                Canvas.Top="325" Canvas.ZIndex="-3"
-               Visibility="{Binding HasGameStarted, Converter={StaticResource booleanToVisibilityConverter}}" />
+               Visibility="{Binding HasGameStarted, Converter={StaticResource BooleanToVisibilityConverter}}" />
         <!-- Stars Top Background -->
         <Image x:Name="backgroundStarsTop" Source="/View/Sprites/background_stars_top.png" Width="900" Height="900"
                Canvas.Top="0" Canvas.ZIndex="-2"
-               Visibility="{Binding HasGameStarted, Converter={StaticResource booleanToVisibilityConverter}}" />
+               Visibility="{Binding HasGameStarted, Converter={StaticResource BooleanToVisibilityConverter}}" />
         <!-- Stars Bottom Background -->
         <Image x:Name="backgroundStarsBottom" Source="/View/Sprites/background_stars_bottom.png" Width="900"
                Height="900" Canvas.ZIndex="-2"
-               Visibility="{Binding HasGameStarted, Converter={StaticResource booleanToVisibilityConverter}}" />
+               Visibility="{Binding HasGameStarted, Converter={StaticResource BooleanToVisibilityConverter}}" />
         <!-- Red Planet -->
         <Image x:Name="redPlanet" Source="/View/Sprites/planet_red.png" Width="250" Height="250"
                Canvas.Top="125" Canvas.ZIndex="-1"
-               Visibility="{Binding HasGameStarted, Converter={StaticResource booleanToVisibilityConverter}}" />
+               Visibility="{Binding HasGameStarted, Converter={StaticResource BooleanToVisibilityConverter}}" />
         <!-- Blue Planet-->
         <Image x:Name="bluePlanet" Source="/View/Sprites/planet_blue.png" Width="250" Height="250"
                Canvas.Top="800" Canvas.Left="600" Canvas.ZIndex="-1"
-               Visibility="{Binding HasGameStarted, Converter={StaticResource booleanToVisibilityConverter}}" />
+               Visibility="{Binding HasGameStarted, Converter={StaticResource BooleanToVisibilityConverter}}" />
         <TextBlock Text="SCORE" Height="17" Width="64" FontFamily="ModeNine" FontWeight="Bold" Canvas.Left="809"
                    FontSize="20" Foreground="#FFD01919" HorizontalAlignment="Center"
                    VerticalAlignment="Top" Canvas.Top="16"
-                   Visibility="{Binding HasGameStarted, Converter={StaticResource booleanToVisibilityConverter}}" />
+                   Visibility="{Binding HasGameStarted, Converter={StaticResource BooleanToVisibilityConverter}}" />
         <TextBlock Text="{Binding Score, Mode=OneWay}" Height="31" Width="79" FontFamily="ModeNine"
                    FontWeight="Bold"
                    Canvas.Left="791" Canvas.Top="40" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Top"
                    Foreground="White" TextAlignment="Right" Visibility="{Binding HasGameStarted}" />
         <TextBlock Text="GAME OVER"
-                   Visibility="{Binding HasLost, Converter={StaticResource booleanToVisibilityConverter}}"
+                   Visibility="{Binding HasLost, Converter={StaticResource BooleanToVisibilityConverter}}"
                    FontFamily="ModeNine"
                    FontWeight="Bold" FontSize="50" Canvas.Left="327" Canvas.Top="33" Foreground="White"
                    TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Top" />
         <TextBlock Text="YOU WIN!"
-                   Visibility="{Binding HasWon, Converter={StaticResource booleanToVisibilityConverter}}"
+                   Visibility="{Binding HasWon, Converter={StaticResource BooleanToVisibilityConverter}}"
                    FontFamily="ModeNine"
                    FontWeight="Bold" FontSize="50" Canvas.Left="347" Canvas.Top="33" Foreground="White"
                    TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Top" />
@@ -66,16 +66,16 @@
         <TextBlock x:Name="startGameTextBlock" Text="PRESS ENTER TO START" HorizontalAlignment="Left"
                    VerticalAlignment="Center" FontSize="36" Foreground="White" Canvas.Top="346" Canvas.Left="234"
                    FontFamily="ModeNine" FontWeight="Bold"
-                   Visibility="{Binding IsInStartScreen, Converter={StaticResource booleanToVisibilityConverter}}" />
+                   Visibility="{Binding IsInStartScreen, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
         <TextBlock x:Name="startGameArrowTextBlock" Text=">" HorizontalAlignment="Center"
                    VerticalAlignment="Center" FontSize="36" Foreground="White" Canvas.Top="346" Canvas.Left="201"
                    FontFamily="ModeNine" FontWeight="Bold"
-                   Visibility="{Binding IsInStartScreen, Converter={StaticResource booleanToVisibilityConverter}}" />
+                   Visibility="{Binding IsInStartScreen, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
         <Grid x:Name="lifeGrid" Canvas.Left="780" Canvas.Top="200" Margin="10" Background="Transparent" />
         <ListView x:Name="highScoreBoardListView" ItemsSource="{Binding HighScores}"
-                  Visibility="{Binding IsScoreBoardOpen, Converter={StaticResource booleanToVisibilityConverter}}"
+                  Visibility="{Binding IsScoreBoardOpen, Converter={StaticResource BooleanToVisibilityConverter}}"
                   FontFamily="ModeNine"
                   FontWeight="Bold" Canvas.Left="256" Canvas.Top="90" SelectionMode="None"
                   HorizontalAlignment="Left" VerticalAlignment="Top">
@@ -101,25 +101,25 @@
         </ListView>
         <custom:GalagaLogo Canvas.Left="272" Canvas.Top="103" Width="360" Height="180" HorizontalAlignment="Left"
                            VerticalAlignment="Center"
-                           Visibility="{Binding IsInStartScreen, Converter={StaticResource booleanToVisibilityConverter}}" />
+                           Visibility="{Binding IsInStartScreen, Converter={StaticResource BooleanToVisibilityConverter}}" />
         <Button Command="{Binding ToggleHighScoreBoardCommand}" Width="240" Height="30" Content="VIEW HIGH SCORE BOARD"
                 Canvas.Left="332" Canvas.Top="550"
                 Background="Transparent"
-                Visibility="{Binding IsInStartScreen, Converter={StaticResource booleanToVisibilityConverter}}"
+                Visibility="{Binding IsInStartScreen, Converter={StaticResource BooleanToVisibilityConverter}}"
                 FontFamily="ModeNine" FontWeight="Bold" IsTabStop="False" />
         <Button Width="240" Height="30" Content="RESET HIGH SCORE BOARD"
                 Canvas.Left="332" Canvas.Top="580"
                 Foreground="#FFD01919" Background="Transparent"
-                Visibility="{Binding IsScoreBoardOpen, Converter={StaticResource booleanToVisibilityConverter}}"
+                Visibility="{Binding IsScoreBoardOpen, Converter={StaticResource BooleanToVisibilityConverter}}"
                 FontFamily="ModeNine" FontWeight="Bold" FontStyle="Oblique" VerticalAlignment="Top" IsTabStop="False"
                 Click="resetHighScoreBoard" />
         <Button Command="{Binding ToggleHighScoreBoardCommand}" Width="240" Height="30" Content="RETURN TO START"
                 Canvas.Left="332" Canvas.Top="550"
                 Background="Transparent"
-                Visibility="{Binding IsScoreBoardOpen, Converter={StaticResource booleanToVisibilityConverter}}"
+                Visibility="{Binding IsScoreBoardOpen, Converter={StaticResource BooleanToVisibilityConverter}}"
                 FontFamily="ModeNine" FontWeight="Bold" IsTabStop="False" />
         <TextBlock Text="HIGH SCORES"
-                   Visibility="{Binding IsScoreBoardOpen, Converter={StaticResource booleanToVisibilityConverter}}"
+                   Visibility="{Binding IsScoreBoardOpen, Converter={StaticResource BooleanToVisibilityConverter}}"
                    FontFamily="ModeNine"
                    FontWeight="Bold" FontSize="50" Canvas.Left="280" Canvas.Top="33" Foreground="White"
                    TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Top" />
