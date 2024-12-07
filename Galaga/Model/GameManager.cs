@@ -330,7 +330,7 @@ public class GameManager : INotifyPropertyChanged
     /// <summary>
     ///     Checks the game status to see whether the game has been won or lost.
     /// </summary>
-    public void CheckGameStatus()
+    public async void CheckGameStatus()
     {
         if (this.playerManager.RemainingLives <= 0 && !this.HasLost)
         {

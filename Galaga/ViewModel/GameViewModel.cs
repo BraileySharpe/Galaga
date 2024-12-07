@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Documents;
 using Galaga.Command;
 using Galaga.Model;
 using VirtualKey = Windows.System.VirtualKey;
@@ -51,17 +50,25 @@ public class GameViewModel : INotifyPropertyChanged
     /// <summary>
     ///     Gets the sort high scores by name command.
     /// </summary>
-    public ICommand SortHighScoresByNameCommand { get; }
+    public ICommand SortHighScoresByNameCommand { get; private set; }
 
     /// <summary>
     ///     Gets the sort high scores by score command.
     /// </summary>
-    public ICommand SortHighScoresByScoreCommand { get; }
+    public ICommand SortHighScoresByScoreCommand { get; private set; }
 
     /// <summary>
     ///     Gets the sort high scores by level command.
     /// </summary>
-    public ICommand SortHighScoresByLevelCommand { get; }
+    public ICommand SortHighScoresByLevelCommand { get; private set; }
+
+    /// <summary>
+    ///     Gets the command to toggle between the high score board and the start screen.
+    /// </summary>
+    /// <value>
+    ///     The command to toggle between the high score board and the start screen.
+    /// </value>
+    public ICommand ToggleHighScoreBoardCommand { get; private set; }
 
     /// <summary>
     ///     Gets a value indicating whether this instance has scored high score.
@@ -72,10 +79,10 @@ public class GameViewModel : INotifyPropertyChanged
     public bool HasScoredHighScore { get; private set; }
 
     /// <summary>
-    /// Gets or sets a value indicating whether this instance is in start screen.
+    ///     Gets or sets a value indicating whether this instance is in start screen.
     /// </summary>
     /// <value>
-    ///   <c>true</c> if this instance is in start screen; otherwise, <c>false</c>.
+    ///     <c>true</c> if this instance is in start screen; otherwise, <c>false</c>.
     /// </value>
     public bool IsInStartScreen
     {
@@ -91,10 +98,10 @@ public class GameViewModel : INotifyPropertyChanged
     }
 
     /// <summary>
-    /// Gets or sets a value indicating whether this instance is score board open.
+    ///     Gets or sets a value indicating whether this instance is score board open.
     /// </summary>
     /// <value>
-    ///   <c>true</c> if this instance is score board open; otherwise, <c>false</c>.
+    ///     <c>true</c> if this instance is score board open; otherwise, <c>false</c>.
     /// </value>
     public bool IsScoreBoardOpen
     {
@@ -194,15 +201,14 @@ public class GameViewModel : INotifyPropertyChanged
         this.canvas = canvas ?? throw new ArgumentNullException(nameof(canvas));
         this.updateParallaxBackground = updateParallaxBackground ??
                                         throw new ArgumentNullException(nameof(updateParallaxBackground));
-        this.activeKeys = new HashSet<VirtualKey>();
-        this.HighScores = new ObservableCollection<HighScoreEntry>();
+        this.activeKeys = [];
+        this.HighScores = [];
         this.highScoreBoard = new HighScoreBoard();
+
         this.setUpGameLoopTimer();
         this.IsInStartScreen = true;
+        this.relayCommands();
 
-        this.SortHighScoresByNameCommand = new RelayCommand(_ => this.SortHighScoresByNameScoreLevel());
-        this.SortHighScoresByScoreCommand = new RelayCommand(_ => this.SortHighScoresByScoreNameLevel());
-        this.SortHighScoresByLevelCommand = new RelayCommand(_ => this.SortHighScoresByLevelScoreName());
         this.gameManager = new GameManager(canvas);
     }
 
@@ -214,6 +220,18 @@ public class GameViewModel : INotifyPropertyChanged
     ///     Occurs when a property value changes.
     /// </summary>
     public event PropertyChangedEventHandler PropertyChanged;
+
+    private void relayCommands()
+    {
+        this.SortHighScoresByNameCommand = new RelayCommand(_ => this.SortHighScoresByNameScoreLevel());
+        this.SortHighScoresByScoreCommand = new RelayCommand(_ => this.SortHighScoresByScoreNameLevel());
+        this.SortHighScoresByLevelCommand = new RelayCommand(_ => this.SortHighScoresByLevelScoreName());
+        this.ToggleHighScoreBoardCommand = new RelayCommand(_ =>
+        {
+            this.IsScoreBoardOpen = !this.IsScoreBoardOpen;
+            this.IsInStartScreen = !this.IsInStartScreen;
+        });
+    }
 
     /// <summary>
     ///     Raises the PropertyChanged event.

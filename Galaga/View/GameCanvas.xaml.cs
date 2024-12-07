@@ -53,7 +53,6 @@ public sealed partial class GameCanvas
         DataContext = this.gameViewModel;
         this.gameViewModel.PropertyChanged += this.OnViewModelPropertyChanged;
 
-
         this.startGameFlashingAnimation.Begin();
         this.backgroundTopPosition = 0;
         this.backgroundBottomPosition = this.backgroundTopPosition + this.backgroundTop.Height;
@@ -104,29 +103,31 @@ public sealed partial class GameCanvas
         }
     }
 
-    private void displayHighScoreBoard(object sender, RoutedEventArgs e)
-    {
-        this.gameViewModel.IsScoreBoardOpen = true;
-        this.gameViewModel.IsInStartScreen = false;
-    }
-
-    private void returnToStart(object sender, RoutedEventArgs e)
-    {
-        this.gameViewModel.IsScoreBoardOpen = false;
-        this.gameViewModel.IsInStartScreen = true;
-    }
-
     private async void resetHighScoreBoard(object sender, RoutedEventArgs e)
     {
-        await this.gameViewModel.ResetHighScoreBoard();
+        if (this.gameViewModel.HighScores.Count != 0)
+        {
+            var dialog = new ContentDialog
+            {
+                Title = "Are you sure you want to reset the high score board?",
+                Content = "This action cannot be undone.",
+                PrimaryButtonText = "YES",
+                SecondaryButtonText = "NO"
+            };
+
+            if (await dialog.ShowAsync() == ContentDialogResult.Primary)
+            {
+                await this.gameViewModel.ResetHighScoreBoard();
+            }
+        }
     }
 
     private async Task<string> promptForPlayerNameAsync()
     {
         var dialog = new ContentDialog
         {
-            Title = "Enter Your Name",
-            Content = new TextBox { PlaceholderText = "Player Name" },
+            Title = "You made a new high score!",
+            Content = new TextBox { PlaceholderText = "Enter Your Name" },
             PrimaryButtonText = "OK"
         };
 
