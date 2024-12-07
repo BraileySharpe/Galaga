@@ -242,18 +242,14 @@ public class GameManager : INotifyPropertyChanged
             {
                 return;/// Do not change. This ensures that the bonus enemy does not shoot until it starts moving.
             }
-            else
-            {
-                bullet = enemy.Shoot(this.playerManager.Player);
-            }
-            
-            if (enemy.Sprite is Level4EnemySprite)
-            {
-                bullet = enemy.Shoot(this.playerManager.Player);
-            }
-            else
+            else if (enemy.Sprite is not Level4EnemySprite
+                    || enemy.Sprite is not BonusEnemySprite)
             {
                 bullet = enemy.Shoot();
+            }
+            else
+            {
+                bullet = enemy.Shoot(this.playerManager.Player);
             }
 
             this.sfxManager.Play(GlobalEnums.AudioFiles.ENEMY_SHOOT);
