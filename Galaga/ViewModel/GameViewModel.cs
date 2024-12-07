@@ -60,11 +60,6 @@ public class GameViewModel : INotifyPropertyChanged
     public ICommand SortHighScoresByLevelCommand { get; }
 
     /// <summary>
-    ///     Gets the reset high score board command.
-    /// </summary>
-    public ICommand ResetHighScoreBoardCommand { get; }
-
-    /// <summary>
     ///     Gets or sets the score.
     /// </summary>
     public int Score
@@ -156,7 +151,6 @@ public class GameViewModel : INotifyPropertyChanged
         this.SortHighScoresByNameCommand = new RelayCommand(_ => this.SortHighScoresByNameScoreLevel());
         this.SortHighScoresByScoreCommand = new RelayCommand(_ => this.SortHighScoresByScoreNameLevel());
         this.SortHighScoresByLevelCommand = new RelayCommand(_ => this.SortHighScoresByLevelScoreName());
-        this.ResetHighScoreBoardCommand = new RelayCommand(this.execute);
         this.gameManager = new GameManager(canvas);
     }
 
@@ -167,11 +161,6 @@ public class GameViewModel : INotifyPropertyChanged
     ///     Occurs when a property value changes.
     /// </summary>
     public event PropertyChangedEventHandler PropertyChanged;
-
-    private async void execute(object _)
-    {
-        await this.ResetHighScoreBoard();
-    }
 
     /// <summary>
     ///     Raises the PropertyChanged event.
@@ -374,6 +363,7 @@ public class GameViewModel : INotifyPropertyChanged
     public async Task ResetHighScoreBoard()
     {
         await this.highScoreBoard.ClearHighScoreBoardAsync();
+        this.HighScores.Clear();
     }
 
     #endregion

@@ -134,6 +134,7 @@
     <Compile Include="Model\BonusEnemy.cs" />
     <Compile Include="Model\Bullet.cs" />
     <Compile Include="Model\BulletManager.cs" />
+    <Compile Include="Model\Explosion.cs" />
     <Compile Include="Model\HighScoreBoard.cs" />
     <Compile Include="Model\HighScoreEntry.cs" />
     <Compile Include="Model\PlayerLife.cs" />
@@ -161,8 +162,8 @@
     <Compile Include="View\Sprites\GalagaLogo.xaml.cs">
       <DependentUpon>GalagaLogo.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Sprites\ExplosionAnimation.xaml.cs">
-      <DependentUpon>ExplosionAnimation.xaml</DependentUpon>
+    <Compile Include="View\Sprites\ExplosionSprite.xaml.cs">
+      <DependentUpon>ExplosionSprite.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Sprites\ShieldSprite.xaml.cs">
       <DependentUpon>ShieldSprite.xaml</DependentUpon>
@@ -284,7 +285,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Sprites\ExplosionAnimation.xaml">
+    <Page Include="View\Sprites\ExplosionSprite.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

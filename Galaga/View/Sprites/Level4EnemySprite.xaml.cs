@@ -13,7 +13,7 @@
         /// <summary>
         ///     Initializes a new instance of the <see cref="Level4EnemySprite" /> class.
         /// </summary>
-        public Level4EnemySprite()
+        public Level4EnemySprite() : base(["BaseSprite", "AlternateSprite"])
         {
             this.InitializeComponent();
             Y = 475;

@@ -93,7 +93,8 @@ public class SfxManager
                 {
                     existingPlayer.Pause();
                 }
-                existingPlayer.Dispose();
+
+                existingPlayer?.Dispose();
                 this.activePlayers.Remove(key);
             }
 

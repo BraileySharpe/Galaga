@@ -22,7 +22,7 @@ namespace Galaga.View.Sprites
         /// <summary>
         ///     Initializes a new instance of the <see cref="Level1EnemySprite" /> class.
         /// </summary>
-        public Level1EnemySprite()
+        public Level1EnemySprite() : base(["BaseSprite", "AlternateSprite"])
         {
             this.InitializeComponent();
             Y = 250;

@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 using Galaga.View.Sprites;
 
@@ -122,7 +123,7 @@ public class GameManager : INotifyPropertyChanged
     private void EnemyManagerOnPropertyChanged(object sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(this.enemyManager.HasBonusEnemyStartedMoving) &&
-                              this.enemyManager.HasBonusEnemyStartedMoving)
+            this.enemyManager.HasBonusEnemyStartedMoving)
         {
             this.sfxManager.Play(GlobalEnums.AudioFiles.BONUSENEMY_SOUND);
         }
@@ -255,7 +256,7 @@ public class GameManager : INotifyPropertyChanged
     /// <summary>
     ///     Moves the enemy bullet.
     /// </summary>
-    public void MoveEnemyBullet()
+    public async Task MoveEnemyBullet()
     {
         if (this.bulletManager.MoveEnemyBullet(this.playerManager.Player))
         {
@@ -278,7 +279,14 @@ public class GameManager : INotifyPropertyChanged
             if (this.playerManager.RemainingLives > 0)
             {
                 this.canvas.Children.Remove(this.playerManager.Player.Sprite);
+                Explosion explosion = new Explosion(this.playerManager.Player.X, this.playerManager.Player.Y);
+                this.canvas.Children.Add(explosion.Sprite);
+                this.timeManager.StopAllTimers();
+                await explosion.Explode();
+                this.canvas.Children.Remove(explosion.Sprite);
+                await Task.Delay(1000);
                 this.playerManager.RespawnPlayer();
+                this.timeManager.InitializeTimers();
             }
             else
             {
@@ -351,7 +359,7 @@ public class GameManager : INotifyPropertyChanged
     }
 
     /// <summary>
-    ///    Enables the player to shoot.
+    ///     Enables the player to shoot.
     /// </summary>
     public void EnableShooting()
     {

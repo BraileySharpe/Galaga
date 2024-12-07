@@ -118,6 +118,11 @@ public sealed partial class GameCanvas
         this.highScoresTextBlock.Visibility = Visibility.Collapsed;
     }
 
+    private async void resetHighScoreBoard(object sender, RoutedEventArgs e)
+    {
+        await this.gameViewModel.ResetHighScoreBoard();
+    }
+
     private async Task<string> promptForPlayerNameAsync()
     {
         var dialog = new ContentDialog
@@ -130,12 +135,7 @@ public sealed partial class GameCanvas
         if (await dialog.ShowAsync() == ContentDialogResult.Primary)
         {
             var name = ((TextBox)dialog.Content).Text;
-            if (name.Length > 0)
-            {
-                return name;
-            }
-
-            return DefaultPlayerName;
+            return name.Length > 0 ? name : DefaultPlayerName;
         }
 
         return AnonymousPlayerName;

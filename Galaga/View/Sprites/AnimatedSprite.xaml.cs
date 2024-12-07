@@ -1,53 +1,58 @@
-﻿using Windows.UI.Xaml;
+﻿using System.Collections.Generic;
+using Windows.UI.Xaml;
 
-// The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
+namespace Galaga.View.Sprites;
 
-namespace Galaga.View.Sprites
+/// <summary>
+///     Sprite to enable animation.
+/// </summary>
+/// <seealso cref="Galaga.View.Sprites.BaseSprite" />
+public partial class AnimatedSprite
 {
+    #region Data members
+
+    private readonly IList<string> spriteStates;
+    private int currentSpriteIndex;
+
+    #endregion
+
+    #region Constructors
+
     /// <summary>
-    ///     Sprite to enable animation.
+    ///     Initializes a new instance of the <see cref="AnimatedSprite" /> class.
     /// </summary>
-    /// <seealso cref="Galaga.View.Sprites.BaseSprite" />
-    public partial class AnimatedSprite
+    public AnimatedSprite(IList<string> spriteStates)
     {
-        #region Data members
-
-        private bool isUsingAlternateSprite;
-
-        #endregion
-
-        #region Constructors
-
-        /// <summary>
-        ///     Initializes a new instance of the <see cref="AnimatedSprite" /> class.
-        /// </summary>
-        public AnimatedSprite()
-        {
-            this.InitializeComponent();
-            this.isUsingAlternateSprite = false;
-        }
-
-        #endregion
-
-        #region Methods
-
-        /// <summary>
-        ///     Toggles the sprite for animation.
-        /// </summary>
-        public void ToggleSprite()
-        {
-            if (this.isUsingAlternateSprite)
-            {
-                VisualStateManager.GoToState(this, "BaseSprite", true);
-            }
-            else
-            {
-                VisualStateManager.GoToState(this, "AlternateSprite", true);
-            }
-
-            this.isUsingAlternateSprite = !this.isUsingAlternateSprite;
-        }
-
-        #endregion
+        this.InitializeComponent();
+        this.spriteStates = spriteStates;
+        this.currentSpriteIndex = 0;
     }
+
+    #endregion
+
+    #region Methods
+
+    /// <summary>
+    ///     Toggles the sprite for animation.
+    /// </summary>
+    public void ToggleSprite()
+    {
+        this.currentSpriteIndex = (this.currentSpriteIndex + 1) % this.spriteStates.Count;
+        VisualStateManager.GoToState(this, this.spriteStates[this.currentSpriteIndex], true);
+    }
+
+    /// <summary>
+    ///     Sets the new sprite states.
+    /// </summary>
+    /// <param name="newSpriteStates">The new sprite states.</param>
+    public void SetNewSpriteStates(IList<string> newSpriteStates)
+    {
+        this.spriteStates.Clear();
+        foreach (var state in newSpriteStates)
+        {
+            this.spriteStates.Add(state);
+        }
+    }
+
+    #endregion
 }

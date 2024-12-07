@@ -84,11 +84,11 @@
                 Background="Transparent"
                 Visibility="{Binding HasGameStarted, Converter={StaticResource booleanToOppositeConverter}}"
                 FontFamily="ModeNine" FontWeight="Bold" IsTabStop="False" Click="displayHighScoreBoard" />
-        <Button x:Name="resetButton" Command="{Binding ResetHighScoreBoardCommand}" Width="240" Height="30" Content="RESET HIGH SCORE BOARD"
+        <Button x:Name="resetButton" Width="240" Height="30" Content="RESET HIGH SCORE BOARD"
                 Canvas.Left="332" Canvas.Top="580"
                 Foreground="#FFD01919" Background="Transparent"
                 Visibility="{Binding HasGameStarted, Converter={StaticResource booleanToOppositeConverter}}"
-                FontFamily="ModeNine" FontWeight="Bold" FontStyle="Oblique" VerticalAlignment="Top" IsTabStop="False" />
+                FontFamily="ModeNine" FontWeight="Bold" FontStyle="Oblique" VerticalAlignment="Top" IsTabStop="False" Click="resetHighScoreBoard"/>
         <Button x:Name="returnToStartButton" Width="240" Height="30" Content="RETURN TO START" Canvas.Left="332" Canvas.Top="550"
                 Background="Transparent"
                 Visibility="Collapsed"
