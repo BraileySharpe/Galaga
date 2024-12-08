@@ -21,7 +21,9 @@ public partial class AnimatedSprite
     /// <summary>
     ///     Initializes a new instance of the <see cref="AnimatedSprite" /> class.
     /// </summary>
-    /// <param name="spriteStates">The sprite states.</param>
+    /// <param name="spriteStates">
+    ///     The sprite states
+    /// </param>
     public AnimatedSprite(IList<string> spriteStates)
     {
         this.InitializeComponent();

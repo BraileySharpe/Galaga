@@ -111,13 +111,15 @@ public class RoundData
     {
         for (var i = 0; i < this.rounds.Count; i++)
         {
-            if (this.CurrentRound == this.rounds[i])
+            if (this.CurrentRound != this.rounds[i])
             {
-                if (i + 1 < this.rounds.Count)
-                {
-                    this.CurrentRound = this.rounds[i + 1];
-                    return;
-                }
+                continue;
+            }
+
+            if (i + 1 < this.rounds.Count)
+            {
+                this.CurrentRound = this.rounds[i + 1];
+                return;
             }
         }
     }

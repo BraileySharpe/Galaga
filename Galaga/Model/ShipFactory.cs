@@ -3,6 +3,9 @@ using Galaga.View.Sprites;
 
 namespace Galaga.Model
 {
+    /// <summary>
+    ///     Represents a factory for creating ships in the game.
+    /// </summary>
     public class ShipFactory
     {
         #region Data members

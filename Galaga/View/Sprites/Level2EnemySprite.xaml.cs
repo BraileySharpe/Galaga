@@ -6,6 +6,12 @@
     /// <seealso cref="Galaga.View.Sprites.Level1EnemySprite" />
     public sealed partial class Level2EnemySprite
     {
+        #region Data members
+
+        private const int InitialY = 325;
+
+        #endregion
+
         #region Constructors
 
         /// <summary>
@@ -14,7 +20,7 @@
         public Level2EnemySprite()
         {
             this.InitializeComponent();
-            Y = 325;
+            Y = InitialY;
         }
 
         #endregion

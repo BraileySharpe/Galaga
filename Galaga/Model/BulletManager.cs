@@ -16,7 +16,6 @@ public class BulletManager
     private readonly IList<Bullet> activeEnemyBullets = new List<Bullet>();
     private readonly IList<Bullet> activePlayerBullets = new List<Bullet>();
     private readonly Canvas canvas;
-
     private readonly CollisionManager collisionManager;
 
     #endregion

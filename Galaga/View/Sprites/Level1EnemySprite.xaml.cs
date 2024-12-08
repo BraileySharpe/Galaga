@@ -1,4 +1,5 @@
-﻿using Windows.UI.Xaml.Controls;
+﻿using System.Runtime.CompilerServices;
+using Windows.UI.Xaml.Controls;
 
 namespace Galaga.View.Sprites
 {
@@ -10,9 +11,20 @@ namespace Galaga.View.Sprites
     /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector2" />
     public partial class Level1EnemySprite
     {
-        #region Properties
+        #region Data members
 
+        private const int InitialY = 250;
+
+        #endregion
+
+        #region Properties
+        /// <summary>
+        ///    Gets the base canvas.
+        /// </summary>
         protected Canvas BaseCanvas => this.baseCanvas;
+        /// <summary>
+        ///   Gets the alternate canvas.
+        /// </summary>
         protected Canvas AlternateCanvas => this.alternateCanvas;
 
         #endregion
@@ -25,7 +37,7 @@ namespace Galaga.View.Sprites
         public Level1EnemySprite() : base(["BaseSprite", "AlternateSprite"])
         {
             this.InitializeComponent();
-            Y = 250;
+            Y = InitialY;
         }
 
         #endregion

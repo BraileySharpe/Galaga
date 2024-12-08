@@ -8,6 +8,9 @@ using Windows.Storage;
 
 namespace Galaga.Model;
 
+/// <summary>
+///     Represents a leaderboard of high scores.
+/// </summary>
 public class HighScoreBoard
 {
     #region Data members

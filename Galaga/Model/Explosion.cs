@@ -13,8 +13,12 @@ public class Explosion : GameObject
     /// <summary>
     ///     Initializes a new instance of the <see cref="Explosion" /> class.
     /// </summary>
-    /// <param name="x">The x.</param>
-    /// <param name="y">The y.</param>
+    /// <param name="x">
+    ///     The x location of the explosion.
+    /// </param>
+    /// <param name="y">
+    ///     The y location of the explosion.
+    /// </param>
     public Explosion(double x, double y)
     {
         Sprite = new ExplosionSprite();
