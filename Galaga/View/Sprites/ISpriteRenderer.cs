@@ -13,9 +13,13 @@
         ///     Renders sprite at the specified (x,y) location in relation
         ///     to the top, left part of the canvas.
         /// </summary>
-        /// <param name="x">x location</param>
-        /// <param name="y">y location</param>
-        void RenderAt(double x, double y);
+        /// <param name="x">
+        ///     x location
+        /// </param>
+        /// <param name="y">
+        ///     y location
+        /// </param>
+        public void RenderAt(double x, double y);
 
         #endregion
     }

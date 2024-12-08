@@ -3,6 +3,9 @@ using System.Windows.Input;
 
 namespace Galaga.Commands;
 
+/// <summary>
+///     Represents a command that can be executed.
+/// </summary>
 public class RelayCommand : ICommand
 {
     #region Data members
@@ -17,8 +20,12 @@ public class RelayCommand : ICommand
     /// <summary>
     ///     Initializes a new instance of the <see cref="RelayCommand" /> class.
     /// </summary>
-    /// <param name="execute">The execute action.</param>
-    /// <param name="canExecute">The can execute predicate.</param>
+    /// <param name="execute">
+    ///     The execute action.
+    /// </param>
+    /// <param name="canExecute">
+    ///     The can execute predicate.
+    /// </param>
     public RelayCommand(Action<object> execute, Predicate<object> canExecute = null)
     {
         this.execute = execute ?? throw new ArgumentNullException(nameof(execute));

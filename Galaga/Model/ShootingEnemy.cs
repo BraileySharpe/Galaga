@@ -10,6 +10,9 @@ public class ShootingEnemy : Enemy
 {
     #region Properties
 
+    /// <summary>
+    ///     Gets or sets the speed of the enemy bullet.
+    /// </summary>
     public int EnemyBulletSpeed { get; protected set; } = 15;
 
     #endregion

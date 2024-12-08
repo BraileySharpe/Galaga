@@ -14,10 +14,10 @@ namespace Galaga.View.Sprites
         #region Properties
 
         /// <summary>
-        /// Gets or sets the y.
+        ///     Gets or sets the y location of the sprite.
         /// </summary>
         /// <value>
-        /// The y.
+        ///     The y location of the sprite.
         /// </value>
         public int Y { get; protected set; }
 
@@ -41,8 +41,12 @@ namespace Galaga.View.Sprites
         ///     Renders sprite at the specified (x,y) location in relation
         ///     to the top, left part of the canvas.
         /// </summary>
-        /// <param name="x">x location</param>
-        /// <param name="y">y location</param>
+        /// <param name="x">
+        ///     x location
+        /// </param>
+        /// <param name="y">
+        ///     y location
+        /// </param>
         public void RenderAt(double x, double y)
         {
             Canvas.SetLeft(this, x);

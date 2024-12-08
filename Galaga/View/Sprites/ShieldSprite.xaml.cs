@@ -14,7 +14,9 @@ namespace Galaga.View.Sprites
         #region Data members
 
         private const int TotalFramesInAnimation = 3;
+
         private int currentFrame;
+
         private readonly DispatcherTimer animationTimer;
 
         #endregion

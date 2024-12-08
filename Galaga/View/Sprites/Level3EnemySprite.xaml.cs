@@ -8,6 +8,12 @@
     /// <seealso cref="Windows.UI.Xaml.Markup.IComponentConnector2" />
     public sealed partial class Level3EnemySprite
     {
+        #region Data members
+
+        private const int InitialY = 400;
+
+        #endregion
+
         #region Constructors
 
         /// <summary>
@@ -16,7 +22,7 @@
         public Level3EnemySprite() : base(["BaseSprite", "AlternateSprite"])
         {
             this.InitializeComponent();
-            Y = 400;
+            Y = InitialY;
         }
 
         #endregion
